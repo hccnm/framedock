@@ -1,6 +1,7 @@
 services:
   app:
-    image: ghcr.io/basketikun/infinite-canvas:latest
+    # 使用前需自行构建并发布此仓库的镜像；本地构建见 docker-compose.local.yml。
+    image: ghcr.io/hccnm/framedock:latest
     container_name: infinite-canvas
     ports:
       - "3000:3000"

@@ -1,0 +1,31 @@
+{
+  "workflowId": "general-qwen-edit",
+  "promptId": "977452bf-1119-4294-baf8-585123f89fa4",
+  "generationNodeId": "comfyui-1794007323822-hizg4",
+  "outputNodeId": "image-1794007399640-16whz",
+  "dimensions": [
+    1344,
+    768
+  ],
+  "references": [
+    "ep001-ref-50958ed01dce248a",
+    "ep001-asset-30acabba7c3f1e54",
+    "ep001-asset-227613a002270251"
+  ],
+  "status": "rejected_wrong_bed_reference",
+  "checks": {
+    "three_people": true,
+    "feiyu_left": true,
+    "dongqing_middle": true,
+    "caibao_right": true,
+    "women_sleeping": true,
+    "man_awake_and_gripping_quilt": true,
+    "no_fragmentation": true,
+    "no_double_images": true,
+    "scene_and_clothing_consistent": true,
+    "saved_canvas_bytes_match": true
+  },
+  "adoption": "rejected_by_user",
+  "sha256": "32710a47238346d0f7a3ee2f74acb18736fef40a8ecdd8c93e28af56f8cd9d01",
+  "reason": "Incorrectly retained the old composite bed. User selected the accepted Xiamen bedroom scene for the replacement."
+}

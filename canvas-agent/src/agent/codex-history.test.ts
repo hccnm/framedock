@@ -448,3 +448,13 @@ test("命令完成条目缺少 command 时仍保留历史卡片", () => {
     assert.equal(messages[0].text, "命令已完成");
     assert.equal((messages[0].detail as { status?: string }).status, "completed");
 });
+
+test("任务状态查询保留完成状态并显示空闲计数", () => {
+    const messages = threadMessages({ id: "thread-1", turns: [{ id: "turn-1", status: "completed", items: [{
+        id: "tool-1", type: "mcpToolCall", tool: "generation_get_status", status: "completed",
+        result: { content: [{ type: "text", text: JSON.stringify({ total: 1, summary: { idle: 1, queued: 0, running: 0, succeeded: 0, failed: 0 } }) }] },
+    }] }] });
+    assert.match(messages[0].text || "", /空闲 1/);
+    assert.match(messages[0].text || "", /失败 0/);
+    assert.equal((messages[0].detail as { status: string }).status, "completed");
+});

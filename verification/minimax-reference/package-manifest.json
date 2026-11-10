@@ -1,0 +1,975 @@
+[
+  {
+    "name": "3d-animation-short-generator",
+    "bytes": 41378,
+    "sha256": "5381969990b9a3cd47d6f5cd0a24d46a267b04aa24c374e3c168668e3869ccf9",
+    "files": 7,
+    "jsonResourceBytes": 142459
+  },
+  {
+    "name": "brand-promo-video-generator",
+    "bytes": 7710,
+    "sha256": "791a9d52c20721d689bae8123acf26edc409059ed7beef6cda8818a8c030ddb6",
+    "files": 2,
+    "jsonResourceBytes": 24257
+  },
+  {
+    "name": "minimalist-product-ad-generator",
+    "bytes": 16453,
+    "sha256": "c60d50d3dd04f7b7b2b3b06e830100bf1b495c78b1df55945495da50f960ce95",
+    "files": 2,
+    "jsonResourceBytes": 64949
+  },
+  {
+    "name": "fpv-tour-video-generator",
+    "bytes": 7911,
+    "sha256": "05adfe112641392fd92d1cc9a5bdaf6da34f0ece4432e576ba240920ecce2bad",
+    "files": 2,
+    "jsonResourceBytes": 25945
+  },
+  {
+    "name": "pov-short-film-generator",
+    "bytes": 7521,
+    "sha256": "826f4d7ed8299efae518504ff8e58629b081012de5c23fc7fdd600ffc2556093",
+    "files": 2,
+    "jsonResourceBytes": 23361
+  },
+  {
+    "name": "suspense-title-sequence-generator",
+    "bytes": 8967,
+    "sha256": "894f1c960bc41661417f4930b9ab92efdd57a0edd2acf149fbfd61230eede879",
+    "files": 2,
+    "jsonResourceBytes": 28845
+  },
+  {
+    "name": "paper-collage-explainer-generator",
+    "bytes": 10157,
+    "sha256": "a57a471cf5c6653eb522f99f7ba1546ddefd93da5f02c2f42e5532be003865c4",
+    "files": 2,
+    "jsonResourceBytes": 36721
+  },
+  {
+    "name": "vox-style-video-generator",
+    "bytes": 21659,
+    "sha256": "22f6ab9fff92fde4c48f4b4437d6d7de762878b1ae65fbc7651ebf0a0ca7c22b",
+    "files": 7,
+    "jsonResourceBytes": 63582
+  },
+  {
+    "name": "short-drama-multilingual-dubbing",
+    "bytes": 9290,
+    "sha256": "215898f5846b72f85a4093b6639b2922c9de6836a8002013ac5b354a62ab31ab",
+    "files": 2,
+    "jsonResourceBytes": 34429
+  },
+  {
+    "name": "micro-expression-video-generator",
+    "bytes": 18158,
+    "sha256": "fc99a07c817786a7a17a90f023ea2f45d96a66c761111106b83276c8d7cc3a1a",
+    "files": 9,
+    "jsonResourceBytes": 74957
+  },
+  {
+    "name": "silkscreen-decorative-illustration-short",
+    "bytes": 10006,
+    "sha256": "b7e31b43cd826cb94a13880eb7a21d961d5ea15d7c8d3647e0bb89621e747fde",
+    "files": 2,
+    "jsonResourceBytes": 32601
+  },
+  {
+    "name": "lip-product-ad-generator",
+    "bytes": 5178,
+    "sha256": "9a1b8dbe234fb0af1243798c84787c02a3adb3cbcfffbcc96cb28d9e36195b7e",
+    "files": 2,
+    "jsonResourceBytes": 15321
+  },
+  {
+    "name": "co-op-game-intro-generator",
+    "bytes": 14391,
+    "sha256": "de8b67b13384d3d658e977f981ed4180f88fd7faa4d6516ed1a1de3229d9cf33",
+    "files": 4,
+    "jsonResourceBytes": 45787
+  },
+  {
+    "name": "h3-prompt-expert",
+    "bytes": 17832,
+    "sha256": "7559a17cf4f387205246ff2d7824caf6b25d9b8097f1ced834ea63b2689e0997",
+    "files": 13,
+    "jsonResourceBytes": 44187
+  },
+  {
+    "name": "transcript-broll-planner",
+    "bytes": 5493,
+    "sha256": "0ef84c05049ca8e0a383bebe53124e5950ce86f84696f7ee383170fc1fd7cd86",
+    "files": 2,
+    "jsonResourceBytes": 16549
+  },
+  {
+    "name": "papercraft-stop-motion-explainer",
+    "bytes": 10740,
+    "sha256": "5643eceb96132f6042a76557d6a0b247087230183fe0948e37f180f45272acf7",
+    "files": 2,
+    "jsonResourceBytes": 36369
+  },
+  {
+    "name": "half-narrated-2d-short-drama",
+    "bytes": 43741,
+    "sha256": "61188fc2978efbe714e95ac8597d443cca7a26140898bc77df290ccd6ce909bd",
+    "files": 12,
+    "jsonResourceBytes": 124818
+  },
+  {
+    "name": "handdrawn-live-video-generator",
+    "bytes": 5312,
+    "sha256": "48fcf25e460a72e020a46b1c6d62e103ee87dcdc31a394a7f217797555c89867",
+    "files": 2,
+    "jsonResourceBytes": 15301
+  },
+  {
+    "name": "reference-video-recreation-workflow",
+    "bytes": 22311,
+    "sha256": "b427877c9e4f1853e55a72869bc6830dad3d6857287768cb6142f6df1105a298",
+    "files": 4,
+    "jsonResourceBytes": 70329
+  },
+  {
+    "name": "digital-product-promo-generator",
+    "bytes": 4400,
+    "sha256": "34df5781a0766dcd0224004487bb7dbdcedda479875142c076fa60db381050df",
+    "files": 2,
+    "jsonResourceBytes": 12149
+  },
+  {
+    "name": "line-doodle-explainer-generator",
+    "bytes": 15665,
+    "sha256": "45b4c79f5f95e25593dcd4f1db5b448c76df3e84235694a4a2522daba764614b",
+    "files": 6,
+    "jsonResourceBytes": 49443
+  },
+  {
+    "name": "wool-felt-story-short",
+    "bytes": 10593,
+    "sha256": "7603021bad5e6807289a6fc0894e09d1e26726c6a73d2fd62ba1cbbc7c3e75f8",
+    "files": 2,
+    "jsonResourceBytes": 37741
+  },
+  {
+    "name": "half-narrated-live-action-short-drama",
+    "bytes": 18700,
+    "sha256": "167f0f69ef2d119ee0bcd0188c62ea0171ba0e141391c144f020a7ce01c9a92c",
+    "files": 5,
+    "jsonResourceBytes": 58802
+  },
+  {
+    "name": "half-narrated-3d-short-drama",
+    "bytes": 91042,
+    "sha256": "35860641bd9f0302a8a1c56219e3b9d952c6cd1afeff309e8a3ac940c0f78226",
+    "files": 12,
+    "jsonResourceBytes": 303655
+  },
+  {
+    "name": "chinese-traditional-animation-shortfilm",
+    "bytes": 12238,
+    "sha256": "93126d35c174c08a469a5971c3d0a314a77e4b029c4dd63bf609674d92018b63",
+    "files": 2,
+    "jsonResourceBytes": 41873
+  },
+  {
+    "name": "astra-prompt-optimizer",
+    "bytes": 11653,
+    "sha256": "fa55690b4480a262059841d02b5399ed1670318ef61dad488959d8f7bb080f4d",
+    "files": 2,
+    "jsonResourceBytes": 38729
+  },
+  {
+    "name": "chinese-celestial-palace-video",
+    "bytes": 13595,
+    "sha256": "963a17b1a58cff6ecb8c1bc3cdaff1f7436d11d835b1751e028737d9d3bcf263",
+    "files": 3,
+    "jsonResourceBytes": 41102
+  },
+  {
+    "name": "vibe-knowledge-film",
+    "bytes": 287816,
+    "sha256": "8e636c8e2752e41f4d48a78fe5972dcbcae3315735a4596a085572c0f2963e9c",
+    "files": 24,
+    "jsonResourceBytes": 1379691
+  },
+  {
+    "name": "fashion-scene-video-planner",
+    "bytes": 5201,
+    "sha256": "887b938a009d02ccf7c833452f092145f991c211ca7ca7952e111d6b5a644607",
+    "files": 2,
+    "jsonResourceBytes": 15205
+  },
+  {
+    "name": "handdrawn-explainer-video",
+    "bytes": 12965720,
+    "sha256": "aaede72f8d184aa9dad4263e420f875614a79785988346963210c7d30f2b95e8",
+    "files": 113,
+    "jsonResourceBytes": 18134645
+  },
+  {
+    "name": "architecture-flythrough-video",
+    "bytes": 58603,
+    "sha256": "af865fbd24de59295bf0c879e92a25f6f51c52154933f341aedc34c5ba815bed",
+    "files": 20,
+    "jsonResourceBytes": 151663
+  },
+  {
+    "name": "typography-product-tvc",
+    "bytes": 41324,
+    "sha256": "e83a3e45273b2f806e74d0f0eccef9c5fcae7fe5ec5d58127b78d1abcf3899ee",
+    "files": 4,
+    "jsonResourceBytes": 137218
+  },
+  {
+    "name": "poster-motion-generator",
+    "bytes": 39911,
+    "sha256": "877a9c0af62b06ea98142b1948ff1e8b5ad46b72b3fb142e2bbcf746eddc63be",
+    "files": 4,
+    "jsonResourceBytes": 147596
+  },
+  {
+    "name": "dot-matrix-brand-wordmark-motion",
+    "bytes": 9904,
+    "sha256": "c32c9093a17eaca71762c53830582cc2bcfd377b6dd35c40c9ce31758d459603",
+    "files": 3,
+    "jsonResourceBytes": 28596
+  },
+  {
+    "name": "miniature-person-scene-compositor",
+    "bytes": 15229,
+    "sha256": "2665f4fc1166895edfe6b789261397016e6a7ac8d3af775b0c0ae238ef2484e1",
+    "files": 2,
+    "jsonResourceBytes": 55281
+  },
+  {
+    "name": "video-multicam-reshoot",
+    "bytes": 10444,
+    "sha256": "ab9af69b5d6b78f8d9dbcfd7249f702d441f3592bfc5e18e942b98940f617ef3",
+    "files": 2,
+    "jsonResourceBytes": 34085
+  },
+  {
+    "name": "collage-performance-mv",
+    "bytes": 2137980,
+    "sha256": "d63843ce9ac409ab2a7f9fc1b1b128616e82b464b6722af37e5b36076a5c84cc",
+    "files": 11,
+    "jsonResourceBytes": 2911346
+  },
+  {
+    "name": "future-sci-fi-cinematic-generator",
+    "bytes": 7289,
+    "sha256": "452867908147ffa6eeecbe61c8baadb4a9291d3b07cf596b51cd19e4d7a75778",
+    "files": 2,
+    "jsonResourceBytes": 21393
+  },
+  {
+    "name": "watercolor-ink-animation",
+    "bytes": 1135734,
+    "sha256": "2f5335fb0892aafd0812e9aa33a075debc3bc57411f7c06ff892895dcee01a47",
+    "files": 27,
+    "jsonResourceBytes": 1739177
+  },
+  {
+    "name": "brand-stream-mg",
+    "bytes": 4809,
+    "sha256": "bd981ccedaaf8196284d7e0691acb7e00cead9933608ba68cd3051b5ca55469e",
+    "files": 2,
+    "jsonResourceBytes": 15249
+  },
+  {
+    "name": "interior-modeling-render",
+    "bytes": 20582,
+    "sha256": "ff82a760df603c11e414f1a31e9f132fd5fa12f5e3162bf3fb58b80eb01d0f78",
+    "files": 4,
+    "jsonResourceBytes": 63980
+  },
+  {
+    "name": "sitcom-story-video",
+    "bytes": 29823,
+    "sha256": "e966e7b204a08b6c81be494698eb0d8e2f2e083ce195f41ccda30aef6677f286",
+    "files": 6,
+    "jsonResourceBytes": 90178
+  },
+  {
+    "name": "video-element-replacement",
+    "bytes": 6456,
+    "sha256": "bca1cd79533ffb5df8e47aca2d0910a8f269ed7429e562e1c87a94d154980d91",
+    "files": 2,
+    "jsonResourceBytes": 20197
+  },
+  {
+    "name": "video-highlight-edit",
+    "bytes": 13830,
+    "sha256": "3e880bfc13aa14a7746924e640a4297b5f911a8ba893267d353fa50ea0e2dce0",
+    "files": 2,
+    "jsonResourceBytes": 48345
+  },
+  {
+    "name": "talking-head-to-animation",
+    "bytes": 86281,
+    "sha256": "67310c1a4ee315b140943673a4d3d60edde86d70bb7f339c518b3c50b7c0daf0",
+    "files": 10,
+    "jsonResourceBytes": 174439
+  },
+  {
+    "name": "character-identity-asset-studio",
+    "bytes": 7670,
+    "sha256": "84c9efc3af1e6135e6945e16c9abbaa4ee91ecedfa71fcf6cc33b114896c4c6a",
+    "files": 2,
+    "jsonResourceBytes": 25301
+  },
+  {
+    "name": "wes-anderson-style-short-film-generator",
+    "bytes": 5400,
+    "sha256": "683cbecb446fc2671367080129edea30a3415fb2ea8dc6722cf603123b77f77f",
+    "files": 2,
+    "jsonResourceBytes": 15141
+  },
+  {
+    "name": "multilingual-hand-drawn-story-video",
+    "bytes": 45188111,
+    "sha256": "19cc67e4129532de25e97f992898da7ff3faabb96506eb133ef1e0a5ae568626",
+    "files": 37,
+    "jsonResourceBytes": 60720029
+  },
+  {
+    "name": "deepwhite-blender-previs",
+    "bytes": 34108,
+    "sha256": "22a33d193a701553bb55c5645d7f8dc43b53246fe7ca25931b6265478cb0d6f1",
+    "files": 3,
+    "jsonResourceBytes": 120403
+  },
+  {
+    "name": "app-ui-flow-motion",
+    "bytes": 88538,
+    "sha256": "9b9b6077d26e02a0f05ab0b39a36a75523f75a315e5a6cd81d24e4a9c48bf57f",
+    "files": 11,
+    "jsonResourceBytes": 193152
+  },
+  {
+    "name": "3d-product-commercial",
+    "bytes": 7871,
+    "sha256": "80201911e3cbd4d683cd280a27495c4ee0926649ff4a08855467144b70bf834c",
+    "files": 2,
+    "jsonResourceBytes": 24297
+  },
+  {
+    "name": "famous-painting-revival",
+    "bytes": 28751,
+    "sha256": "b65617ead33ff14e061b3ca9a2396fe8af4ebc83c6086d5c87a779b0b047302e",
+    "files": 8,
+    "jsonResourceBytes": 82364
+  },
+  {
+    "name": "iwai-shunji-cinematic-aesthetics",
+    "bytes": 22047,
+    "sha256": "71e119e9ef378cb836f5ed06ceea24457b223c2dd44fd6f015ffcb3e749fa10d",
+    "files": 9,
+    "jsonResourceBytes": 53803
+  },
+  {
+    "name": "live-sketch-motion",
+    "bytes": 8472,
+    "sha256": "7814757bec7d1bff0034ca19f1a1f839ce80a9b0f1d4d418eae1753bc39c7f4e",
+    "files": 2,
+    "jsonResourceBytes": 28181
+  },
+  {
+    "name": "interactive-explainer-animations",
+    "bytes": 2816164,
+    "sha256": "801ce367e6853e74bb12d71623b485b0e27c1349a9eff33b9aee901e3f038303",
+    "files": 97,
+    "jsonResourceBytes": 16324998
+  },
+  {
+    "name": "ip-toy-grid-motion",
+    "bytes": 11428,
+    "sha256": "6a4cf14ee4b5df72d08643569ef4aa10677909001fbf36e499a59c7f1b074578",
+    "files": 5,
+    "jsonResourceBytes": 32517
+  },
+  {
+    "name": "prehistoric-animation-generator",
+    "bytes": 16502,
+    "sha256": "67e7fc0357b771f30fd2fd38c4a50c78925ee2b1d5981a410f7a1a624ffb8784",
+    "files": 9,
+    "jsonResourceBytes": 40324
+  },
+  {
+    "name": "wedding-couple-video-maker",
+    "bytes": 114637,
+    "sha256": "afd305bf3c560d1c3e2abb86e5c9d823002471a4e15d071dd9659bdd06e97cc1",
+    "files": 36,
+    "jsonResourceBytes": 348828
+  },
+  {
+    "name": "retro-collage-motion-film",
+    "bytes": 22193,
+    "sha256": "4debc0b634c4a3358c610120567954ecb8cfe8c71699b9933ecf6feeccde8124",
+    "files": 9,
+    "jsonResourceBytes": 55030
+  },
+  {
+    "name": "architecture-flythrough",
+    "bytes": 58573,
+    "sha256": "7afbfa8cbc18ba18380f3744e94f357bec83cc4029d19816c81bc04a4e043993",
+    "files": 20,
+    "jsonResourceBytes": 151279
+  },
+  {
+    "name": "blender-product-film",
+    "bytes": 38424,
+    "sha256": "a96af788c3315a3dd3215120de8f3a633dcb7fab563c3ba151c0d59f33a0e1c4",
+    "files": 20,
+    "jsonResourceBytes": 91623
+  },
+  {
+    "name": "ecommerce-visual-creator",
+    "bytes": 90528,
+    "sha256": "3b8660b23f34981a91e3207d61824446e4ff57e9ae542bc4bc881e52ff7f9f3f",
+    "files": 26,
+    "jsonResourceBytes": 273757
+  },
+  {
+    "name": "miyazaki-inspired-animation",
+    "bytes": 9668,
+    "sha256": "4fceba5d6491ecc373b803c327d5e3f8b23e988afb1a6d0c16c9169eedd5091f",
+    "files": 2,
+    "jsonResourceBytes": 31193
+  },
+  {
+    "name": "rpg-game-cinematic",
+    "bytes": 15524,
+    "sha256": "a1609547644509ffa133bd63aad45957ea2aedb0b4688daafeccaa9a9d5d18d9",
+    "files": 3,
+    "jsonResourceBytes": 43012
+  },
+  {
+    "name": "90s-cel-animation-city-pop-short",
+    "bytes": 7613,
+    "sha256": "4e071b990fac3e601efa2a1ab223d6d8eda567105ab692ce0998d6c1b11e4765",
+    "files": 2,
+    "jsonResourceBytes": 21929
+  },
+  {
+    "name": "shot-by-shot-study",
+    "bytes": 802422,
+    "sha256": "3c62c12d00aa3de914776bbb89ad3b25c363ca30061a66be2b751c24c927e170",
+    "files": 41,
+    "jsonResourceBytes": 1415821
+  },
+  {
+    "name": "bullet-time-slow-motion-video",
+    "bytes": 7580,
+    "sha256": "8f144a3dddd3e5a64d6e85944cbdb20706357d85aa1da70dc561f0355912eee1",
+    "files": 2,
+    "jsonResourceBytes": 23717
+  },
+  {
+    "name": "script-development-editor",
+    "bytes": 1446117,
+    "sha256": "e8b739234c2629b2accfa97400583f677e9c250019adab800a301929e0230bfa",
+    "files": 83,
+    "jsonResourceBytes": 3969765
+  },
+  {
+    "name": "editable-product-motion-films",
+    "bytes": 14204106,
+    "sha256": "5d9e655a9d13a118c10aa2c827149eda7e1159c6118a8259a2aab7873b209425",
+    "files": 190,
+    "jsonResourceBytes": 20040574
+  },
+  {
+    "name": "grotesque-handdrawn-animation",
+    "bytes": 6311358,
+    "sha256": "79173503ff54b20c1ee46aab4246875ec39d88c3542f7ee9791a561585f4b453",
+    "files": 22,
+    "jsonResourceBytes": 8453817
+  },
+  {
+    "name": "plot-twist-ad-generator",
+    "bytes": 17544,
+    "sha256": "685897b139bb10fded065ee636772cfa7fa96adb980c0c2d56265522b0f0059e",
+    "files": 7,
+    "jsonResourceBytes": 43990
+  },
+  {
+    "name": "brand-kinetic-typography-promo",
+    "bytes": 149470,
+    "sha256": "1af90a6646a2b8d6a77e7c00471180a00a85717a4994913bd11c5dbab1db6666",
+    "files": 31,
+    "jsonResourceBytes": 494403
+  },
+  {
+    "name": "pet-keynote-video",
+    "bytes": 11905,
+    "sha256": "8612a35522470898db20a3281e8067c915164a85a4421cc5a5ad257944c092fc",
+    "files": 2,
+    "jsonResourceBytes": 39453
+  },
+  {
+    "name": "depth-guided-animation-generator",
+    "bytes": 13942,
+    "sha256": "71cb7f5691ddc4c0fca5b070229b314f8f3457edf36c3db3ecca42e3c78fad88",
+    "files": 6,
+    "jsonResourceBytes": 42129
+  },
+  {
+    "name": "ad-creative",
+    "bytes": 5498,
+    "sha256": "48c00a9b85ccbb40f940071cf84f22f82b75c8ec6ceaa9ee970e850bd3b7e3ad",
+    "files": 2,
+    "jsonResourceBytes": 14729
+  },
+  {
+    "name": "film-reference-prompt-writer",
+    "bytes": 17082,
+    "sha256": "2d0b4c0c9a9ffaa25157040ac824977d8214b33233d89ec26404d5168761f9db",
+    "files": 9,
+    "jsonResourceBytes": 42996
+  },
+  {
+    "name": "koc-video",
+    "bytes": 24110,
+    "sha256": "34fb911380cb346d442374da9ec3659787f216d9530225b5e192c79e33fe8eb8",
+    "files": 7,
+    "jsonResourceBytes": 63383
+  },
+  {
+    "name": "brand-ad",
+    "bytes": 28724,
+    "sha256": "f239f65eb48666ba9589f440d6190caa68c393357befe54819b2dff3d0a65014",
+    "files": 9,
+    "jsonResourceBytes": 81594
+  },
+  {
+    "name": "brand-font-effect-editor",
+    "bytes": 4122,
+    "sha256": "1082ad3eb12c2badee46e4d4cc016f8e41c63d41522d1b2fcf6eadec04e31bf6",
+    "files": 2,
+    "jsonResourceBytes": 12561
+  },
+  {
+    "name": "video-deconstruct",
+    "bytes": 6286,
+    "sha256": "97c1efd06e1d9f354acaf56371c4adb2cabb7a4baae0bcf3490a8a155c202b2e",
+    "files": 3,
+    "jsonResourceBytes": 16349
+  },
+  {
+    "name": "ui-motion",
+    "bytes": 48972,
+    "sha256": "f93d099f0c09c0db38805bd495cbc6cb1fa039bdbaedef27cd7fed9465493c70",
+    "files": 19,
+    "jsonResourceBytes": 138210
+  },
+  {
+    "name": "windows-xp-dialog-story",
+    "bytes": 6922,
+    "sha256": "bf20d6d6450aa028897b1022678309f0f5d14d7c17f655c463266bf7ed536f92",
+    "files": 2,
+    "jsonResourceBytes": 20797
+  },
+  {
+    "name": "chinese-style-short-drama-generator",
+    "bytes": 11814,
+    "sha256": "b839fc3e0be23f4017a0d0566c8c245033e019eddeaaee5148cecfea7020ab9f",
+    "files": 2,
+    "jsonResourceBytes": 41189
+  },
+  {
+    "name": "mg-voiceover-animation-generator",
+    "bytes": 29706,
+    "sha256": "bf8937f71be6fdc10a570792264ec85787c628300f9cfdef4f4c7ea3944e7ebc",
+    "files": 9,
+    "jsonResourceBytes": 86836
+  },
+  {
+    "name": "native-ad-mockup",
+    "bytes": 7046,
+    "sha256": "e50c56de00278c9b0aaf6562b63b250f4f94aa1750ed6e39e84dd7d0965356f8",
+    "files": 2,
+    "jsonResourceBytes": 22029
+  },
+  {
+    "name": "video-deconstruct-analyzer",
+    "bytes": 13836,
+    "sha256": "c74cea1102d8adcbb42f99ecb027c75fefd87679ff87db6147db6fa78572ace2",
+    "files": 5,
+    "jsonResourceBytes": 38392
+  },
+  {
+    "name": "dreamina-cli",
+    "bytes": 36214,
+    "sha256": "23e9cfad6d63527e76493319f3fbfff034e510150f460d9c87f31bf2a87f2ede",
+    "files": 8,
+    "jsonResourceBytes": 132383
+  },
+  {
+    "name": "blender-workflow",
+    "bytes": 69935,
+    "sha256": "edf9f4a4678f6d041112c984193ea06967d8575fc9d01906f0f8f2ba1bb26789",
+    "files": 22,
+    "jsonResourceBytes": 225680
+  },
+  {
+    "name": "design-libtv",
+    "bytes": 7663,
+    "sha256": "45c3c4e2d1ccd2d998b86651ba23c135d94c2f1547201cd284ab0bb04c70375a",
+    "files": 2,
+    "jsonResourceBytes": 26217
+  },
+  {
+    "name": "control-in-app-browser",
+    "bytes": 8479,
+    "sha256": "ae0824baec87dde6e050bfb3f30998fc52daa755005e6a992500ab92122e0eb8",
+    "files": 2,
+    "jsonResourceBytes": 26301
+  },
+  {
+    "name": "backrooms-dreamcore",
+    "bytes": 6991,
+    "sha256": "543c504546c088cdea334febe16abb649eab3e9e42922070382d7ea096d0a9c6",
+    "files": 2,
+    "jsonResourceBytes": 22581
+  },
+  {
+    "name": "design-photoshop",
+    "bytes": 35101,
+    "sha256": "2c83b77aabe8d3d0173c9019d77c353537bbdab16ce517e60b911c4516d45cfa",
+    "files": 15,
+    "jsonResourceBytes": 108574
+  },
+  {
+    "name": "subtitle-correction",
+    "bytes": 18673,
+    "sha256": "1c3a54dc15711a266cdc8b5ee919dd807dc8d54ed4e9916c58f96676f09432be",
+    "files": 5,
+    "jsonResourceBytes": 81980
+  },
+  {
+    "name": "design-after-effects",
+    "bytes": 110507,
+    "sha256": "f6f48d383136d3d71432aa8881cd97a5d7312e425e003421a6537993e26df23d",
+    "files": 32,
+    "jsonResourceBytes": 331269
+  },
+  {
+    "name": "niulai-movie-style",
+    "bytes": 20683,
+    "sha256": "97349b2bee1cc7647c57dce570dfaded5e67371f917373764642d119e01ab9ba",
+    "files": 6,
+    "jsonResourceBytes": 59026
+  },
+  {
+    "name": "digital-drawing-timelapse",
+    "bytes": 5633,
+    "sha256": "e0f6b040dd4345b413a7eadabd5e28a175753dae1c1a6a8e97d45babee396717",
+    "files": 2,
+    "jsonResourceBytes": 17541
+  },
+  {
+    "name": "browser-game-demo-maker",
+    "bytes": 12051,
+    "sha256": "cae36b4c81bc9bae0c11d86f83dc21de73eb4a27e41096620b4a843c9323f890",
+    "files": 5,
+    "jsonResourceBytes": 33863
+  },
+  {
+    "name": "coordinate-camera-control-designer",
+    "bytes": 12218,
+    "sha256": "910300c0689a9fa9e938e8d2f3292c2acd9a42f25f8133cc8b06a6de2b99eb31",
+    "files": 4,
+    "jsonResourceBytes": 39304
+  },
+  {
+    "name": "anime-pv-maker",
+    "bytes": 14495,
+    "sha256": "4913f94a856e30aba19204f8fbf3f4a19040fbbb53450d4bca4e4e3d9c0fcf70",
+    "files": 2,
+    "jsonResourceBytes": 47581
+  },
+  {
+    "name": "anime-game-pv",
+    "bytes": 31224,
+    "sha256": "7634c19da8789828542421fff8e0ce009efb5a19584616c259f11f0dbfc18215",
+    "files": 5,
+    "jsonResourceBytes": 111609
+  },
+  {
+    "name": "h3-visual-design",
+    "bytes": 112283,
+    "sha256": "05ebfb1ec13171e016f3b04af665b21a04670937a4403b787f5492cb967aacf2",
+    "files": 15,
+    "jsonResourceBytes": 309050
+  },
+  {
+    "name": "content-strategy",
+    "bytes": 8032,
+    "sha256": "3f77362fc514a1bcaa65817db72a8fa62fedf5e00999748f217784c13c48fb68",
+    "files": 2,
+    "jsonResourceBytes": 24345
+  },
+  {
+    "name": "touchdesigner-workflow",
+    "bytes": 38461,
+    "sha256": "ba09fc9f23623368ec10ee02b76dd33b01ca8d5909dcf1e665e476a8ff55623a",
+    "files": 10,
+    "jsonResourceBytes": 114768
+  },
+  {
+    "name": "logo-creative-material-motion-lab",
+    "bytes": 3503,
+    "sha256": "9f7eba6b4b65e9406bbe13e13b78c4b922d4c5e9f7b0d417380b696a45b945e2",
+    "files": 2,
+    "jsonResourceBytes": 9533
+  },
+  {
+    "name": "handdrawn-product-poster-motion",
+    "bytes": 14966,
+    "sha256": "d1d5c726f2bb254726e15271f634f9cbfaaf3242c5643b0e4d862c10dbee8f7f",
+    "files": 4,
+    "jsonResourceBytes": 45113
+  },
+  {
+    "name": "mime-object-video",
+    "bytes": 5245,
+    "sha256": "c4d16047db2a3d9b9d5a7a145861b58382a567403fb26ff3b8c49e71ac6fff9f",
+    "files": 2,
+    "jsonResourceBytes": 15205
+  },
+  {
+    "name": "houdini-workflow",
+    "bytes": 244121,
+    "sha256": "d858e61727c4f93f3ffef2adc717b578deff7ac344d8518a6eea6b7ee4362173",
+    "files": 35,
+    "jsonResourceBytes": 801630
+  },
+  {
+    "name": "cinematic-title-sequence",
+    "bytes": 80632,
+    "sha256": "1a000364a346ef2ef42b15e74d2ee706fe0d9e79d259eafcc96c997caa64ff64",
+    "files": 10,
+    "jsonResourceBytes": 232263
+  },
+  {
+    "name": "audiobook",
+    "bytes": 82770,
+    "sha256": "085f1b5ec831ea40e7e1b50b938daa89c218ad73364656c70d04fa0f3c4389dc",
+    "files": 29,
+    "jsonResourceBytes": 338290
+  },
+  {
+    "name": "skill-reviewer",
+    "bytes": 5211,
+    "sha256": "e093f05f8bb0484a5e7f01752454b8f02733e30caf834959a9c579f937ea2962",
+    "files": 2,
+    "jsonResourceBytes": 13833
+  },
+  {
+    "name": "skill-creator",
+    "bytes": 25329,
+    "sha256": "24b48793b3aa485649ec3fe268dbd64e15b3e98fafe284356c269a946177c0b4",
+    "files": 7,
+    "jsonResourceBytes": 74517
+  },
+  {
+    "name": "voice-design",
+    "bytes": 3899,
+    "sha256": "e390eefd16544665011c60770ab0477da6014bdc5136fdd87dbcf54a9594ab33",
+    "files": 2,
+    "jsonResourceBytes": 10241
+  },
+  {
+    "name": "podcast-to-content-suite",
+    "bytes": 7357,
+    "sha256": "bd0a204d3885685212b637ee3e0d31382bb7751f56283cc5a1c0f9346f884698",
+    "files": 4,
+    "jsonResourceBytes": 21303
+  },
+  {
+    "name": "voiceover-direction",
+    "bytes": 5607,
+    "sha256": "044d2ab1f2298c078f32fe32ea1ef7afb8508c31ac8931b86a4b57374613a11c",
+    "files": 2,
+    "jsonResourceBytes": 14797
+  },
+  {
+    "name": "voice-clone",
+    "bytes": 8139,
+    "sha256": "d83ccaf80ca9f51cf44474c121eeb5ac55b2541ec299954ba24221a4df16ac8f",
+    "files": 3,
+    "jsonResourceBytes": 21133
+  },
+  {
+    "name": "video-transcript",
+    "bytes": 5806,
+    "sha256": "206cf0ee7cf4cb098d2932840ccb2bdc24068ae61875edb68d2e733dfeffbdc2",
+    "files": 2,
+    "jsonResourceBytes": 16497
+  },
+  {
+    "name": "education-studio",
+    "bytes": 29476,
+    "sha256": "a9e1fdbe974f390593dd2f6f08bf1fd827119962a7f6eb3e4d006ee38f911da2",
+    "files": 5,
+    "jsonResourceBytes": 100772
+  },
+  {
+    "name": "writing-fragments",
+    "bytes": 4203,
+    "sha256": "170a1dd8d69c2e453f4f767ad9573ad55874ff99a0f72d24c122443dfd2dedaa",
+    "files": 2,
+    "jsonResourceBytes": 11261
+  },
+  {
+    "name": "frontend-slides",
+    "bytes": 614918,
+    "sha256": "a0fe5a9474b561113c2a3dc28eba3e011ba1d8bd771dd4e7c1ae2a08cbf49f03",
+    "files": 82,
+    "jsonResourceBytes": 2386377
+  },
+  {
+    "name": "director-stage",
+    "bytes": 13857,
+    "sha256": "328e459b38492ab3c1ae88d5258072cc05fda3223d395a2a9a3ef13a29069a89",
+    "files": 7,
+    "jsonResourceBytes": 31698
+  },
+  {
+    "name": "social-caption",
+    "bytes": 5527,
+    "sha256": "85997c59d9dc87d7171b1f8001815be754ad12066b419c1f4d61f0caa2cbe49a",
+    "files": 2,
+    "jsonResourceBytes": 15869
+  },
+  {
+    "name": "sports-podcast-outline",
+    "bytes": 4171,
+    "sha256": "95370d666186bffe5d0e9b4d9abec267e9e7b35e8d2ef210ae4d8f04534de401",
+    "files": 2,
+    "jsonResourceBytes": 11681
+  },
+  {
+    "name": "podcast-marketing",
+    "bytes": 6949,
+    "sha256": "31e27192699ef83e23cb9ebafce007f298f7d80e090fd2bb1d068386aa453231",
+    "files": 2,
+    "jsonResourceBytes": 19697
+  },
+  {
+    "name": "podcast-studio",
+    "bytes": 3662,
+    "sha256": "3759cabeb639875c312d566c96e905295f76e9646f9eceaa934f980a75bbd382",
+    "files": 2,
+    "jsonResourceBytes": 9701
+  },
+  {
+    "name": "brand-ip-asset-package-design",
+    "bytes": 5983,
+    "sha256": "ac879ab3529caeba7fe56664dd6777dba3963f1cae2240a054f7a79ffa4adc41",
+    "files": 2,
+    "jsonResourceBytes": 16921
+  },
+  {
+    "name": "oriental-diffusion-aesthetic",
+    "bytes": 5625,
+    "sha256": "119b84eaa8b49a971a15dc0ca7435b511546281c6358d3f0c07222d63e82298e",
+    "files": 2,
+    "jsonResourceBytes": 17453
+  },
+  {
+    "name": "material-propagation-poster",
+    "bytes": 16609,
+    "sha256": "520c3afffe7a1734285f77c8fb66447a667b95dcb6bf51974e59fd48b73b320e",
+    "files": 7,
+    "jsonResourceBytes": 49186
+  },
+  {
+    "name": "video-recreation",
+    "bytes": 19871,
+    "sha256": "3dc51059e3b5cc7158f2536f17a267f1465ba0d0d7c494a72699d3a16093a239",
+    "files": 4,
+    "jsonResourceBytes": 57919
+  },
+  {
+    "name": "trendy-3d-ins-card",
+    "bytes": 7448,
+    "sha256": "8d29d8bb02af019fe5243a4a2fe37bce2ac834144e89694bf57bc205e65578cb",
+    "files": 2,
+    "jsonResourceBytes": 23149
+  },
+  {
+    "name": "stamp-photo-motion",
+    "bytes": 3477,
+    "sha256": "d56ae564df56924b8caec5bd1984df846fcdbcb1f55972c0c1a3fe2f402fd8db",
+    "files": 2,
+    "jsonResourceBytes": 9273
+  },
+  {
+    "name": "cultural-pattern-visual-system-generator",
+    "bytes": 4094,
+    "sha256": "b60cad440a650c0ce4e871174f458dae8c432ba62e3002dac71efe4c4a0934af",
+    "files": 2,
+    "jsonResourceBytes": 11121
+  },
+  {
+    "name": "product-dynamic-poster-video",
+    "bytes": 64074,
+    "sha256": "10a8468929379d6ddbd1929badd91670415639aa844d94fa594b30acd2124202",
+    "files": 15,
+    "jsonResourceBytes": 252038
+  },
+  {
+    "name": "character-reference",
+    "bytes": 2380,
+    "sha256": "ad6ae25ae13c4fca035c5faaaefacf02405992f173a956bc99d80d5ae9906101",
+    "files": 2,
+    "jsonResourceBytes": 6285
+  },
+  {
+    "name": "music-video-production",
+    "bytes": 64591,
+    "sha256": "12e4565886d6ab3d2dd6428610712c593b95c3c25a38429f2f5b13b9c89e84bf",
+    "files": 10,
+    "jsonResourceBytes": 167355
+  },
+  {
+    "name": "storyboard-keyframes",
+    "bytes": 3639,
+    "sha256": "7b6b6e0384e6d291b95fac5c968271225c1cc4469e26c4ba43f2e3c5d475cf2f",
+    "files": 2,
+    "jsonResourceBytes": 10297
+  },
+  {
+    "name": "narrative-script",
+    "bytes": 2177,
+    "sha256": "5785447829b1785b27f81f21e72578dbff31c7790c3446bde936e4c1f196ceaf",
+    "files": 2,
+    "jsonResourceBytes": 5445
+  },
+  {
+    "name": "scene-reference",
+    "bytes": 2673,
+    "sha256": "174b39f36652303aad4865704afabe9f13ab734c5a937f3911564c20b9765517",
+    "files": 2,
+    "jsonResourceBytes": 7281
+  },
+  {
+    "name": "short-drama-production",
+    "bytes": 11531,
+    "sha256": "67fae11f41b92b31d38b79abdb59bc0e93da8808f03e557c6f98ab8a06ec414a",
+    "files": 8,
+    "jsonResourceBytes": 25956
+  },
+  {
+    "name": "video-segments",
+    "bytes": 2291,
+    "sha256": "f86162379e85273587e67c09da32a16d730bf6d33c725d6bc5f82a80fae3bddc",
+    "files": 2,
+    "jsonResourceBytes": 5765
+  }
+]

@@ -1,0 +1,836 @@
+[
+  {
+    "name": "3d-animation-short-generator",
+    "files": 7,
+    "bytes": 41378,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/3d-animation-short-generator"
+  },
+  {
+    "name": "brand-promo-video-generator",
+    "files": 2,
+    "bytes": 7710,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/brand-promo-video-generator"
+  },
+  {
+    "name": "minimalist-product-ad-generator",
+    "files": 2,
+    "bytes": 16453,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/minimalist-product-ad-generator"
+  },
+  {
+    "name": "fpv-tour-video-generator",
+    "files": 2,
+    "bytes": 7911,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/fpv-tour-video-generator"
+  },
+  {
+    "name": "pov-short-film-generator",
+    "files": 2,
+    "bytes": 7521,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/pov-short-film-generator"
+  },
+  {
+    "name": "suspense-title-sequence-generator",
+    "files": 2,
+    "bytes": 8967,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/suspense-title-sequence-generator"
+  },
+  {
+    "name": "paper-collage-explainer-generator",
+    "files": 2,
+    "bytes": 10157,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/paper-collage-explainer-generator"
+  },
+  {
+    "name": "vox-style-video-generator",
+    "files": 7,
+    "bytes": 21659,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/vox-style-video-generator"
+  },
+  {
+    "name": "short-drama-multilingual-dubbing",
+    "files": 2,
+    "bytes": 9290,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/short-drama-multilingual-dubbing"
+  },
+  {
+    "name": "micro-expression-video-generator",
+    "files": 9,
+    "bytes": 18158,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/micro-expression-video-generator"
+  },
+  {
+    "name": "silkscreen-decorative-illustration-short",
+    "files": 2,
+    "bytes": 10006,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/silkscreen-decorative-illustration-short"
+  },
+  {
+    "name": "lip-product-ad-generator",
+    "files": 2,
+    "bytes": 5178,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/lip-product-ad-generator"
+  },
+  {
+    "name": "co-op-game-intro-generator",
+    "files": 4,
+    "bytes": 14391,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/co-op-game-intro-generator"
+  },
+  {
+    "name": "h3-prompt-expert",
+    "files": 13,
+    "bytes": 17832,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/h3-prompt-expert"
+  },
+  {
+    "name": "transcript-broll-planner",
+    "files": 2,
+    "bytes": 5493,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/transcript-broll-planner"
+  },
+  {
+    "name": "papercraft-stop-motion-explainer",
+    "files": 2,
+    "bytes": 10740,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/papercraft-stop-motion-explainer"
+  },
+  {
+    "name": "half-narrated-2d-short-drama",
+    "files": 12,
+    "bytes": 43741,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/half-narrated-2d-short-drama"
+  },
+  {
+    "name": "handdrawn-live-video-generator",
+    "files": 2,
+    "bytes": 5312,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/handdrawn-live-video-generator"
+  },
+  {
+    "name": "reference-video-recreation-workflow",
+    "files": 4,
+    "bytes": 22311,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/reference-video-recreation-workflow"
+  },
+  {
+    "name": "digital-product-promo-generator",
+    "files": 2,
+    "bytes": 4400,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/digital-product-promo-generator"
+  },
+  {
+    "name": "line-doodle-explainer-generator",
+    "files": 6,
+    "bytes": 15665,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/line-doodle-explainer-generator"
+  },
+  {
+    "name": "wool-felt-story-short",
+    "files": 2,
+    "bytes": 10593,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/wool-felt-story-short"
+  },
+  {
+    "name": "half-narrated-live-action-short-drama",
+    "files": 5,
+    "bytes": 18700,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/half-narrated-live-action-short-drama"
+  },
+  {
+    "name": "half-narrated-3d-short-drama",
+    "files": 12,
+    "bytes": 91042,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/half-narrated-3d-short-drama"
+  },
+  {
+    "name": "chinese-traditional-animation-shortfilm",
+    "files": 2,
+    "bytes": 12238,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/chinese-traditional-animation-shortfilm"
+  },
+  {
+    "name": "astra-prompt-optimizer",
+    "files": 2,
+    "bytes": 11653,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/astra-prompt-optimizer"
+  },
+  {
+    "name": "chinese-celestial-palace-video",
+    "files": 3,
+    "bytes": 13595,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/chinese-celestial-palace-video"
+  },
+  {
+    "name": "vibe-knowledge-film",
+    "files": 24,
+    "bytes": 287816,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/vibe-knowledge-film"
+  },
+  {
+    "name": "fashion-scene-video-planner",
+    "files": 2,
+    "bytes": 5201,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/fashion-scene-video-planner"
+  },
+  {
+    "name": "handdrawn-explainer-video",
+    "files": 113,
+    "bytes": 12965720,
+    "source": "https://design.minimax.io/api/v1/skills/market/download?name=handdrawn-explainer-video&source=preview"
+  },
+  {
+    "name": "architecture-flythrough-video",
+    "files": 20,
+    "bytes": 58603,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/architecture-flythrough-video"
+  },
+  {
+    "name": "typography-product-tvc",
+    "files": 4,
+    "bytes": 41324,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/typography-product-tvc"
+  },
+  {
+    "name": "poster-motion-generator",
+    "files": 4,
+    "bytes": 39911,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/poster-motion-generator"
+  },
+  {
+    "name": "dot-matrix-brand-wordmark-motion",
+    "files": 3,
+    "bytes": 9904,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/dot-matrix-brand-wordmark-motion"
+  },
+  {
+    "name": "miniature-person-scene-compositor",
+    "files": 2,
+    "bytes": 15229,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/miniature-person-scene-compositor"
+  },
+  {
+    "name": "video-multicam-reshoot",
+    "files": 2,
+    "bytes": 10444,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/video-multicam-reshoot"
+  },
+  {
+    "name": "collage-performance-mv",
+    "files": 11,
+    "bytes": 2137980,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/collage-performance-mv"
+  },
+  {
+    "name": "future-sci-fi-cinematic-generator",
+    "files": 2,
+    "bytes": 7289,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/future-sci-fi-cinematic-generator"
+  },
+  {
+    "name": "watercolor-ink-animation",
+    "files": 27,
+    "bytes": 1135734,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/watercolor-ink-animation"
+  },
+  {
+    "name": "brand-stream-mg",
+    "files": 2,
+    "bytes": 4809,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/brand-stream-mg"
+  },
+  {
+    "name": "interior-modeling-render",
+    "files": 4,
+    "bytes": 20582,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/interior-modeling-render"
+  },
+  {
+    "name": "sitcom-story-video",
+    "files": 6,
+    "bytes": 29823,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/sitcom-story-video"
+  },
+  {
+    "name": "video-element-replacement",
+    "files": 2,
+    "bytes": 6456,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/video-element-replacement"
+  },
+  {
+    "name": "video-highlight-edit",
+    "files": 2,
+    "bytes": 13830,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/video-highlight-edit"
+  },
+  {
+    "name": "talking-head-to-animation",
+    "files": 10,
+    "bytes": 86281,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/talking-head-to-animation"
+  },
+  {
+    "name": "character-identity-asset-studio",
+    "files": 2,
+    "bytes": 7670,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/character-identity-asset-studio"
+  },
+  {
+    "name": "wes-anderson-style-short-film-generator",
+    "files": 2,
+    "bytes": 5400,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/wes-anderson-style-short-film-generator"
+  },
+  {
+    "name": "multilingual-hand-drawn-story-video",
+    "files": 37,
+    "bytes": 45188111,
+    "source": "https://design.minimax.cn/api/v1/skills/market/download?name=multilingual-hand-drawn-story-video&source=preview"
+  },
+  {
+    "name": "deepwhite-blender-previs",
+    "files": 3,
+    "bytes": 34108,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/deepwhite-blender-previs"
+  },
+  {
+    "name": "app-ui-flow-motion",
+    "files": 11,
+    "bytes": 88538,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/app-ui-flow-motion"
+  },
+  {
+    "name": "3d-product-commercial",
+    "files": 2,
+    "bytes": 7871,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/3d-product-commercial"
+  },
+  {
+    "name": "famous-painting-revival",
+    "files": 8,
+    "bytes": 28751,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/famous-painting-revival"
+  },
+  {
+    "name": "iwai-shunji-cinematic-aesthetics",
+    "files": 9,
+    "bytes": 22047,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/iwai-shunji-cinematic-aesthetics"
+  },
+  {
+    "name": "live-sketch-motion",
+    "files": 2,
+    "bytes": 8472,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/live-sketch-motion"
+  },
+  {
+    "name": "interactive-explainer-animations",
+    "files": 97,
+    "bytes": 2816164,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/interactive-explainer-animations"
+  },
+  {
+    "name": "ip-toy-grid-motion",
+    "files": 5,
+    "bytes": 11428,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/ip-toy-grid-motion"
+  },
+  {
+    "name": "prehistoric-animation-generator",
+    "files": 9,
+    "bytes": 16502,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/prehistoric-animation-generator"
+  },
+  {
+    "name": "wedding-couple-video-maker",
+    "files": 36,
+    "bytes": 114637,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/wedding-couple-video-maker"
+  },
+  {
+    "name": "retro-collage-motion-film",
+    "files": 9,
+    "bytes": 22193,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/retro-collage-motion-film"
+  },
+  {
+    "name": "architecture-flythrough",
+    "files": 20,
+    "bytes": 58573,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/architecture-flythrough"
+  },
+  {
+    "name": "blender-product-film",
+    "files": 20,
+    "bytes": 38424,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/blender-product-film"
+  },
+  {
+    "name": "ecommerce-visual-creator",
+    "files": 26,
+    "bytes": 90528,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/ecommerce-visual-creator"
+  },
+  {
+    "name": "miyazaki-inspired-animation",
+    "files": 2,
+    "bytes": 9668,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/miyazaki-inspired-animation"
+  },
+  {
+    "name": "rpg-game-cinematic",
+    "files": 3,
+    "bytes": 15524,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/rpg-game-cinematic"
+  },
+  {
+    "name": "90s-cel-animation-city-pop-short",
+    "files": 2,
+    "bytes": 7613,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/90s-cel-animation-city-pop-short"
+  },
+  {
+    "name": "shot-by-shot-study",
+    "files": 41,
+    "bytes": 802422,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/shot-by-shot-study"
+  },
+  {
+    "name": "bullet-time-slow-motion-video",
+    "files": 2,
+    "bytes": 7580,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/bullet-time-slow-motion-video"
+  },
+  {
+    "name": "script-development-editor",
+    "files": 83,
+    "bytes": 1446117,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/script-development-editor"
+  },
+  {
+    "name": "editable-product-motion-films",
+    "files": 190,
+    "bytes": 14204106,
+    "source": "https://design.minimax.cn/api/v1/skills/market/download?name=editable-product-motion-films&source=preview"
+  },
+  {
+    "name": "grotesque-handdrawn-animation",
+    "files": 22,
+    "bytes": 6311358,
+    "source": "https://design.minimax.io/api/v1/skills/market/download?name=grotesque-handdrawn-animation&source=preview"
+  },
+  {
+    "name": "plot-twist-ad-generator",
+    "files": 7,
+    "bytes": 17544,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/plot-twist-ad-generator"
+  },
+  {
+    "name": "brand-kinetic-typography-promo",
+    "files": 31,
+    "bytes": 149470,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/brand-kinetic-typography-promo"
+  },
+  {
+    "name": "pet-keynote-video",
+    "files": 2,
+    "bytes": 11905,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/pet-keynote-video"
+  },
+  {
+    "name": "depth-guided-animation-generator",
+    "files": 6,
+    "bytes": 13942,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/depth-guided-animation-generator"
+  },
+  {
+    "name": "ad-creative",
+    "files": 2,
+    "bytes": 5498,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/ad-creative"
+  },
+  {
+    "name": "film-reference-prompt-writer",
+    "files": 9,
+    "bytes": 17082,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/film-reference-prompt-writer"
+  },
+  {
+    "name": "koc-video",
+    "files": 7,
+    "bytes": 24110,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/koc-video"
+  },
+  {
+    "name": "brand-ad",
+    "files": 9,
+    "bytes": 28724,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/brand-ad"
+  },
+  {
+    "name": "brand-font-effect-editor",
+    "files": 2,
+    "bytes": 4122,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/brand-font-effect-editor"
+  },
+  {
+    "name": "video-deconstruct",
+    "files": 3,
+    "bytes": 6286,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/video-deconstruct"
+  },
+  {
+    "name": "ui-motion",
+    "files": 19,
+    "bytes": 48972,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/ui-motion"
+  },
+  {
+    "name": "windows-xp-dialog-story",
+    "files": 2,
+    "bytes": 6922,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/windows-xp-dialog-story"
+  },
+  {
+    "name": "chinese-style-short-drama-generator",
+    "files": 2,
+    "bytes": 11814,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/chinese-style-short-drama-generator"
+  },
+  {
+    "name": "mg-voiceover-animation-generator",
+    "files": 9,
+    "bytes": 29706,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/mg-voiceover-animation-generator"
+  },
+  {
+    "name": "native-ad-mockup",
+    "files": 2,
+    "bytes": 7046,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/native-ad-mockup"
+  },
+  {
+    "name": "video-deconstruct-analyzer",
+    "files": 5,
+    "bytes": 13836,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/video-deconstruct-analyzer"
+  },
+  {
+    "name": "dreamina-cli",
+    "files": 8,
+    "bytes": 36214,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/dreamina-cli"
+  },
+  {
+    "name": "blender-workflow",
+    "files": 22,
+    "bytes": 69935,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/blender-workflow"
+  },
+  {
+    "name": "design-libtv",
+    "files": 2,
+    "bytes": 7663,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/design-libtv"
+  },
+  {
+    "name": "control-in-app-browser",
+    "files": 2,
+    "bytes": 8479,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/control-in-app-browser"
+  },
+  {
+    "name": "backrooms-dreamcore",
+    "files": 2,
+    "bytes": 6991,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/backrooms-dreamcore"
+  },
+  {
+    "name": "design-photoshop",
+    "files": 15,
+    "bytes": 35101,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/design-photoshop"
+  },
+  {
+    "name": "subtitle-correction",
+    "files": 5,
+    "bytes": 18673,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/subtitle-correction"
+  },
+  {
+    "name": "design-after-effects",
+    "files": 32,
+    "bytes": 110507,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/design-after-effects"
+  },
+  {
+    "name": "niulai-movie-style",
+    "files": 6,
+    "bytes": 20683,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/niulai-movie-style"
+  },
+  {
+    "name": "digital-drawing-timelapse",
+    "files": 2,
+    "bytes": 5633,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/digital-drawing-timelapse"
+  },
+  {
+    "name": "browser-game-demo-maker",
+    "files": 5,
+    "bytes": 12051,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/browser-game-demo-maker"
+  },
+  {
+    "name": "coordinate-camera-control-designer",
+    "files": 4,
+    "bytes": 12218,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/coordinate-camera-control-designer"
+  },
+  {
+    "name": "anime-pv-maker",
+    "files": 2,
+    "bytes": 14495,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/anime-pv-maker"
+  },
+  {
+    "name": "anime-game-pv",
+    "files": 5,
+    "bytes": 31224,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/anime-game-pv"
+  },
+  {
+    "name": "h3-visual-design",
+    "files": 15,
+    "bytes": 112283,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/h3-visual-design"
+  },
+  {
+    "name": "content-strategy",
+    "files": 2,
+    "bytes": 8032,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/content-strategy"
+  },
+  {
+    "name": "touchdesigner-workflow",
+    "files": 10,
+    "bytes": 38461,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/touchdesigner-workflow"
+  },
+  {
+    "name": "logo-creative-material-motion-lab",
+    "files": 2,
+    "bytes": 3503,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/logo-creative-material-motion-lab"
+  },
+  {
+    "name": "handdrawn-product-poster-motion",
+    "files": 4,
+    "bytes": 14966,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/handdrawn-product-poster-motion"
+  },
+  {
+    "name": "mime-object-video",
+    "files": 2,
+    "bytes": 5245,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/mime-object-video"
+  },
+  {
+    "name": "houdini-workflow",
+    "files": 35,
+    "bytes": 244121,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/houdini-workflow"
+  },
+  {
+    "name": "cinematic-title-sequence",
+    "files": 10,
+    "bytes": 80632,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/cinematic-title-sequence"
+  },
+  {
+    "name": "audiobook",
+    "files": 29,
+    "bytes": 82770,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/audiobook"
+  },
+  {
+    "name": "skill-reviewer",
+    "files": 2,
+    "bytes": 5211,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/skill-reviewer"
+  },
+  {
+    "name": "skill-creator",
+    "files": 7,
+    "bytes": 25329,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/skill-creator"
+  },
+  {
+    "name": "voice-design",
+    "files": 2,
+    "bytes": 3899,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/voice-design"
+  },
+  {
+    "name": "podcast-to-content-suite",
+    "files": 4,
+    "bytes": 7357,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/podcast-to-content-suite"
+  },
+  {
+    "name": "voiceover-direction",
+    "files": 2,
+    "bytes": 5607,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/voiceover-direction"
+  },
+  {
+    "name": "voice-clone",
+    "files": 3,
+    "bytes": 8139,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/voice-clone"
+  },
+  {
+    "name": "video-transcript",
+    "files": 2,
+    "bytes": 5806,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/video-transcript"
+  },
+  {
+    "name": "education-studio",
+    "files": 5,
+    "bytes": 29476,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/education-studio"
+  },
+  {
+    "name": "writing-fragments",
+    "files": 2,
+    "bytes": 4203,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/writing-fragments"
+  },
+  {
+    "name": "frontend-slides",
+    "files": 82,
+    "bytes": 614918,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/frontend-slides"
+  },
+  {
+    "name": "director-stage",
+    "files": 7,
+    "bytes": 13857,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/director-stage"
+  },
+  {
+    "name": "social-caption",
+    "files": 2,
+    "bytes": 5527,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/social-caption"
+  },
+  {
+    "name": "sports-podcast-outline",
+    "files": 2,
+    "bytes": 4171,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/sports-podcast-outline"
+  },
+  {
+    "name": "podcast-marketing",
+    "files": 2,
+    "bytes": 6949,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/podcast-marketing"
+  },
+  {
+    "name": "podcast-studio",
+    "files": 2,
+    "bytes": 3662,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/podcast-studio"
+  },
+  {
+    "name": "brand-ip-asset-package-design",
+    "files": 2,
+    "bytes": 5983,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/brand-ip-asset-package-design"
+  },
+  {
+    "name": "oriental-diffusion-aesthetic",
+    "files": 2,
+    "bytes": 5625,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/oriental-diffusion-aesthetic"
+  },
+  {
+    "name": "material-propagation-poster",
+    "files": 7,
+    "bytes": 16609,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/material-propagation-poster"
+  },
+  {
+    "name": "video-recreation",
+    "files": 4,
+    "bytes": 19871,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/video-recreation"
+  },
+  {
+    "name": "trendy-3d-ins-card",
+    "files": 2,
+    "bytes": 7448,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/trendy-3d-ins-card"
+  },
+  {
+    "name": "stamp-photo-motion",
+    "files": 2,
+    "bytes": 3477,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/stamp-photo-motion"
+  },
+  {
+    "name": "cultural-pattern-visual-system-generator",
+    "files": 2,
+    "bytes": 4094,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/cultural-pattern-visual-system-generator"
+  },
+  {
+    "name": "product-dynamic-poster-video",
+    "files": 15,
+    "bytes": 64074,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/product-dynamic-poster-video"
+  },
+  {
+    "name": "character-reference",
+    "files": 2,
+    "bytes": 2380,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/character-reference"
+  },
+  {
+    "name": "music-video-production",
+    "files": 10,
+    "bytes": 64591,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/music-video-production"
+  },
+  {
+    "name": "storyboard-keyframes",
+    "files": 2,
+    "bytes": 3639,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/storyboard-keyframes"
+  },
+  {
+    "name": "narrative-script",
+    "files": 2,
+    "bytes": 2177,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/narrative-script"
+  },
+  {
+    "name": "scene-reference",
+    "files": 2,
+    "bytes": 2673,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/scene-reference"
+  },
+  {
+    "name": "short-drama-production",
+    "files": 8,
+    "bytes": 11531,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/short-drama-production"
+  },
+  {
+    "name": "video-segments",
+    "files": 2,
+    "bytes": 2291,
+    "path": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/hilo-skill-previews/video-segments"
+  }
+]

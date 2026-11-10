@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  merge_group:
+    types: [checks_requested]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  checks:
+    name: Checks
+    runs-on: ubuntu-latest
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            web/package-lock.json
+            canvas-agent/package-lock.json
+            desktop/package-lock.json
+            plugins/canvas/sdk/package-lock.json
+            plugins/canvas/markdown/package-lock.json
+            plugins/canvas/svg/package-lock.json
+            plugins/canvas/html/package-lock.json
+            plugins/canvas/panorama/package-lock.json
+            plugins/canvas/sticky-note/package-lock.json
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.14"
+
+      - name: Install application dependencies
+        run: npm run setup
+
+      - name: Check frontend types
+        run: npm --prefix web run typecheck
+
+      - name: Check plugin SDK types
+        run: npm --prefix plugins/canvas/sdk run typecheck
+
+      - name: Run tests with isolated user data
+        shell: bash
+        run: |
+          test_home="$(mktemp -d)"
+          trap 'rm -rf "$test_home"' EXIT
+          env HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" npm --prefix web test
+          env HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" npm --prefix canvas-agent test
+          env HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" node --test desktop/tests/*.test.mjs
+
+      - name: Build application
+        run: npm run build

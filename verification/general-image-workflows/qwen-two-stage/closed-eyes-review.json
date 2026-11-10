@@ -1,0 +1,17 @@
+{
+  "workflow": "Qwen Image 2.1 general multi-reference",
+  "prompt_id": "cc54fcc4-b3ca-4ea8-a125-c5617fffdfbf",
+  "source": "user-approved cropped overhead image",
+  "status": "visually_reviewed_pass",
+  "checks": {
+    "central_man_eyes_closed": true,
+    "women_eyes_closed": true,
+    "approved_close_overhead_framing_preserved": true,
+    "two_pillows": true,
+    "feiyu_left_dongqing_center_caibao_right": true,
+    "no_fragmentation": true
+  },
+  "canvas_written": false,
+  "adoption": "pending_user_review",
+  "sha256": "7d092da2d266096a58bdd32bd49a723cca9b4320d3d6f8e3cb2b5ec04e4ccd7d"
+}

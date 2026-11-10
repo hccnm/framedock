@@ -18,15 +18,15 @@
 - [本地开发](/zh-CN/docs/development/local-development)
 - [画布数据结构](/zh-CN/docs/development/canvas-data-structure)
 
-## 商务合作
+## 商用与许可
 
 - [开源协议](/zh-CN/docs/business/license)
-- [商务合作](/zh-CN/docs/business/business)
+- [商用说明](/zh-CN/docs/business/business)
 
-## 支持与安全
+## 贡献与安全
 
 - [漏洞提交](/zh-CN/docs/support/security)
-- [赞助支持](/zh-CN/docs/support/sponsor)
+- [参与贡献](/zh-CN/docs/support/sponsor)
 
 ## 项目进度
 

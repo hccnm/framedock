@@ -18,10 +18,10 @@ registry/
 1. `npm install && npm run build` → 在 `dist/` 产出各 `<id>.js` 与 `official-plugins.json`;
 2. 把 `dist/` 强推到孤儿分支 **`plugins-dist`**(仅含产物,force-push 覆盖)。
 
-前端默认从下面地址读取(可用 `VITE_PLUGIN_REGISTRY_URL` 覆盖):
+远程注册表地址如下（可用 `VITE_PLUGIN_REGISTRY_URL` 覆盖）；需先在维护仓库运行发布工作流生成 `plugins-dist`，仅修改地址不会发布产物。FrameDock 桌面当前只加载随包插件，此处保留远程发布工具说明：
 
 ```
-https://cdn.jsdelivr.net/gh/basketikun/infinite-canvas@plugins-dist/official-plugins.json
+https://cdn.jsdelivr.net/gh/hccnm/framedock@plugins-dist/official-plugins.json
 ```
 
 清单里每条的 `entry`(相对文件名)由前端解析成与清单同目录的绝对 URL,再走既有 URL 安装流程。jsDelivr 对分支有缓存(约数小时),需要立即生效可对该分支目录做 purge。

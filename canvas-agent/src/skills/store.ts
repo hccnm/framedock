@@ -28,6 +28,7 @@ export type ManagedSkillDetail = {
     path: string;
     revision: string;
     managed: true;
+    enabled: boolean;
 };
 
 export type CreateManagedSkillInput = {
@@ -90,7 +91,76 @@ export class SkillStore {
         }
     }
 
+    async list() {
+        await this.writeQueue.catch(() => undefined);
+        try { await this.assertExistingRoot(); }
+        catch (error) { if (error instanceof SkillStoreError && error.statusCode === 404) return { skills: [], errors: [] }; throw error; }
+        const entries = await fs.readdir(this.skillsPath, { withFileTypes: true });
+        const skills: ManagedSkillDetail[] = [];
+        const errors: string[] = [];
+        for (const entry of entries) {
+            if (!entry.isDirectory() && !entry.isSymbolicLink()) continue;
+            try { skills.push(await this.get(entry.name)); }
+            catch (error) { errors.push(`${entry.name}: ${error instanceof Error ? error.message : "读取失败"}`); }
+        }
+        return { skills, errors };
+    }
+
+    setEnabled(name: string, enabled: boolean) {
+        return this.mutate(async () => {
+            const paths = await this.safeExistingPaths(name);
+            const current = await readSkill(paths.skillFile, name);
+            await writeFileAtomic(paths.skillFile, serializeSkill({ ...current.frontmatter, enabled }, current.instructions));
+            return this.readDetail(name, paths.skillFile, paths.openAiFile);
+        });
+    }
+
+    async resolve(selector: { name: string; path: string }) {
+        const skill = await this.get(selector.name);
+        if (skill.path !== selector.path) throw new SkillStoreError("Skill 选择路径无效", 400);
+        if (!skill.enabled) throw new SkillStoreError("Skill 已停用", 409);
+        return skill;
+    }
+
     /** 创建新的画布专属 Skill。 */
+    importPackage(input: { files: Record<string, string>; interface?: ManagedSkillInterface }) {
+        return this.mutate(async () => {
+            if (!input?.files || typeof input.files !== "object" || Array.isArray(input.files)) throw new SkillStoreError("技能文件无效", 400);
+            const files = Object.entries(input.files).map(([name, content]) => {
+                if (!name || name.includes("\\") || name.includes("\0") || name.includes(":") || name.split("/").some((part) => !part || part === "." || part === "..")) throw new SkillStoreError("技能资源路径不安全", 400);
+                if (typeof content !== "string" || Buffer.from(content, "base64").toString("base64") !== content) throw new SkillStoreError("技能资源编码无效", 400);
+                return [name, Buffer.from(content, "base64")] as const;
+            });
+            const entry = files.find(([name]) => name === "SKILL.md");
+            if (!entry) throw new SkillStoreError("技能包缺少 SKILL.md", 400);
+            const parsed = matter(entry[1].toString("utf8"));
+            const name = skillName(parsed.data.name);
+            skillDescription(parsed.data.description);
+            skillInstructions(parsed.content);
+            const metadata = skillInterfaceValue(input.interface, name);
+            await this.ensureRoot();
+            const skillDir = path.join(this.skillsPath, name);
+            if (await lstatOptional(skillDir)) throw new SkillStoreError("同名 Skill 已存在", 409);
+            await fs.mkdir(skillDir);
+            try {
+                for (const [relative, content] of files) {
+                    const file = path.join(skillDir, relative);
+                    await fs.mkdir(path.dirname(file), { recursive: true });
+                    await fs.writeFile(file, content, { flag: "wx" });
+                }
+                const openAi = path.join(skillDir, "agents", "openai.yaml");
+                if (metadata) {
+                    const previous = await lstatOptional(openAi) ? recordValue(parseYaml(await fs.readFile(openAi, "utf8"))) : {};
+                    await this.writeOpenAi(openAi, previous, metadata);
+                }
+                return await this.readDetail(name, path.join(skillDir, "SKILL.md"), openAi);
+            } catch (error) {
+                await fs.rm(skillDir, { recursive: true, force: true });
+                throw error;
+            }
+        });
+    }
+
     create(input: CreateManagedSkillInput) {
         return this.mutate(async () => {
             const name = skillName(input?.name);
@@ -232,6 +302,7 @@ export class SkillStore {
             path: skillFile,
             revision: revision(skill.raw, openAi.raw),
             managed: true,
+            enabled: skill.frontmatter.enabled !== false,
         };
     }
 

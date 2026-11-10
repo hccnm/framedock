@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "scenario": "route",
+  "events": [
+    "[e2e-lifecycle] did-start-loading",
+    "[e2e-lifecycle] flowharbor:close-ready",
+    "[e2e-lifecycle] did-navigate-in-page",
+    "[e2e-lifecycle] did-start-loading",
+    "[e2e-lifecycle] did-navigate-in-page",
+    "[e2e-lifecycle] flowharbor:close-result"
+  ],
+  "profile": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/flowharbor-close-e2e-MMjx3r",
+  "profileRemoved": true
+}

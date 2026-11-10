@@ -1,0 +1,1350 @@
+[
+  {
+    "id": "general-z-image",
+    "name": "通用多参考-Z Image",
+    "description": "通用图像生成与多参考组合，不限定角色、场景或风格。0 张为文生图，最多 3 张参考。LoRA 默认与原文生一致：瑶光 0.5、如梦似幻 0.7、8步蒸馏 0.45，依次加载且全部开启；Agent 可修改各自开关、文件及强度。使用原生实验性 Omni 编码，参考一致性取决于现有 Z Image 权重，需按实测结果使用。",
+    "outputKinds": [
+      "image"
+    ],
+    "workflow": {
+      "1": {
+        "class_type": "UNETLoader",
+        "inputs": {
+          "unet_name": "z_image_bf16.safetensors",
+          "weight_dtype": "default"
+        },
+        "_meta": {
+          "title": "模型"
+        }
+      },
+      "2": {
+        "class_type": "CLIPLoader",
+        "inputs": {
+          "clip_name": "qwen_3_4b.safetensors",
+          "type": "lumina2",
+          "device": "default"
+        },
+        "_meta": {
+          "title": "文本编码器"
+        }
+      },
+      "3": {
+        "class_type": "VAELoader",
+        "inputs": {
+          "vae_name": "ae.safetensors"
+        },
+        "_meta": {
+          "title": "VAE"
+        }
+      },
+      "4": {
+        "class_type": "TextEncodeZImageOmni",
+        "inputs": {
+          "clip": [
+            "9",
+            1
+          ],
+          "vae": [
+            "3",
+            0
+          ],
+          "prompt": "根据提示词生成图像；有参考图时，按描述选取其中的主体、材质、色彩或构图，生成统一自然的新画面。",
+          "auto_resize_images": false,
+          "image1": [
+            "4_image1_resize",
+            0
+          ],
+          "image2": [
+            "4_image2_resize",
+            0
+          ],
+          "image3": [
+            "4_image3_resize",
+            0
+          ]
+        },
+        "_meta": {
+          "title": "通用提示词与参考图"
+        }
+      },
+      "5": {
+        "class_type": "EmptySD3LatentImage",
+        "inputs": {
+          "width": 1024,
+          "height": 1024,
+          "batch_size": 1
+        },
+        "_meta": {
+          "title": "输出尺寸"
+        }
+      },
+      "6": {
+        "class_type": "KSampler",
+        "inputs": {
+          "model": [
+            "9",
+            0
+          ],
+          "positive": [
+            "4",
+            0
+          ],
+          "negative": [
+            "8",
+            0
+          ],
+          "latent_image": [
+            "5",
+            0
+          ],
+          "seed": 42,
+          "steps": 8,
+          "cfg": 1,
+          "sampler_name": "res_2s_ode",
+          "scheduler": "kl_optimal",
+          "denoise": 1
+        },
+        "_meta": {
+          "title": "采样参数"
+        }
+      },
+      "7": {
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "6",
+            0
+          ],
+          "vae": [
+            "3",
+            0
+          ]
+        },
+        "_meta": {
+          "title": "解码"
+        }
+      },
+      "8": {
+        "class_type": "CLIPTextEncode",
+        "inputs": {
+          "clip": [
+            "9",
+            1
+          ],
+          "text": ""
+        },
+        "_meta": {
+          "title": "负向提示词（CFG为1时不生效）"
+        }
+      },
+      "9": {
+        "class_type": "CR Load LoRA",
+        "inputs": {
+          "model": [
+            "12",
+            0
+          ],
+          "clip": [
+            "12",
+            1
+          ],
+          "switch": "On",
+          "lora_name": "Z-Image-Fun-Lora-Distill-8-Steps-2603-ComfyUI.safetensors",
+          "strength_model": 0.45,
+          "strength_clip": 0
+        },
+        "_meta": {
+          "title": "8步蒸馏 LoRA"
+        }
+      },
+      "10": {
+        "class_type": "SaveImage",
+        "inputs": {
+          "images": [
+            "7",
+            0
+          ],
+          "filename_prefix": "FrameDock/ZImage/general"
+        },
+        "_meta": {
+          "title": "保存图像"
+        }
+      },
+      "11": {
+        "class_type": "CR Load LoRA",
+        "inputs": {
+          "model": [
+            "1",
+            0
+          ],
+          "clip": [
+            "2",
+            0
+          ],
+          "switch": "On",
+          "lora_name": "Kook_Zimage_瑶光.safetensors",
+          "strength_model": 0.5,
+          "strength_clip": 0
+        },
+        "_meta": {
+          "title": "风格 LoRA 1"
+        }
+      },
+      "12": {
+        "class_type": "CR Load LoRA",
+        "inputs": {
+          "model": [
+            "11",
+            0
+          ],
+          "clip": [
+            "11",
+            1
+          ],
+          "switch": "On",
+          "lora_name": "Kook_Zimage_如梦似幻.safetensors",
+          "strength_model": 0.7,
+          "strength_clip": 0
+        },
+        "_meta": {
+          "title": "风格 LoRA 2"
+        }
+      },
+      "21": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": ""
+        },
+        "_meta": {
+          "title": "参考图 1（可选）"
+        }
+      },
+      "22": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": ""
+        },
+        "_meta": {
+          "title": "参考图 2（可选）"
+        }
+      },
+      "23": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": ""
+        },
+        "_meta": {
+          "title": "参考图 3（可选）"
+        }
+      },
+      "4_image1_resize": {
+        "class_type": "ImageScaleToTotalPixels",
+        "inputs": {
+          "image": [
+            "21",
+            0
+          ],
+          "upscale_method": "area",
+          "megapixels": 1,
+          "resolution_steps": 16
+        }
+      },
+      "4_image2_resize": {
+        "class_type": "ImageScaleToTotalPixels",
+        "inputs": {
+          "image": [
+            "22",
+            0
+          ],
+          "upscale_method": "area",
+          "megapixels": 1,
+          "resolution_steps": 16
+        }
+      },
+      "4_image3_resize": {
+        "class_type": "ImageScaleToTotalPixels",
+        "inputs": {
+          "image": [
+            "23",
+            0
+          ],
+          "upscale_method": "area",
+          "megapixels": 1,
+          "resolution_steps": 16
+        }
+      }
+    },
+    "fields": [
+      {
+        "id": "4:prompt",
+        "nodeId": "4",
+        "inputKey": "prompt",
+        "nodeTitle": "通用提示词与参考图",
+        "label": "提示词",
+        "type": "textarea",
+        "enabled": true,
+        "order": 0,
+        "defaultValue": "根据提示词生成图像；有参考图时，按描述选取其中的主体、材质、色彩或构图，生成统一自然的新画面。",
+        "presetRole": "prompt"
+      },
+      {
+        "id": "21:image",
+        "nodeId": "21",
+        "inputKey": "image",
+        "nodeTitle": "参考图 1（可选）",
+        "label": "参考图 1",
+        "type": "image",
+        "enabled": true,
+        "order": 1,
+        "defaultValue": "",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "4",
+          "inputKey": "image1",
+          "optional": true,
+          "startIndex": 1
+        }
+      },
+      {
+        "id": "22:image",
+        "nodeId": "22",
+        "inputKey": "image",
+        "nodeTitle": "参考图 2（可选）",
+        "label": "参考图 2",
+        "type": "image",
+        "enabled": true,
+        "order": 2,
+        "defaultValue": "",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "4",
+          "inputKey": "image2",
+          "optional": true,
+          "startIndex": 1
+        }
+      },
+      {
+        "id": "23:image",
+        "nodeId": "23",
+        "inputKey": "image",
+        "nodeTitle": "参考图 3（可选）",
+        "label": "参考图 3",
+        "type": "image",
+        "enabled": true,
+        "order": 3,
+        "defaultValue": "",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "4",
+          "inputKey": "image3",
+          "optional": true,
+          "startIndex": 1
+        }
+      },
+      {
+        "id": "5:width",
+        "nodeId": "5",
+        "inputKey": "width",
+        "nodeTitle": "输出尺寸",
+        "label": "宽度",
+        "type": "number",
+        "enabled": true,
+        "order": 4,
+        "defaultValue": 1024,
+        "min": 32,
+        "step": 32,
+        "presetRole": "width"
+      },
+      {
+        "id": "5:height",
+        "nodeId": "5",
+        "inputKey": "height",
+        "nodeTitle": "输出尺寸",
+        "label": "高度",
+        "type": "number",
+        "enabled": true,
+        "order": 5,
+        "defaultValue": 1024,
+        "min": 32,
+        "step": 32,
+        "presetRole": "height"
+      },
+      {
+        "id": "6:seed",
+        "nodeId": "6",
+        "inputKey": "seed",
+        "nodeTitle": "采样参数",
+        "label": "种子",
+        "type": "number",
+        "enabled": true,
+        "order": 6,
+        "defaultValue": 42,
+        "min": 0,
+        "randomize": true,
+        "presetRole": "seed"
+      },
+      {
+        "id": "6:steps",
+        "nodeId": "6",
+        "inputKey": "steps",
+        "nodeTitle": "采样参数",
+        "label": "步数",
+        "type": "number",
+        "enabled": true,
+        "order": 7,
+        "defaultValue": 8,
+        "min": 1,
+        "step": 1
+      },
+      {
+        "id": "6:cfg",
+        "nodeId": "6",
+        "inputKey": "cfg",
+        "nodeTitle": "采样参数",
+        "label": "CFG",
+        "type": "number",
+        "enabled": true,
+        "order": 8,
+        "defaultValue": 1,
+        "min": 0,
+        "step": 0.1
+      },
+      {
+        "id": "8:text",
+        "nodeId": "8",
+        "inputKey": "text",
+        "nodeTitle": "负向提示词（CFG为1时不生效）",
+        "label": "负向提示词（CFG为1时不生效）",
+        "type": "textarea",
+        "enabled": true,
+        "order": 9,
+        "defaultValue": ""
+      },
+      {
+        "id": "11:switch",
+        "nodeId": "11",
+        "inputKey": "switch",
+        "nodeTitle": "风格 LoRA 1",
+        "label": "风格 LoRA 1 开关",
+        "type": "dropdown",
+        "enabled": true,
+        "order": 10,
+        "defaultValue": "On",
+        "options": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": "11:lora_name",
+        "nodeId": "11",
+        "inputKey": "lora_name",
+        "nodeTitle": "风格 LoRA 1",
+        "label": "风格 LoRA 1 文件（须匹配当前模型）",
+        "type": "dropdown",
+        "enabled": true,
+        "order": 11,
+        "defaultValue": "Kook_Zimage_瑶光.safetensors",
+        "options": [
+          "Kook_Zimage_瑶光.safetensors",
+          "Kook_Zimage_如梦似幻.safetensors",
+          "Z-Image-Fun-Lora-Distill-8-Steps-2603-ComfyUI.safetensors"
+        ]
+      },
+      {
+        "id": "11:strength_model",
+        "nodeId": "11",
+        "inputKey": "strength_model",
+        "nodeTitle": "风格 LoRA 1",
+        "label": "风格 LoRA 1 强度",
+        "type": "number",
+        "enabled": true,
+        "order": 12,
+        "defaultValue": 0.5,
+        "step": 0.05
+      },
+      {
+        "id": "12:switch",
+        "nodeId": "12",
+        "inputKey": "switch",
+        "nodeTitle": "风格 LoRA 2",
+        "label": "风格 LoRA 2 开关",
+        "type": "dropdown",
+        "enabled": true,
+        "order": 13,
+        "defaultValue": "On",
+        "options": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": "12:lora_name",
+        "nodeId": "12",
+        "inputKey": "lora_name",
+        "nodeTitle": "风格 LoRA 2",
+        "label": "风格 LoRA 2 文件（须匹配当前模型）",
+        "type": "dropdown",
+        "enabled": true,
+        "order": 14,
+        "defaultValue": "Kook_Zimage_如梦似幻.safetensors",
+        "options": [
+          "Kook_Zimage_瑶光.safetensors",
+          "Kook_Zimage_如梦似幻.safetensors",
+          "Z-Image-Fun-Lora-Distill-8-Steps-2603-ComfyUI.safetensors"
+        ]
+      },
+      {
+        "id": "12:strength_model",
+        "nodeId": "12",
+        "inputKey": "strength_model",
+        "nodeTitle": "风格 LoRA 2",
+        "label": "风格 LoRA 2 强度",
+        "type": "number",
+        "enabled": true,
+        "order": 15,
+        "defaultValue": 0.7,
+        "step": 0.05
+      },
+      {
+        "id": "9:switch",
+        "nodeId": "9",
+        "inputKey": "switch",
+        "nodeTitle": "8步蒸馏 LoRA",
+        "label": "8步蒸馏 LoRA 开关",
+        "type": "dropdown",
+        "enabled": true,
+        "order": 16,
+        "defaultValue": "On",
+        "options": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": "9:lora_name",
+        "nodeId": "9",
+        "inputKey": "lora_name",
+        "nodeTitle": "8步蒸馏 LoRA",
+        "label": "8步蒸馏 LoRA 文件（须匹配当前模型）",
+        "type": "dropdown",
+        "enabled": true,
+        "order": 17,
+        "defaultValue": "Z-Image-Fun-Lora-Distill-8-Steps-2603-ComfyUI.safetensors",
+        "options": [
+          "Kook_Zimage_瑶光.safetensors",
+          "Kook_Zimage_如梦似幻.safetensors",
+          "Z-Image-Fun-Lora-Distill-8-Steps-2603-ComfyUI.safetensors"
+        ]
+      },
+      {
+        "id": "9:strength_model",
+        "nodeId": "9",
+        "inputKey": "strength_model",
+        "nodeTitle": "8步蒸馏 LoRA",
+        "label": "8步蒸馏 LoRA 强度",
+        "type": "number",
+        "enabled": true,
+        "order": 18,
+        "defaultValue": 0.45,
+        "step": 0.05
+      }
+    ],
+    "createdAt": "2026-10-29T09:52:38.542Z",
+    "updatedAt": "2026-11-06T14:24:02.382Z"
+  },
+  {
+    "id": "general-qwen-edit",
+    "name": "通用多参考-Qwen Edit",
+    "description": "通用图像生成与多参考组合，不限定角色、场景或风格。0 张为文生图，最多 16 张参考。使用 Qwen Image 2.1；用 <image1> 至 <image16> 指定参考用途；输出尺寸独立设置，编辑时建议与主图比例一致。",
+    "outputKinds": [
+      "image"
+    ],
+    "workflow": {
+      "1": {
+        "class_type": "UNETLoader",
+        "inputs": {
+          "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+          "weight_dtype": "default"
+        },
+        "_meta": {
+          "title": "模型"
+        }
+      },
+      "2": {
+        "class_type": "CLIPLoader",
+        "inputs": {
+          "clip_name": "qwen3vl_8b_bf16.safetensors",
+          "type": "qwen_image",
+          "device": "default"
+        },
+        "_meta": {
+          "title": "文本编码器"
+        }
+      },
+      "3": {
+        "class_type": "VAELoader",
+        "inputs": {
+          "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+        },
+        "_meta": {
+          "title": "VAE"
+        }
+      },
+      "4": {
+        "class_type": "TextEncodeQwenImage21",
+        "inputs": {
+          "clip": [
+            "11",
+            1
+          ],
+          "vae": [
+            "3",
+            0
+          ],
+          "prompt": "根据提示词生成图像；有参考图时，按 <image1>、<image2> 等编号描述需要保留或改变的内容，生成统一自然的新画面。",
+          "negative_prompt": "",
+          "resolution": 1024,
+          "images.image_1": [
+            "21",
+            0
+          ],
+          "images.image_2": [
+            "22",
+            0
+          ],
+          "images.image_3": [
+            "23",
+            0
+          ],
+          "images.image_4": [
+            "24",
+            0
+          ],
+          "images.image_5": [
+            "25",
+            0
+          ],
+          "images.image_6": [
+            "26",
+            0
+          ],
+          "images.image_7": [
+            "27",
+            0
+          ],
+          "images.image_8": [
+            "28",
+            0
+          ],
+          "images.image_9": [
+            "29",
+            0
+          ],
+          "images.image_10": [
+            "30",
+            0
+          ],
+          "images.image_11": [
+            "31",
+            0
+          ],
+          "images.image_12": [
+            "32",
+            0
+          ],
+          "images.image_13": [
+            "33",
+            0
+          ],
+          "images.image_14": [
+            "34",
+            0
+          ],
+          "images.image_15": [
+            "35",
+            0
+          ],
+          "images.image_16": [
+            "36",
+            0
+          ]
+        },
+        "_meta": {
+          "title": "通用提示词与参考图"
+        }
+      },
+      "5": {
+        "class_type": "EmptySD3LatentImage",
+        "inputs": {
+          "width": 1024,
+          "height": 1024,
+          "batch_size": 1
+        },
+        "_meta": {
+          "title": "输出尺寸"
+        }
+      },
+      "6": {
+        "class_type": "KSampler",
+        "inputs": {
+          "model": [
+            "11",
+            0
+          ],
+          "positive": [
+            "4",
+            0
+          ],
+          "negative": [
+            "4",
+            1
+          ],
+          "latent_image": [
+            "5",
+            0
+          ],
+          "seed": 42,
+          "steps": 25,
+          "cfg": 1,
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "denoise": 1
+        },
+        "_meta": {
+          "title": "采样参数"
+        }
+      },
+      "7": {
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "6",
+            0
+          ],
+          "vae": [
+            "3",
+            0
+          ]
+        },
+        "_meta": {
+          "title": "解码"
+        }
+      },
+      "10": {
+        "class_type": "SaveImage",
+        "inputs": {
+          "images": [
+            "7",
+            0
+          ],
+          "filename_prefix": "FrameDock/QwenEdit/general"
+        },
+        "_meta": {
+          "title": "保存图像"
+        }
+      },
+      "11": {
+        "class_type": "CR Load LoRA",
+        "inputs": {
+          "model": [
+            "1",
+            0
+          ],
+          "clip": [
+            "2",
+            0
+          ],
+          "switch": "Off",
+          "lora_name": "None",
+          "strength_model": 1,
+          "strength_clip": 0
+        },
+        "_meta": {
+          "title": "可选 LoRA 1（默认关闭）"
+        }
+      },
+      "21": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": ""
+        },
+        "_meta": {
+          "title": "参考图 1（可选）"
+        }
+      },
+      "22": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": ""
+        },
+        "_meta": {
+          "title": "参考图 2（可选）"
+        }
+      },
+      "23": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": ""
+        },
+        "_meta": {
+          "title": "参考图 3（可选）"
+        }
+      },
+      "24": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": ""
+        },
+        "_meta": {
+          "title": "参考图 4（可选）"
+        }
+      },
+      "25": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": ""
+        },
+        "_meta": {
+          "title": "参考图 5（可选）"
+        }
+      },
+      "26": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": ""
+        },
+        "_meta": {
+          "title": "参考图 6（可选）"
+        }
+      },
+      "27": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": ""
+        },
+        "_meta": {
+          "title": "参考图 7（可选）"
+        }
+      },
+      "28": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": ""
+        },
+        "_meta": {
+          "title": "参考图 8（可选）"
+        }
+      },
+      "29": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": ""
+        },
+        "_meta": {
+          "title": "参考图 9（可选）"
+        }
+      },
+      "30": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": ""
+        },
+        "_meta": {
+          "title": "参考图 10（可选）"
+        }
+      },
+      "31": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": ""
+        },
+        "_meta": {
+          "title": "参考图 11（可选）"
+        }
+      },
+      "32": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": ""
+        },
+        "_meta": {
+          "title": "参考图 12（可选）"
+        }
+      },
+      "33": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": ""
+        },
+        "_meta": {
+          "title": "参考图 13（可选）"
+        }
+      },
+      "34": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": ""
+        },
+        "_meta": {
+          "title": "参考图 14（可选）"
+        }
+      },
+      "35": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": ""
+        },
+        "_meta": {
+          "title": "参考图 15（可选）"
+        }
+      },
+      "36": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": ""
+        },
+        "_meta": {
+          "title": "参考图 16（可选）"
+        }
+      }
+    },
+    "fields": [
+      {
+        "id": "4:prompt",
+        "nodeId": "4",
+        "inputKey": "prompt",
+        "nodeTitle": "通用提示词与参考图",
+        "label": "提示词",
+        "type": "textarea",
+        "enabled": true,
+        "order": 0,
+        "defaultValue": "根据提示词生成图像；有参考图时，按 <image1>、<image2> 等编号描述需要保留或改变的内容，生成统一自然的新画面。",
+        "presetRole": "prompt"
+      },
+      {
+        "id": "21:image",
+        "nodeId": "21",
+        "inputKey": "image",
+        "nodeTitle": "参考图 1（可选）",
+        "label": "参考图 1",
+        "type": "image",
+        "enabled": true,
+        "order": 1,
+        "defaultValue": "",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "4",
+          "inputKey": "images.image_1",
+          "optional": true,
+          "startIndex": 1
+        }
+      },
+      {
+        "id": "22:image",
+        "nodeId": "22",
+        "inputKey": "image",
+        "nodeTitle": "参考图 2（可选）",
+        "label": "参考图 2",
+        "type": "image",
+        "enabled": true,
+        "order": 2,
+        "defaultValue": "",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "4",
+          "inputKey": "images.image_2",
+          "optional": true,
+          "startIndex": 1
+        }
+      },
+      {
+        "id": "23:image",
+        "nodeId": "23",
+        "inputKey": "image",
+        "nodeTitle": "参考图 3（可选）",
+        "label": "参考图 3",
+        "type": "image",
+        "enabled": true,
+        "order": 3,
+        "defaultValue": "",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "4",
+          "inputKey": "images.image_3",
+          "optional": true,
+          "startIndex": 1
+        }
+      },
+      {
+        "id": "24:image",
+        "nodeId": "24",
+        "inputKey": "image",
+        "nodeTitle": "参考图 4（可选）",
+        "label": "参考图 4",
+        "type": "image",
+        "enabled": true,
+        "order": 4,
+        "defaultValue": "",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "4",
+          "inputKey": "images.image_4",
+          "optional": true,
+          "startIndex": 1
+        }
+      },
+      {
+        "id": "25:image",
+        "nodeId": "25",
+        "inputKey": "image",
+        "nodeTitle": "参考图 5（可选）",
+        "label": "参考图 5",
+        "type": "image",
+        "enabled": true,
+        "order": 5,
+        "defaultValue": "",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "4",
+          "inputKey": "images.image_5",
+          "optional": true,
+          "startIndex": 1
+        }
+      },
+      {
+        "id": "26:image",
+        "nodeId": "26",
+        "inputKey": "image",
+        "nodeTitle": "参考图 6（可选）",
+        "label": "参考图 6",
+        "type": "image",
+        "enabled": true,
+        "order": 6,
+        "defaultValue": "",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "4",
+          "inputKey": "images.image_6",
+          "optional": true,
+          "startIndex": 1
+        }
+      },
+      {
+        "id": "27:image",
+        "nodeId": "27",
+        "inputKey": "image",
+        "nodeTitle": "参考图 7（可选）",
+        "label": "参考图 7",
+        "type": "image",
+        "enabled": true,
+        "order": 7,
+        "defaultValue": "",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "4",
+          "inputKey": "images.image_7",
+          "optional": true,
+          "startIndex": 1
+        }
+      },
+      {
+        "id": "28:image",
+        "nodeId": "28",
+        "inputKey": "image",
+        "nodeTitle": "参考图 8（可选）",
+        "label": "参考图 8",
+        "type": "image",
+        "enabled": true,
+        "order": 8,
+        "defaultValue": "",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "4",
+          "inputKey": "images.image_8",
+          "optional": true,
+          "startIndex": 1
+        }
+      },
+      {
+        "id": "29:image",
+        "nodeId": "29",
+        "inputKey": "image",
+        "nodeTitle": "参考图 9（可选）",
+        "label": "参考图 9",
+        "type": "image",
+        "enabled": true,
+        "order": 9,
+        "defaultValue": "",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "4",
+          "inputKey": "images.image_9",
+          "optional": true,
+          "startIndex": 1
+        }
+      },
+      {
+        "id": "30:image",
+        "nodeId": "30",
+        "inputKey": "image",
+        "nodeTitle": "参考图 10（可选）",
+        "label": "参考图 10",
+        "type": "image",
+        "enabled": true,
+        "order": 10,
+        "defaultValue": "",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "4",
+          "inputKey": "images.image_10",
+          "optional": true,
+          "startIndex": 1
+        }
+      },
+      {
+        "id": "31:image",
+        "nodeId": "31",
+        "inputKey": "image",
+        "nodeTitle": "参考图 11（可选）",
+        "label": "参考图 11",
+        "type": "image",
+        "enabled": true,
+        "order": 11,
+        "defaultValue": "",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "4",
+          "inputKey": "images.image_11",
+          "optional": true,
+          "startIndex": 1
+        }
+      },
+      {
+        "id": "32:image",
+        "nodeId": "32",
+        "inputKey": "image",
+        "nodeTitle": "参考图 12（可选）",
+        "label": "参考图 12",
+        "type": "image",
+        "enabled": true,
+        "order": 12,
+        "defaultValue": "",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "4",
+          "inputKey": "images.image_12",
+          "optional": true,
+          "startIndex": 1
+        }
+      },
+      {
+        "id": "33:image",
+        "nodeId": "33",
+        "inputKey": "image",
+        "nodeTitle": "参考图 13（可选）",
+        "label": "参考图 13",
+        "type": "image",
+        "enabled": true,
+        "order": 13,
+        "defaultValue": "",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "4",
+          "inputKey": "images.image_13",
+          "optional": true,
+          "startIndex": 1
+        }
+      },
+      {
+        "id": "34:image",
+        "nodeId": "34",
+        "inputKey": "image",
+        "nodeTitle": "参考图 14（可选）",
+        "label": "参考图 14",
+        "type": "image",
+        "enabled": true,
+        "order": 14,
+        "defaultValue": "",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "4",
+          "inputKey": "images.image_14",
+          "optional": true,
+          "startIndex": 1
+        }
+      },
+      {
+        "id": "35:image",
+        "nodeId": "35",
+        "inputKey": "image",
+        "nodeTitle": "参考图 15（可选）",
+        "label": "参考图 15",
+        "type": "image",
+        "enabled": true,
+        "order": 15,
+        "defaultValue": "",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "4",
+          "inputKey": "images.image_15",
+          "optional": true,
+          "startIndex": 1
+        }
+      },
+      {
+        "id": "36:image",
+        "nodeId": "36",
+        "inputKey": "image",
+        "nodeTitle": "参考图 16（可选）",
+        "label": "参考图 16",
+        "type": "image",
+        "enabled": true,
+        "order": 16,
+        "defaultValue": "",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "4",
+          "inputKey": "images.image_16",
+          "optional": true,
+          "startIndex": 1
+        }
+      },
+      {
+        "id": "5:width",
+        "nodeId": "5",
+        "inputKey": "width",
+        "nodeTitle": "输出尺寸",
+        "label": "宽度",
+        "type": "number",
+        "enabled": true,
+        "order": 17,
+        "defaultValue": 1024,
+        "min": 32,
+        "step": 32,
+        "presetRole": "width"
+      },
+      {
+        "id": "5:height",
+        "nodeId": "5",
+        "inputKey": "height",
+        "nodeTitle": "输出尺寸",
+        "label": "高度",
+        "type": "number",
+        "enabled": true,
+        "order": 18,
+        "defaultValue": 1024,
+        "min": 32,
+        "step": 32,
+        "presetRole": "height"
+      },
+      {
+        "id": "6:seed",
+        "nodeId": "6",
+        "inputKey": "seed",
+        "nodeTitle": "采样参数",
+        "label": "种子",
+        "type": "number",
+        "enabled": true,
+        "order": 19,
+        "defaultValue": 42,
+        "min": 0,
+        "randomize": true,
+        "presetRole": "seed"
+      },
+      {
+        "id": "6:steps",
+        "nodeId": "6",
+        "inputKey": "steps",
+        "nodeTitle": "采样参数",
+        "label": "步数",
+        "type": "number",
+        "enabled": true,
+        "order": 20,
+        "defaultValue": 25,
+        "min": 1,
+        "step": 1
+      },
+      {
+        "id": "6:cfg",
+        "nodeId": "6",
+        "inputKey": "cfg",
+        "nodeTitle": "采样参数",
+        "label": "CFG",
+        "type": "number",
+        "enabled": true,
+        "order": 21,
+        "defaultValue": 1,
+        "min": 0,
+        "step": 0.1
+      },
+      {
+        "id": "4:negative_prompt",
+        "nodeId": "4",
+        "inputKey": "negative_prompt",
+        "nodeTitle": "通用提示词与参考图",
+        "label": "负向提示词（CFG为1时不生效）",
+        "type": "textarea",
+        "enabled": true,
+        "order": 22,
+        "defaultValue": ""
+      },
+      {
+        "id": "4:resolution",
+        "nodeId": "4",
+        "inputKey": "resolution",
+        "nodeTitle": "通用提示词与参考图",
+        "label": "单张参考图像素预算边长（0保持原尺寸）",
+        "type": "number",
+        "enabled": true,
+        "order": 23,
+        "defaultValue": 1024,
+        "min": 0,
+        "step": 32
+      },
+      {
+        "id": "11:switch",
+        "nodeId": "11",
+        "inputKey": "switch",
+        "nodeTitle": "可选 LoRA 1（默认关闭）",
+        "label": "可选 LoRA 1（默认关闭） 开关",
+        "type": "dropdown",
+        "enabled": true,
+        "order": 24,
+        "defaultValue": "Off",
+        "options": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": "11:lora_name",
+        "nodeId": "11",
+        "inputKey": "lora_name",
+        "nodeTitle": "可选 LoRA 1（默认关闭）",
+        "label": "LoRA 文件（须匹配当前模型）",
+        "type": "dropdown",
+        "enabled": true,
+        "order": 25,
+        "defaultValue": "None",
+        "options": [
+          "None"
+        ]
+      },
+      {
+        "id": "11:strength_model",
+        "nodeId": "11",
+        "inputKey": "strength_model",
+        "nodeTitle": "可选 LoRA 1（默认关闭）",
+        "label": "LoRA 强度",
+        "type": "number",
+        "enabled": true,
+        "order": 26,
+        "defaultValue": 1,
+        "step": 0.05
+      }
+    ],
+    "createdAt": "2026-10-29T09:52:38.542Z",
+    "updatedAt": "2026-10-29T09:52:38.542Z"
+  }
+]

@@ -1,0 +1,268 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "z_image_bf16.safetensors",
+      "weight_dtype": "default"
+    },
+    "_meta": {
+      "title": "模型"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen_3_4b.safetensors",
+      "type": "lumina2",
+      "device": "default"
+    },
+    "_meta": {
+      "title": "文本编码器"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "ae.safetensors"
+    },
+    "_meta": {
+      "title": "VAE"
+    }
+  },
+  "4": {
+    "class_type": "TextEncodeZImageOmni",
+    "inputs": {
+      "clip": [
+        "9",
+        1
+      ],
+      "vae": [
+        "3",
+        0
+      ],
+      "prompt": "重新生成参考图1的同一关键帧，保持原图镜头角度、景别、床铺环境、床品、人物大小、身体姿态和三人位置完全一致。横向写实影视画面，恰好三名成年人物同床躺卧。画面中央是东青，严格沿用图1中央男性的面容、发型和睡衣，平躺睁眼朝上，右手拢握被口。画面左侧是肥鱼，面容、蓝色头发、鲸鱼发饰和服装依据参考图2，保持图1左侧人物睡卧姿态，脸上无伤。画面右侧是菜包，面容、发型依据参考图3，穿图1中的黑衣与红围巾，保持图1右侧睡卧姿态。严格保持左肥鱼、中东青、右菜包的顺序和原有头部位置、人物间距与遮挡关系，不镜像，不交换身份，不增加人物。自然清晨光，真实皮肤和织物细节，统一透视与光影，无文字。",
+      "auto_resize_images": false,
+      "image1": [
+        "4_image1_resize",
+        0
+      ],
+      "image2": [
+        "4_image2_resize",
+        0
+      ],
+      "image3": [
+        "4_image3_resize",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "通用提示词与参考图"
+    }
+  },
+  "5": {
+    "class_type": "EmptySD3LatentImage",
+    "inputs": {
+      "width": 1216,
+      "height": 704,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "输出尺寸"
+    }
+  },
+  "6": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "9",
+        0
+      ],
+      "positive": [
+        "4",
+        0
+      ],
+      "negative": [
+        "8",
+        0
+      ],
+      "latent_image": [
+        "5",
+        0
+      ],
+      "seed": 8891089578341364,
+      "steps": 50,
+      "cfg": 4,
+      "sampler_name": "res_2s_ode",
+      "scheduler": "kl_optimal",
+      "denoise": 1
+    },
+    "_meta": {
+      "title": "采样参数"
+    }
+  },
+  "7": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "6",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "解码"
+    }
+  },
+  "8": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "9",
+        1
+      ],
+      "text": ""
+    },
+    "_meta": {
+      "title": "负向提示词（CFG为1时不生效）"
+    }
+  },
+  "9": {
+    "class_type": "CR Load LoRA",
+    "inputs": {
+      "model": [
+        "12",
+        0
+      ],
+      "clip": [
+        "12",
+        1
+      ],
+      "switch": "Off",
+      "lora_name": "Z-Image-Fun-Lora-Distill-8-Steps-2603-ComfyUI.safetensors",
+      "strength_model": 0.45,
+      "strength_clip": 0
+    },
+    "_meta": {
+      "title": "8步蒸馏 LoRA"
+    }
+  },
+  "10": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "7",
+        0
+      ],
+      "filename_prefix": "FrameDock/ZImage/diagnosis/base-50"
+    },
+    "_meta": {
+      "title": "保存图像"
+    }
+  },
+  "11": {
+    "class_type": "CR Load LoRA",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "clip": [
+        "2",
+        0
+      ],
+      "switch": "Off",
+      "lora_name": "Kook_Zimage_瑶光.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 0
+    },
+    "_meta": {
+      "title": "风格 LoRA 1"
+    }
+  },
+  "12": {
+    "class_type": "CR Load LoRA",
+    "inputs": {
+      "model": [
+        "11",
+        0
+      ],
+      "clip": [
+        "11",
+        1
+      ],
+      "switch": "Off",
+      "lora_name": "Kook_Zimage_如梦似幻.safetensors",
+      "strength_model": 0.7,
+      "strength_clip": 0
+    },
+    "_meta": {
+      "title": "风格 LoRA 2"
+    }
+  },
+  "21": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "canvas-ui13uEiO.png"
+    },
+    "_meta": {
+      "title": "参考图 1（可选）"
+    }
+  },
+  "22": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "canvas-kr-k1VEZ.png"
+    },
+    "_meta": {
+      "title": "参考图 2（可选）"
+    }
+  },
+  "23": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "canvas-lHkvuGZf.png"
+    },
+    "_meta": {
+      "title": "参考图 3（可选）"
+    }
+  },
+  "4_image1_resize": {
+    "class_type": "ImageScaleToTotalPixels",
+    "inputs": {
+      "image": [
+        "21",
+        0
+      ],
+      "upscale_method": "area",
+      "megapixels": 1,
+      "resolution_steps": 16
+    }
+  },
+  "4_image2_resize": {
+    "class_type": "ImageScaleToTotalPixels",
+    "inputs": {
+      "image": [
+        "22",
+        0
+      ],
+      "upscale_method": "area",
+      "megapixels": 1,
+      "resolution_steps": 16
+    }
+  },
+  "4_image3_resize": {
+    "class_type": "ImageScaleToTotalPixels",
+    "inputs": {
+      "image": [
+        "23",
+        0
+      ],
+      "upscale_method": "area",
+      "megapixels": 1,
+      "resolution_steps": 16
+    }
+  }
+}

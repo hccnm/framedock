@@ -1,41 +1,177 @@
 ---
-title: Local Agent Integration Plan
-description: Plan for connecting Codex and Claude to the canvas through Canvas Agent and MCP
+title: Local CLI Desktop Integration Plan
+description: Let the desktop app discover and use the user's installed Codex CLI without requiring npx or a bundled Codex runtime
 ---
 
-# Local Agent Integration Plan
+# Local CLI Desktop Integration Plan
 
-## Goal
+## Product outcome
 
-Allow locally authenticated coding agents to read and modify the active browser canvas without moving canvas data, credentials, or local permissions to a hosted backend.
+The installed Infinite Canvas desktop app should automatically discover the user's local Codex CLI, show its real executable path, version, authentication state, models, and reasoning options, and run it without asking the user to open a terminal or execute `npx`.
 
-## Architecture
+The selected CLI must reuse the user's existing login, `CODEX_HOME`, custom provider, and proxy environment. Claude Code should use the same runtime contract later; the first delivery should implement Codex only.
 
-Canvas Agent is the single local bridge. The browser synchronizes structured canvas state to it over authenticated HTTP and SSE. Codex and future Claude adapters use MCP tools exposed by Canvas Agent. Browser-side writes remain structured, reviewable, and undoable.
+## Architectural decision
 
-The service is divided into agent adapters, canvas state and tool handling, HTTP/SSE transport, and MCP exposure. Codex is the first adapter through `codex app-server`; Claude should use the Claude Agent SDK rather than duplicating canvas logic.
+A normal browser page cannot enumerate `PATH`, spawn a local executable, or own a child-process lifecycle. The OpenDesign experience is provided by an Electron shell that manages a local daemon; the daemon discovers and launches CLIs while the React UI only talks to daemon APIs.
 
-## Tool design
+Infinite Canvas should adopt the same boundary while preserving its existing Canvas Agent implementation:
 
-Tools should cover state and selection reads, node creation and updates, connections, batch operations, viewport and selection changes, and text, image, or video generation. High-level tools convert to a small set of canvas operations before the browser applies them.
+```txt
+Electron desktop
+  ├─ existing Vite React renderer
+  ├─ restricted preload bridge
+  └─ Canvas Agent sidecar lifecycle
+             |
+             v
+Canvas Agent
+  ├─ CLI discovery and diagnostics
+  ├─ Codex adapter -> selected local `codex app-server --stdio`
+  └─ existing HTTP, SSE, MCP, history, approvals, and canvas bridge
+```
 
-## Side panel
+The hosted browser app may remain available, but it should direct users to the desktop app for Local CLI mode instead of presenting `npx`, Local URL, and token fields as the primary flow.
 
-The browser panel manages connection state, conversations, streaming events, model and reasoning settings, permissions, approvals, local Skills, diagnostics, and task cancellation. A turn is bound to its initiating `clientId` so focusing another browser tab cannot redirect its canvas operations.
+## OpenDesign findings to adopt
 
-## Security
+- Keep the desktop shell responsible for process lifecycle and security IPC; keep CLI behavior in the daemon.
+- Separate the runtime registry, executable discovery, version probing, model probing, process invocation, and stream adapters.
+- Search both inherited `PATH` and common GUI-missing toolchain directories such as Homebrew, npm/pnpm, nvm, fnm, mise, Volta, and bun.
+- Resolve Codex in this order: explicit absolute path, all PATH/toolchain candidates, then the CLI inside `Codex.app` on macOS. Infinite Canvas should not bundle a fallback Codex.
+- Prove candidates by spawning `--version`; if an early shim is broken, continue to the next candidate.
+- Prefer live model discovery and clearly label fallback/default data.
+- Preserve the user's environment and configuration directories instead of importing API keys.
 
-- Bind to localhost and require a generated connection token.
-- Pin the accepted browser origin.
-- Keep local agent login and file permissions out of the hosted site.
-- Make writes confirmable and undoable in the browser.
-- Never redirect an active turn to another tab when its initiating page disconnects.
+OpenDesign is Apache-2.0. Reimplement the small required design rather than copying large source sections. If code is copied, retain the required license, NOTICE, attribution, and modification notices.
 
-## Delivery stages
+Primary references:
 
-1. Expose canvas state and operations to local Codex through MCP.
-2. Add the browser Codex panel with streaming conversations and history.
-3. Add a Claude Agent SDK adapter using the same canvas tools.
-4. Improve approvals, diagnostics, multi-tab behavior, Skills, and recovery.
+- https://github.com/nexu-io/open-design/blob/main/apps/daemon/src/runtimes/detection.ts
+- https://github.com/nexu-io/open-design/blob/main/apps/daemon/src/runtimes/executables.ts
+- https://github.com/nexu-io/open-design/blob/main/apps/daemon/src/runtimes/defs/codex.ts
+- https://github.com/nexu-io/open-design/blob/main/packages/platform/src/toolchain.ts
+- https://github.com/nexu-io/open-design/blob/main/apps/packaged/src/sidecars.ts
 
-The MVP is complete when an agent can connect to the active canvas, read state and selection, apply visible node operations, start a generation workflow, return structured errors, and remain isolated across tabs.
+## Existing code to preserve
+
+Keep the Canvas Agent HTTP/SSE transport, token and origin checks, canvas sessions, Codex app-server protocol client, histories, approvals, Skills, message metadata, browser agent panel, canvas synchronization, undo, and multi-tab ownership.
+
+Replace these boundaries:
+
+- Remove the fixed `@openai/codex` dependency from `canvas-agent/package.json`.
+- Replace `require.resolve("@openai/codex/package.json")` in `codex-client.ts` with a validated selected executable.
+- Add runtime discovery, selection, diagnostics, and rescan APIs.
+- Add a desktop host that starts and stops Canvas Agent automatically.
+- Replace the normal desktop connection instructions with Local CLI selection.
+
+## Proposed modules
+
+```txt
+desktop/src/
+  main.ts
+  preload.ts
+  sidecar.ts
+  paths.ts
+  security.ts
+
+canvas-agent/src/runtime/
+  types.ts
+  registry.ts
+  executables.ts
+  toolchain-paths.ts
+  detection.ts
+  process.ts
+  codex.ts
+
+web/src/services/api/local-cli.ts
+web/src/stores/use-local-cli-store.ts
+web/src/components/agent/agent-runtime-view.tsx
+web/src/types/desktop-host.d.ts
+```
+
+## Discovery and execution contract
+
+Search an explicit absolute path first, then every matching candidate in `PATH` and well-known toolchain directories, followed by `/Applications/Codex.app/Contents/Resources/codex` and its user-scoped equivalent on macOS. Validate file type and executable permissions. Windows must support `.exe`, `.cmd`, `.bat`, and `PATHEXT` safely.
+
+Probe each candidate with `codex --version` under a five-second timeout. File existence alone is not evidence that a CLI is installed. Walk past broken shims, with an eight-candidate cap per rescan. After selection, use `codex login status` for authentication diagnostics and prefer app-server `model/list` for the authoritative model catalog; `codex debug models` may provide a settings-page preview. If model discovery fails, retain a clearly labeled CLI-default option.
+
+Child environment precedence is system proxy environment, inherited desktop environment, then explicit per-CLI advanced overrides. Preserve `HOME`, `PATH`, proxy variables, and an existing `CODEX_HOME`; default to `~/.codex` only when it is absent. Never copy local authentication files or provider secrets into application configuration.
+
+## Agent API
+
+Add:
+
+```http
+GET  /agent/runtimes
+POST /agent/runtimes/rescan
+PUT  /agent/runtime
+POST /agent/runtime/test
+```
+
+Each runtime result should include id, name, availability, selected state, executable path, version, authentication status, model list and source, reasoning options, and structured diagnostics.
+
+Runtime selection must accept only a discovered runtime id and executable fingerprint, never arbitrary commands or argv from the renderer. A path selected through a native file dialog must still pass the same executable and identity probes.
+
+`CodexAppClient.start()` should receive the validated executable path and environment and spawn:
+
+```txt
+<selected codex> app-server --stdio
+```
+
+Switching a runtime while a turn is active must be rejected. An idle switch closes the old app-server, clears process-scoped clients, and starts a new instance without assigning old runtime state to it.
+
+## Desktop lifecycle and security
+
+- Package the web renderer and Canvas Agent in the desktop installer.
+- Start Canvas Agent on app launch, wait for health, and pass one-time connection data through a restricted preload bridge.
+- Restart once after an unexpected sidecar exit; repeated failure opens diagnostics rather than creating a restart loop.
+- On quit, interrupt active work and request graceful shutdown before terminating the child.
+- Enforce a single application instance and retain current and previous sidecar logs.
+- Enable Electron `contextIsolation`, disable `nodeIntegration`, restrict navigation and external URLs, and expose only allowlisted IPC methods.
+- Spawn executables with structured file/argument arrays. Do not compose a `shell: true` command string.
+- Bind the sidecar to `127.0.0.1`, retain random-token and origin checks, and redact stderr before persistence or browser delivery.
+- Never read, return, or log Codex auth files, API keys, or provider secrets.
+
+## UI behavior
+
+Settings should offer a **Local CLI / API provider** switch using the existing application theme. Local CLI cards show the discovered executable, version, authentication state, model source, and a Test action. Rescan is explicit. Selecting Codex expands model, reasoning, test, and advanced-path controls.
+
+The desktop renderer connects automatically and does not show `npx`, Local URL, or token fields. A normal browser renderer should state that Local CLI requires the desktop app. The current manual bridge may temporarily remain under developer options.
+
+The model UI must distinguish **live list from CLI** from **CLI default**. Test results must identify the executable path and version actually used.
+
+## Delivery phases
+
+1. **Local Codex runtime:** add discovery, probes, selection, runtime APIs, and local executable spawning; remove bundled Codex while preserving current frontend protocols.
+2. **Desktop zero-command launch:** add Electron packaging, secure preload, sidecar lifecycle, automatic connection, and single-instance behavior.
+3. **Runtime settings UX:** add CLI cards, rescan, live models, reasoning, login diagnostics, manual path selection, and separate desktop/browser empty states.
+4. **Claude Code:** add an independent Claude adapter using the same runtime contract without pretending its event or session protocol is Codex-compatible.
+
+## Acceptance
+
+Automated coverage must include platform path ordering, executable validation, minimal GUI `PATH`, common toolchain installs, bad-shim fallback, explicit-path diagnostics, version/auth/model fallback behavior, environment inheritance, credential redaction, runtime switching, sidecar restart and shutdown, single instance, preload allowlists, navigation restrictions, and command-injection rejection.
+
+The end-to-end acceptance path is:
+
+1. A local Codex CLI is already authenticated and uses a custom provider.
+2. The user installs and opens Infinite Canvas desktop without opening a terminal.
+3. Settings automatically show the actual Codex path and version.
+4. Models match the selected CLI; model and reasoning selection pass the Test action.
+5. A canvas Agent turn streams, calls canvas tools, handles approval and interruption, and persists history.
+6. Restarting the desktop app restores the selection and conversation without requiring any `npx` command.
+
+## Explicit non-goals and risks
+
+- A hosted browser page will not directly spawn local CLIs.
+- The first release will not run multiple Codex installations concurrently or migrate sessions across CLIs.
+- Electron has its own Chromium profile and cannot silently reuse IndexedDB from the user's Chrome profile. Provide project/config export-import; seamless Chrome data sharing would require a separate browser-extension or Native Messaging project.
+- Experimental Codex model commands may change, so model discovery must fail gracefully.
+- Code signing, notarization, auto-update, and three-platform release validation are separate release gates; a development Electron launch is not a production installer.
+
+The implementation agent should begin with Canvas Agent discovery and a real local Codex app-server turn, then add Electron lifecycle, and only then replace the connection UI. This keeps CLI protocol, desktop packaging, and UI risks independently testable.
+
+## First-release implementation notes (deviations from this plan)
+
+- `/agent/runtimes` responses do not embed `models` / `reasoningOptions`: models and reasoning efforts keep coming live from the running app-server's `model/list` through the existing `/agent/codex/models` endpoint, and the settings view labels that source instead of probing again.
+- The advanced path setting is a text field that submits an absolute path; the Agent re-probes and validates it before saving. A native file picker is deferred to the packaging stage.
+- The first desktop release is a runnable Electron entry (`desktop/`, reusing the repository's `canvas-agent/dist` and `web/dist`); installers, signing/notarization, and auto-update remain separate deliverables per the risks section and are tracked in the TODO.

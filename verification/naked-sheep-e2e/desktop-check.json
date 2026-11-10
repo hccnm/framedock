@@ -1,0 +1,105 @@
+{
+  "workspacePath": "/Users/ethanhuang/.flowharbor/codex-workspaces/site",
+  "folders": [
+    {
+      "id": "sheep_folder_5a6c0fb001068ebf1cf451ed",
+      "name": "裸羊逃跑事件"
+    }
+  ],
+  "pages": [
+    {
+      "id": "sheep_page_0f854d8c15297ac88c176b74",
+      "title": "重构资产_20261019 · 1",
+      "nodes": 24
+    },
+    {
+      "id": "sheep_page_570648019cb25acf1638a3c3",
+      "title": "重构资产_20261019 · 2",
+      "nodes": 24
+    },
+    {
+      "id": "sheep_page_820238fcac23d2c81f01afdb",
+      "title": "重构资产_20261019 · 3",
+      "nodes": 24
+    },
+    {
+      "id": "sheep_page_68182a2664aede19ef32f62f",
+      "title": "重构资产_20261019 · 4",
+      "nodes": 24
+    },
+    {
+      "id": "sheep_page_07b5d39c1fa78cb6cd0837d5",
+      "title": "重构资产_20261019 · 5",
+      "nodes": 21
+    },
+    {
+      "id": "sheep_page_27af9e75282c1f6f551fd5db",
+      "title": "角色设定 · 1",
+      "nodes": 17
+    },
+    {
+      "id": "sheep_page_0cf47f789ca7d2f303e90321",
+      "title": "场景设定 · 1",
+      "nodes": 5
+    },
+    {
+      "id": "sheep_page_08f5364d41949c1027fc1837",
+      "title": "道具设定 · 1",
+      "nodes": 11
+    },
+    {
+      "id": "sheep_page_e02072b1534de99ebb9e44ba",
+      "title": "项目音频",
+      "nodes": 14
+    },
+    {
+      "id": "sheep_page_7b1ee1e36916bf8ed3468fc5",
+      "title": "项目说明与脚本",
+      "nodes": 6
+    },
+    {
+      "id": "sheep_page_874583c30354abfece5189f8",
+      "title": "ComfyUI 模板",
+      "nodes": 6
+    },
+    {
+      "id": "sheep_page_fcb7023916272e7699d19842",
+      "title": "E2E生成验收",
+      "nodes": 3
+    }
+  ],
+  "imageDiagnostics": {
+    "text": "项目库\nE2E生成验收\n创作助手已连接\n中\n切换到深色主题\nv0.20.0\nAgent\n创作画布\n收起画布\n展开助手\n交换面板\n画布\n资产\n提示词库\n画布元素\n3\n选择\n全部\n角色生成验收样片（非定稿）\n图片\n真实生成提示词与回执\n最高画质，杰作，超精细，干净棚拍光线，一位中国农村中年男性，亚洲面孔，东亚五官，45岁，朴实克制的农民，身形清瘦，哑光皮肤质感，日晒肤色，无油光，不泛油，黑色短发夹少量白发，双眼都睁开，对称双眼，神情平静，穿八十年代中国农村素色深蓝粗布上衣，灰黑长裤，旧黑布鞋，标准站立姿势，双手自然垂放，全身可见，从头到脚都在画面内，正常透视，50mm标准镜头，干净浅灰色棚拍背景，柔和均匀漫射光，正常身材比例，光影层次感，电影质感，艺术氛围，高级的氛围感，梦幻， prompt_id: 184321ad-bb5f-4eff-812f-ba07cacbf385 状态: success / completed 本样片仅用于验收，不代表正式定稿。\n角色原版模板引用（未再次提交）\nComfyUI\n1024 x 1680 · 1.6 MB\n最高画质，杰作，超精细，干净棚拍光线，一位中国农村中年男性，亚洲面孔，东亚五官，45岁，朴实克制的农民，身形清瘦，哑光皮肤质感，日晒肤色，无油光，不泛油，黑色短发夹少量白发，双眼都睁开，对称双眼，神情平静，穿八十年代中国农村素色深蓝粗布上衣，灰黑长裤，旧黑布鞋，标准站立姿势，双手自然垂放，全身可见，从头到脚都在画面内，正常透视，50mm标准镜头，干净浅灰色棚拍背景，柔和均匀漫射光，正常身材比例，光影层次感，电影质感，艺术氛围，高级的氛围感，梦幻，\n\nprompt_id: 184321ad-bb5f-4eff-812f-ba07cacbf385\n状态: success / completed\n本样片仅用于验收，不代表正式定稿。\n自定义\nComfyUI\n01_角色_作者原文\n待运行\n60%\n3\n创作助手\n已连接\n使用应用设置中的文本模型渠道，助手服务随应用启动，无需安装 CLI 或外部插件。\n内置 API 助手，使用应用设置中的文本模型渠道。无需安装或登录 CLI。\n创作助手已连接",
+    "images": [
+      {
+        "src": "blob:app://flowharbor/d7804eb7-2c31-4b0b-802b-e493321b0ad8",
+        "complete": true,
+        "width": 468
+      },
+      {
+        "src": "blob:app://flowharbor/d7804eb7-2c31-4b0b-802b-e493321b0ad8",
+        "complete": true,
+        "width": 468
+      }
+    ]
+  },
+  "generatedImageRestored": true,
+  "skills": {
+    "status": 200,
+    "ok": true,
+    "data": [
+      {
+        "name": "korean-thriller-asset-to-video",
+        "description": "将韩剧式悬疑、复仇小说或剧本按角色生图提示词确认、场景生图提示词确认、用户上传图片后生成MiniMax视频提示词的三阶段流程制作，支持修改造型与连续片段，默认中文交付。",
+        "path": "/Users/ethanhuang/.flowharbor/codex-workspaces/site/.agents/skills/korean-thriller-asset-to-video/SKILL.md",
+        "revision": "36f115d3f2e42a998b25244c4365721b164476565351d5cfefad4fec38be4bf0",
+        "managed": true,
+        "enabled": true,
+        "scope": "repo"
+      }
+    ],
+    "errors": []
+  },
+  "skillPageText": "FlowHarbor\n开始创作\n项目库\n我的素材\n图像创作\n视频创作\n画布导入与导出\n技能\n插件\n工作流\n\n最近创作\n\nE2E生成验收\n重构资产_20261019 · 1\n重构资产_20261019 · 2\n重构资产_20261019 · 3\n重构资产_20261019 · 4\n重构资产_20261019 · 5\n角色设定 · 1\n场景设定 · 1\n道具设定 · 1\n项目音频\n项目说明与脚本\nComfyUI 模板\n设置\n基于 basketikun / infinite-canvas\n开源项目 ↗\n技能\n\n把重复使用的指令整理为技能，管理适用场景与启用状态。\n\n技能保存在本机工作空间。选择技能后可在创作助手中使用；从对话或画布生成草稿使用应用设置中的文本模型，无需安装 CLI。\n\n本地 Skill\n保存在本机，由内置 API 助手使用\n创建 Skill\n全部来源\nkorean-thriller-asset-to-video\n将韩剧式悬疑、复仇小说或剧本按角色生图提示词确认、场景生图提示词确认、用户上传图片后生成MiniMax视频提示词的三阶段流程制作，支持修改造型与连续片段，默认中文交付。\n项目 · korean-thriller-asset-to-video\n已启用\n使用",
+  "skillVisible": true
+}

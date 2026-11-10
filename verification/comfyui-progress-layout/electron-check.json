@@ -1,0 +1,17 @@
+{
+  "removals": 0,
+  "replacements": 0,
+  "missingFrames": 0,
+  "hiddenFrames": 0,
+  "frames": 1200,
+  "statuses": [
+    "自定义ComfyUI状态测试运行中",
+    "自定义ComfyUI状态测试排队中",
+    "自定义ComfyUI状态测试运行中"
+  ],
+  "mutations": 2,
+  "queueCalls": 10,
+  "historyCalls": 10,
+  "asset": "app://framedock/assets/index-KCWuyA1A.js",
+  "passed": true
+}

@@ -5,5 +5,14 @@ description: Planned follow-up work
 
 # TODO
 
-- Replace the Claude Code CLI adapter with a Claude Agent SDK adapter and improve the tool queue, following the [Local Agent Integration Plan](/docs/progress/local-agent-integration-plan).
+## FrameDock desktop
+
+- 继续优化创作页整体画布布局；MiniMax 风格开始创作首页、内置 Agent / 本机 Codex CLI 选择、Agent 对话样式与完整 Skill 目录及示例媒体已移入待测试清单。
+- 按现有本机运行时契约补充 Claude Code CLI 适配器；目前可选择本机 Codex CLI 与内置 API Agent。
+- 继续验证原生项目目录选择与大媒体保存、普通 JSON 配置重启恢复和内置 API 助手真实模型端到端；独立 Electron 已验证应用数据目录内文本与 PNG 落盘、刷新及重启恢复，页面切换、被拦截导航、刷新后的关闭及验收失败清理回归与证据移入待测试清单。「裸羊逃跑事件」真实样例已导入并合并为单创作页，分区布局与后续分镜连线操作移入待测试清单，不自动导入历史备份。
+
+## Upstream backlog (reference)
+
+- Desktop packaging follow-ups: configure Apple signing credentials and validate the first signed arm64/x64 installers and draft Release (see Pending Tests); add in-app auto-update separately.
+- Provide project/config export-import from the browser app into the desktop app so existing local data can migrate.
 - Add Skill installation from web search, Skill resource-file management, and controlled local-memory persistence.

@@ -5,6 +5,67 @@ import test from "node:test";
 
 import { CanvasSession } from "./session.js";
 
+test("ComfyUI 工具校验参数并转发到当前 turn 绑定的网页", async (t) => {
+    const session = new CanvasSession();
+    const first = connect(session, "first");
+    const second = connect(session, "second");
+    t.after(() => { first.close(); second.close(); });
+    session.bindClient("first");
+    session.activateClient("second");
+    const calls = [
+        ["comfyui_list_workflows", { keyword: "zimage", outputKind: "image" }],
+        ["comfyui_get_workflow", { workflowId: "workflow-1" }],
+        ["comfyui_run_workflow", { workflowId: "workflow-1", values: { "seed:id": 42 }, randomEnabled: { "seed:id": false }, inputs: [{ fieldId: "image-field", nodeId: "image-1" }], run: false }],
+    ] as const;
+    for (const [name, input] of calls) {
+        const pending = session.callTool(name, input);
+        const event = first.events("tool_call").at(-1);
+        assert.equal(field(event, "name"), name);
+        assert.deepEqual(field(event, "input"), input);
+        session.resolveResult("first", { requestId: String(field(event, "requestId")), result: { ok: true } });
+        assert.deepEqual(await pending, { ok: true });
+    }
+    assert.equal(second.event("tool_call"), undefined);
+    await assert.rejects(session.callTool("comfyui_run_workflow", { workflowId: "" }));
+    await assert.rejects(session.callTool("comfyui_run_workflow", { workflowId: "x", values: { seed: [] } }));
+});
+
+test("项目文件工具固定到本轮创作页，忽略模型传入的项目和焦点切换", async (t) => {
+    const session = new CanvasSession();
+    const first = connect(session, "first");
+    const second = connect(session, "second");
+    t.after(() => { first.close(); second.close(); });
+    session.updateState(snapshot("page-a"), "first");
+    session.updateState(snapshot("page-b"), "second");
+    assert.throws(() => session.bindClient("first", "page-b"), /创作页已切换/);
+    session.bindClient("first", "page-a", "scope-a");
+    session.updateState(snapshot("page-c"), "first");
+    session.bindClient("first");
+    session.activateClient("second");
+    for (const name of ["project_list_files", "project_read_file"] as const) {
+        const input = name === "project_read_file" ? { path: "剧情/第一集.md", projectId: "page-b" } : { projectId: "page-b" };
+        const pending = session.callTool(name, input);
+        const event = first.events("tool_call").at(-1);
+        assert.equal(field(event, "name"), name);
+        assert.deepEqual(field(event, "input"), { ...(name === "project_read_file" ? { path: "剧情/第一集.md" } : {}), projectId: "page-a", projectFileScope: "scope-a" });
+        session.resolveResult("first", { requestId: String(field(event, "requestId")), result: { content: "最新剧情" } });
+        assert.deepEqual(await pending, { content: "最新剧情" });
+    }
+    assert.equal(second.event("tool_call"), undefined);
+    await assert.rejects(session.callTool("canvas_get_state", {}), /创作页已切换/);
+    await assert.rejects(session.callTool("canvas_apply_ops", { ops: [] }), /创作页已切换/);
+    await assert.rejects(session.callTool("comfyui_run_workflow", { workflowId: "workflow" }), /创作页已切换/);
+    session.releaseClient("first");
+    const pending = session.callTool("project_list_files", {});
+    const event = second.events("tool_call").at(-1);
+    assert.deepEqual(field(event, "input"), { projectId: "page-b", projectFileScope: "" });
+    session.resolveResult("second", { requestId: String(field(event, "requestId")), result: { entries: [] } });
+    await pending;
+    session.updateState({ hasCanvas: false } as never, "second");
+    await assert.rejects(session.callTool("project_list_files", {}), /没有关联项目/);
+    await assert.rejects(session.callTool("project_read_file", { path: "" }));
+});
+
 test("MCP 读取当前激活网页的画布", async (t) => {
     const session = new CanvasSession();
     const first = connect(session, "first");
@@ -60,6 +121,55 @@ test("画布写操作只发送给当前激活网页", async (t) => {
     assert.equal(field(call, "name"), "canvas_apply_ops");
     session.resolveResult("second", { requestId: String(field(call, "requestId")), result: { ok: true } });
     assert.deepEqual(await result, { ok: true });
+});
+
+test("媒体导入只发送到指定的活动创作页", async (t) => {
+    const session = new CanvasSession();
+    const first = connect(session, "first");
+    const second = connect(session, "second");
+    t.after(() => { first.close(); second.close(); });
+    session.updateState(snapshot("canvas-first"), "first");
+    session.updateState(snapshot("canvas-second"), "second");
+    session.activateClient("second");
+    const input = { projectId: "canvas-first", nodeId: "audio-1", nodeType: "audio", title: "音色", dataUrl: "data:audio/wav;base64,YWJj", x: 10, y: 20 };
+    await assert.rejects(session.callTool("canvas_import_media", input), /projectId/);
+    assert.equal(first.event("tool_call"), undefined);
+    assert.equal(second.event("tool_call"), undefined);
+    const pending = session.callTool("canvas_import_media", { ...input, projectId: "canvas-second" });
+    const call = second.event("tool_call");
+    assert.equal(field(call, "name"), "canvas_import_media");
+    session.resolveResult("second", { requestId: String(field(call, "requestId")), result: { nodeId: input.nodeId, storageKey: "audio:stored" } });
+    assert.deepEqual(await pending, { nodeId: input.nodeId, storageKey: "audio:stored" });
+});
+
+test("视频截帧校验时间、节点和创作页，并返回前端新图片节点 ID", async (t) => {
+    const session = new CanvasSession();
+    const first = connect(session, "first");
+    const second = connect(session, "second");
+    t.after(() => { first.close(); second.close(); });
+    const video = { id: "video-1", type: "video", title: "测试视频", position: { x: 0, y: 0 }, width: 320, height: 180, metadata: { content: "blob:test-video" } };
+    session.updateState({ ...snapshot("canvas-first"), nodes: [video] }, "first");
+    session.updateState({ ...snapshot("canvas-second"), nodes: [video] }, "second");
+    session.activateClient("second");
+    const input = { projectId: "canvas-second", nodeId: "video-1", position: "time", time: 2.5 };
+    await assert.rejects(session.callTool("canvas_capture_video_frame", { ...input, projectId: "canvas-first" }), /projectId/);
+    await assert.rejects(session.callTool("canvas_capture_video_frame", { ...input, time: undefined }), /time/);
+    await assert.rejects(session.callTool("canvas_capture_video_frame", { ...input, time: -1 }));
+    await assert.rejects(session.callTool("canvas_capture_video_frame", { ...input, time: Number.NaN }));
+    await assert.rejects(session.callTool("canvas_capture_video_frame", { ...input, position: "middle" }));
+    await assert.rejects(session.callTool("canvas_capture_video_frame", { ...input, nodeId: "missing" }), /视频节点/);
+    assert.equal(first.event("tool_call"), undefined);
+    assert.equal(second.event("tool_call"), undefined);
+    for (const position of ["first", "last", "current", "time"]) {
+        const request = { ...input, position };
+        const pending = session.callTool("canvas_capture_video_frame", request);
+        const call = second.events("tool_call").at(-1);
+        assert.equal(field(call, "name"), "canvas_capture_video_frame");
+        assert.deepEqual(field(call, "input"), request);
+        const result = { nodeId: "frame-1", sourceNodeId: "video-1", storageKey: "image:frame", time: 2.5 };
+        session.resolveResult("second", { requestId: String(field(call, "requestId")), result });
+        assert.deepEqual(await pending, result);
+    }
 });
 
 test("当前 turn 的图片附件可在发起标签页画布创建图片节点", async (t) => {
@@ -376,7 +486,9 @@ test("a disconnected bound client never falls back and can resume with the same 
     const reconnected = connect(session, "first");
     t.after(() => reconnected.close());
     session.updateState(snapshot("canvas-first-reconnected"), "first");
-    assert.equal(field(await session.callTool("canvas_get_state", {}), "projectId"), "canvas-first-reconnected");
+    await assert.rejects(session.callTool("canvas_get_state", {}), /创作页已切换/);
+    session.updateState(snapshot("canvas-first"), "first");
+    assert.equal(field(await session.callTool("canvas_get_state", {}), "projectId"), "canvas-first");
 
     const result = session.callTool("canvas_create_text_node", { text: "reconnected" });
     const call = reconnected.event("tool_call");

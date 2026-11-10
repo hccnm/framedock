@@ -1,0 +1,180 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+      "weight_dtype": "default"
+    },
+    "_meta": {
+      "title": "模型"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen3vl_8b_bf16.safetensors",
+      "type": "qwen_image",
+      "device": "default"
+    },
+    "_meta": {
+      "title": "文本编码器"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+    },
+    "_meta": {
+      "title": "VAE"
+    }
+  },
+  "4": {
+    "class_type": "TextEncodeQwenImage21",
+    "inputs": {
+      "clip": [
+        "11",
+        1
+      ],
+      "vae": [
+        "3",
+        0
+      ],
+      "prompt": "以 <image1> 为构图、人物姿势和卧室场景基准，重新生成一张高质量真人影视剧横向关键帧。画面始终只有三名成年人物，画面从左到右依次是肥鱼、东青、菜包，保持原图的机位、床头、米白色床品、窗边自然日光和三人躺在同一张床上的关系。<image2> 仅用于校正画面左侧肥鱼的人物身份、蓝色长发、鲸鱼发饰和蓝白女仆服；<image3> 仅用于校正画面右侧菜包的人物身份、黑色短发、紫色发夹、黑色短袖和红色围巾。不要把单人参考图变成画中画或站立全身图。肥鱼在最左侧，闭眼熟睡，头轻靠在东青左肩旁；东青是正中央唯一男性，严格保留 <image1> 中的面部身份、黑色睡醒发型和白色短袖睡衣，仰躺睁眼向上看，右手自然攥住胸前被沿，另一只手在画面下缘；菜包在最右侧，闭眼熟睡，脸贴在东青右肩旁。保留三人头部的大小、朝向、自然遮挡与亲密但安静的姿态。画面完整连贯，头发、脸、衣服和被子有清楚连续的轮廓，真实皮肤质感，柔和自然光，写实摄影。",
+      "negative_prompt": "",
+      "resolution": 1024,
+      "images.image_1": [
+        "21",
+        0
+      ],
+      "images.image_2": [
+        "22",
+        0
+      ],
+      "images.image_3": [
+        "23",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "通用提示词与参考图"
+    }
+  },
+  "5": {
+    "class_type": "EmptySD3LatentImage",
+    "inputs": {
+      "width": 1344,
+      "height": 768,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "输出尺寸"
+    }
+  },
+  "6": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "11",
+        0
+      ],
+      "positive": [
+        "4",
+        0
+      ],
+      "negative": [
+        "4",
+        1
+      ],
+      "latent_image": [
+        "5",
+        0
+      ],
+      "seed": 20261107,
+      "steps": 25,
+      "cfg": 1.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "采样参数"
+    }
+  },
+  "7": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "6",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "解码"
+    }
+  },
+  "10": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "7",
+        0
+      ],
+      "filename_prefix": "FrameDock/QwenEdit/general"
+    },
+    "_meta": {
+      "title": "保存图像"
+    }
+  },
+  "11": {
+    "class_type": "CR Load LoRA",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "clip": [
+        "2",
+        0
+      ],
+      "switch": "Off",
+      "lora_name": "None",
+      "strength_model": 1.0,
+      "strength_clip": 0.0
+    },
+    "_meta": {
+      "title": "可选 LoRA 1（默认关闭）"
+    }
+  },
+  "21": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "canvas-Mzntzynk.png"
+    },
+    "_meta": {
+      "title": "参考图 1（可选）"
+    }
+  },
+  "22": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "canvas-JpWEZGRz.png"
+    },
+    "_meta": {
+      "title": "参考图 2（可选）"
+    }
+  },
+  "23": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "canvas-WFO5Bk-t.png"
+    },
+    "_meta": {
+      "title": "参考图 3（可选）"
+    }
+  }
+}

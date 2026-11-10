@@ -1,0 +1,13 @@
+{
+  "ok": true,
+  "result": {
+    "ok": true,
+    "projectId": "YPGguXUHDBMZ3wgCfpzu8",
+    "nodeId": "comfyui-1794007323822-hizg4",
+    "workflowId": "general-qwen-edit",
+    "workflowName": "通用多参考-Qwen Edit",
+    "run": true,
+    "status": "uploading",
+    "note": "已启动工作流准备；尚未确认服务入队或生成成功，请用 generation_get_status 查询此 nodeId。"
+  }
+}

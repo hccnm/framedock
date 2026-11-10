@@ -1,0 +1,21 @@
+{
+  "workflow": "Qwen Image 2.1 general multi-reference",
+  "execution": "direct ComfyUI workflow, two sequential stages",
+  "canvas_written": false,
+  "stage_1_prompt_id": "0d7f3d74-5f2a-456b-a6cd-6dedc57cad22",
+  "stage_2_prompt_id": "ffd31c40-4a0b-4591-8593-3e3ba5918b16",
+  "status": "visually_reviewed_pass",
+  "checks": {
+    "overhead_camera_preserved": true,
+    "headboard_at_top_and_bodies_down_bed_length": true,
+    "two_original_pillows_no_additional_pillow": true,
+    "left_feiyu_middle_dongqing_right_caibao": true,
+    "women_asleep_man_awake": true,
+    "no_fragmentation_or_duplicated_people": true
+  },
+  "adoption": "pending_user_review",
+  "files": {
+    "bed.png": "56fa1533fb332e31488ee38437c0416f330c6daedd858d72daa4f23e20c9fdce",
+    "people.png": "e9a5743734c4205eaa7c31e19ac282b95f25d36553da282da1bdc31cb1fccc6c"
+  }
+}

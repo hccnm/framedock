@@ -1,0 +1,264 @@
+{
+  "prompt": [
+    467,
+    "141bc89d-011b-4c25-88d9-3c9e4fc9853a",
+    {
+      "1": {
+        "class_type": "UNETLoader",
+        "inputs": {
+          "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+          "weight_dtype": "default"
+        },
+        "_meta": {
+          "title": "模型"
+        }
+      },
+      "2": {
+        "class_type": "CLIPLoader",
+        "inputs": {
+          "clip_name": "qwen3vl_8b_bf16.safetensors",
+          "type": "qwen_image",
+          "device": "default"
+        },
+        "_meta": {
+          "title": "文本编码器"
+        }
+      },
+      "3": {
+        "class_type": "VAELoader",
+        "inputs": {
+          "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+        },
+        "_meta": {
+          "title": "VAE"
+        }
+      },
+      "4": {
+        "class_type": "TextEncodeQwenImage21",
+        "inputs": {
+          "clip": [
+            "11",
+            1
+          ],
+          "vae": [
+            "3",
+            0
+          ],
+          "prompt": "生成一张真人影视剧横向卧室关键帧。<image1> 是唯一的房间、床、床架和床品设计参考：普通厦门住宅的小卧室，白墙，靠墙的浅木色平板床头，白色金属床架和白色管状栏杆，浅色素棉床单、枕头和被子，床旁的窄窗、米白窗帘，窗上方的白色壁挂空调，清晨自然日光。床铺和床品必须以 <image1> 为准，保持简朴真实的居家质感，棉被是参考中的素色自然褶皱布面。镜头可以为容纳三人而重新构图，横向、从床尾一侧略高的位置朝床头拍摄，中景到中全景，清楚展示枕位和三人上半身，并让白色金属床架的边缘自然入画。<image2> 仅提供中央男性东青的面部身份、黑色睡醒发型、白色短袖T恤睡衣；<image3> 仅提供左侧女性肥鱼的面部身份、蓝色长发、鲸鱼配饰与蓝白女仆服；<image4> 仅提供右侧女性菜包的面部身份、黑色短发、紫色发夹、黑色短袖和红色围巾。将三名成年人物自然地放在 <image1> 的同一张床上，画面从左到右必须依次为肥鱼、东青、菜包；他们是同一透视、同一光照里的真人，只有三个人。中央东青仰躺，刚醒来睁眼望向上方，右手在胸前攥住被口，睡衣不变。左侧肥鱼侧卧闭眼熟睡，头轻靠东青画面左侧的肩旁；右侧菜包侧卧闭眼熟睡，脸轻靠东青画面右侧的肩旁。三人的下半身自然被同一床素棉被遮盖，头部大小相近，肩臂关系自然。人物单人参考只控制身份和衣着，生成全新的卧室镜头，真实皮肤、连续自然的头发、衣服与棉被轮廓。",
+          "negative_prompt": "",
+          "resolution": 1024,
+          "images.image_1": [
+            "21",
+            0
+          ],
+          "images.image_2": [
+            "22",
+            0
+          ],
+          "images.image_3": [
+            "23",
+            0
+          ],
+          "images.image_4": [
+            "24",
+            0
+          ]
+        },
+        "_meta": {
+          "title": "通用提示词与参考图"
+        }
+      },
+      "5": {
+        "class_type": "EmptySD3LatentImage",
+        "inputs": {
+          "width": 1344,
+          "height": 768,
+          "batch_size": 1
+        },
+        "_meta": {
+          "title": "输出尺寸"
+        }
+      },
+      "6": {
+        "class_type": "KSampler",
+        "inputs": {
+          "model": [
+            "11",
+            0
+          ],
+          "positive": [
+            "4",
+            0
+          ],
+          "negative": [
+            "4",
+            1
+          ],
+          "latent_image": [
+            "5",
+            0
+          ],
+          "seed": 20261108,
+          "steps": 25,
+          "cfg": 1.0,
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "denoise": 1.0
+        },
+        "_meta": {
+          "title": "采样参数"
+        }
+      },
+      "7": {
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "6",
+            0
+          ],
+          "vae": [
+            "3",
+            0
+          ]
+        },
+        "_meta": {
+          "title": "解码"
+        }
+      },
+      "10": {
+        "class_type": "SaveImage",
+        "inputs": {
+          "images": [
+            "7",
+            0
+          ],
+          "filename_prefix": "FrameDock/QwenEdit/general"
+        },
+        "_meta": {
+          "title": "保存图像"
+        }
+      },
+      "11": {
+        "class_type": "CR Load LoRA",
+        "inputs": {
+          "model": [
+            "1",
+            0
+          ],
+          "clip": [
+            "2",
+            0
+          ],
+          "switch": "Off",
+          "lora_name": "None",
+          "strength_model": 1.0,
+          "strength_clip": 0.0
+        },
+        "_meta": {
+          "title": "可选 LoRA 1（默认关闭）"
+        }
+      },
+      "21": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": "canvas-YXT27oiv.png"
+        },
+        "_meta": {
+          "title": "参考图 1（可选）"
+        }
+      },
+      "22": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": "canvas-6nTYjpP9.png"
+        },
+        "_meta": {
+          "title": "参考图 2（可选）"
+        }
+      },
+      "23": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": "canvas-XDHsM0EI.png"
+        },
+        "_meta": {
+          "title": "参考图 3（可选）"
+        }
+      },
+      "24": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": "canvas-N6qJ5NIl.png"
+        },
+        "_meta": {
+          "title": "参考图 4（可选）"
+        }
+      }
+    },
+    {
+      "client_id": "infinite-canvas-CGg-ndhx6kxJ3eE3JSs_I",
+      "create_time": 1794008020177
+    },
+    [
+      "10"
+    ]
+  ],
+  "outputs": {
+    "10": {
+      "images": [
+        {
+          "filename": "general_00004_.png",
+          "subfolder": "FrameDock\\QwenEdit",
+          "type": "output",
+          "metadata": {
+            "kind": "image",
+            "width": 1344,
+            "height": 768
+          }
+        }
+      ]
+    }
+  },
+  "status": {
+    "status_str": "success",
+    "completed": true,
+    "messages": [
+      [
+        "execution_start",
+        {
+          "prompt_id": "141bc89d-011b-4c25-88d9-3c9e4fc9853a",
+          "timestamp": 1794008020178
+        }
+      ],
+      [
+        "execution_cached",
+        {
+          "nodes": [
+            "1",
+            "2",
+            "3",
+            "5",
+            "11"
+          ],
+          "prompt_id": "141bc89d-011b-4c25-88d9-3c9e4fc9853a",
+          "timestamp": 1794008020236
+        }
+      ],
+      [
+        "execution_success",
+        {
+          "prompt_id": "141bc89d-011b-4c25-88d9-3c9e4fc9853a",
+          "timestamp": 1794008072240
+        }
+      ]
+    ]
+  },
+  "meta": {
+    "10": {
+      "node_id": "10",
+      "display_node": "10",
+      "parent_node": null,
+      "real_node_id": "10"
+    }
+  }
+}

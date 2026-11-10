@@ -1,0 +1,1908 @@
+{
+  "version": 1,
+  "source": "/Users/ethanhuang/Desktop/others/fnos/media",
+  "userData": "/Users/ethanhuang/Library/Application Support/FlowHarbor Desktop",
+  "folderId": "sheep_folder_5a6c0fb001068ebf1cf451ed",
+  "projectIds": [
+    "sheep_page_0f854d8c15297ac88c176b74"
+  ],
+  "importedAt": "2026-10-21T10:18:08.802Z",
+  "excludedPaths": [
+    "90_历史版本/",
+    "04_制作过程/production/Fisher资产补充_20261020/",
+    "03_项目素材/首帧/",
+    "03_项目素材/视频片段/"
+  ],
+  "obsoleteAudit": {
+    "removed": 0,
+    "reason": "明确作废的无毛暗红补充羊图、首夜43条视频、旧59首帧均未进入导入范围；历史说明仅作参考。"
+  },
+  "skillWorkspace": "/Users/ethanhuang/.flowharbor/codex-workspaces/site",
+  "skillFiles": 12,
+  "counts": {
+    "images": 150,
+    "audios": 14,
+    "texts": 6,
+    "workflows": 6,
+    "creativePages": 1,
+    "assets": 157,
+    "generatedSamples": 1
+  },
+  "files": [
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/A01_MLS_lying_night_v1.png",
+      "bytes": 2105655,
+      "sha256": "6bbab2ef834d2fce715b74dc79d4c60a505498c1dcd5dc00d8fa813c225d3d80",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_56cdcae10c116d4c9b0796f2"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/A01_MS_foreleg_night_v1.png",
+      "bytes": 1989549,
+      "sha256": "01938cc43c9f1c66071d17a1e42fe09b51f899366a641fa813f39081b6a46c5a",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_7735c12ed13736514dec627b"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/A02_ash_paper_night_v1.png",
+      "bytes": 2154522,
+      "sha256": "d634062ec4a24c7ea4085360ef8c60da1f7f4e6c745b461c087c14b92e26caac",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_b91bd44e8c99018ed7ab6a30"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C01_CU_table_night_v1.png",
+      "bytes": 2070269,
+      "sha256": "152c307c5311bac836772b2bd7899efd902d51e00a96e75e7cbd1695c021905d",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_283e1acd63eec1f60e8b5af6"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C01_MCU_door_night_v1.png",
+      "bytes": 2017383,
+      "sha256": "4ac158f720d9c281b71c1854090b0acf188d51a247664bad67ffebc374f04444",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_03f77d22fd90bf38e3fdcd11"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C01_MCU_table_night_v1.png",
+      "bytes": 2073069,
+      "sha256": "120926507418ebaf12d47a6d7dbf49ca3057e8a90a0eb952accd5e31f3666e37",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_b045d8cba520946dc84c4d49"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C01_MS_table_night_v1.png",
+      "bytes": 2088136,
+      "sha256": "1e0e7d00952f31e28038cc0a757b4f8ab3e7abfede7f2e2550849e079f4b6631",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_7378d6c1b39f92ee2c3a4cad"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C01_hand_door_night_v1.png",
+      "bytes": 2155563,
+      "sha256": "19c93b59d0923b95df2cd1c806d369f833eb12c63df4a50e41108415dd4722fc",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_05a12d761ea62cd6b3e92723"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C02_CU_down_night_v1.png",
+      "bytes": 2120284,
+      "sha256": "13723a4378c3d3ccc2467f987bead7dc76ec0a0680af013ea0dd27e0b191def3",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_d1408eeda181dd470455efab"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C02_CU_lamp_night_v1.png",
+      "bytes": 2124227,
+      "sha256": "824f4a6d2bd012a2e4c7d85d6daa8798323a2923574e5c7501bd602cb146006a",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_36e6df34c70f57a014da819a"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C02_CU_smile_night_v1.png",
+      "bytes": 2123326,
+      "sha256": "f268a3fec952842361e53e206e682f56cda7d80cde453725a394b28e1e237957",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_d3b099672c2232fe2087fb5a"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C02_CU_table_night_v1.png",
+      "bytes": 2111000,
+      "sha256": "d91fb77b1f460e9464c6b050a85af7368c7ab98cd78f676bbc4ef0b264ff99fb",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_77fac01ecd161f513d2e586c"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C02_MCU_door_night_v1.png",
+      "bytes": 2164041,
+      "sha256": "a4b0fca2cebbba9e8869fe17b212ac0745e0e79a7b5d9623fbdf2c3beefee627",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_93ae83c5bbf4b0c43a3f206a"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C02_MCU_table_night_v1.png",
+      "bytes": 2102760,
+      "sha256": "8571a4b924ca7fb2e978c272ce3806f4874fb97f88e5447ebb4399d829d692c6",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_b51638db6071bd064316c77a"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C02_MS_candle_night_v1.png",
+      "bytes": 2131986,
+      "sha256": "0d15892423195bdd7d519d1e007e06dd3d324cbabbd8b4cc8e345242b6e3f3ef",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_5e9ca954e66eef28831e3e25"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C02_MS_table_night_v1.png",
+      "bytes": 2066714,
+      "sha256": "753e4444aa79f4964be88ac2ea2cbe7e2710017f5d59a2af0958aa7d8244d2fc",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_38d4888f72fdc870d6b41e3b"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C03_CU_warn_night_v1.png",
+      "bytes": 2082357,
+      "sha256": "566e04b635b094be72abc9809c58af21354fd5770b4cfaf4ce7d8cd6a1975ff6",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_1bd974f3b6c5fa5df823dc9a"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C03_MCU_warn_night_v1.png",
+      "bytes": 2030734,
+      "sha256": "08ad1a2eb45c0f88ec1d0a3bdf1735780bbaad18e9b86b997f8595a9f3425c1c",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_d8ee681839b318e11dd5c687"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C03_MLS_squat_night_v1.png",
+      "bytes": 2121370,
+      "sha256": "5fa46b7a0629a8702d82c86c2f159745f2dcccc339fedda2961d651bf06f1c42",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_57000bd77e0d4de28709e18a"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C03_MS_door_night_v1.png",
+      "bytes": 2052498,
+      "sha256": "72c9dbe529761ecd63b7620b638d8a0b6d0c00dadb20fb0b9f609d295d4c5a10",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_afcfca859a93deeebaf391f0"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C03_MS_squat_night_v1.png",
+      "bytes": 2076416,
+      "sha256": "d535cbc905065801dd7bff2a932f15211489f15942399d1c9bbf9733096760d4",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_dcf1bdbb918a302f2985b0ef"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C04_MCU_table_night_v1.png",
+      "bytes": 2061696,
+      "sha256": "f4c60c603ec44f54917979571af622b747aefc5a1c1db76727f7847f7a879dc7",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_ffb2d0768bd02628bab82486"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C04_MLS_door_night_v1.png",
+      "bytes": 2093538,
+      "sha256": "d6f924186791eea21c4ad6d961bd81c75daeea0954df7d204ab5cfcd44ecb1b8",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_e976aaac383267ab032e1289"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C04_MS_room_night_v1.png",
+      "bytes": 1987218,
+      "sha256": "6f33dea3af346c66d8fcacfc94a2c609fd045bb3f2f32a2fd89b3e6c4d95a601",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_24a8f0be77fbc7d01d10250a"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C04_hand_package_night_v1.png",
+      "bytes": 2122609,
+      "sha256": "8c8b5b51721903ca025e432d4eff78cb717a2d2e7fc49fc1f674049f9fcb036d",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_0e0b4650f8192fb7b2792af6"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C05_CU_profile_night_v1.png",
+      "bytes": 2010176,
+      "sha256": "de9e9c31313daf2e29cf174c0891f9eee9c05c676da49defe7dca2d25b75a837",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_8d29ed522dc9519c9e930bc3"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C05_MLS_room_night_v1.png",
+      "bytes": 2051778,
+      "sha256": "2d408efe3b81ae20ee7804113b2b6cbd29ab77487fc1de73b9d6621f27fde244",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_6472d981caeb9d69d491279f"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/C05_MS_table_night_v1.png",
+      "bytes": 2019235,
+      "sha256": "106d958a13770e97b2d3b4c5d1ecd7905894982bda7b004391b312a17ac73228",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_53ac871f279dbb5ad799a041"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/S01_basin_macro_night_v1.png",
+      "bytes": 2509862,
+      "sha256": "ef61a61e027da41fd7233de4948326a217711a71f6f1674340d92c05990b16ac",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_875cdf385b876f714addaecf"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/S01_door_crack_night_v1.png",
+      "bytes": 2406030,
+      "sha256": "172f641425e28eed4f131c057711c464c93fbca41d81ea8c04030b0805386426",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_8e8811e5d1ccb25bea631973"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/S01_night_door_35_night_v1.png",
+      "bytes": 2421325,
+      "sha256": "643ea27f1a0a10ab5a3a4d937afe46b251370dfd75992288c39e73bb2a5223b9",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_617c9c3b5641c2975d57e46b"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/S01_night_door_50_night_v1.png",
+      "bytes": 2389737,
+      "sha256": "27a7c0feda705ecb42b4cd78fd6ccb4071c165fa389d9875c329d03bc312fb3c",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_844316c7d1e641b4bb4bb307"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/S01_night_low_35_night_v1.png",
+      "bytes": 2421104,
+      "sha256": "bbe36aed7d3bebac981034eba59bb6af47c02ea6f9e39622557521e925bc3a8a",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_352583a7f6ef3b5b941ec13d"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/S01_night_overhead_35_night_v1.png",
+      "bytes": 2390737,
+      "sha256": "e3230f43979626a9d990997c4f2a2f92a2795419785e3f7f0e0e79125ece76c9",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_ffb725316179a6db92bbe268"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/S01_night_table_100_night_v1.png",
+      "bytes": 2355296,
+      "sha256": "4eec81c4c95db2c7acb52ab3d85bff2c2e1aec805fdffa5b0493778425b9e2ac",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_68e812b7478ea859b032c0cf"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/S01_night_table_35_night_v1.png",
+      "bytes": 2379082,
+      "sha256": "9b295baa6e3f76787bff6f06c7fa1627ac05fac4d38cb6f06730ad02779a2d34",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_a8d39494adfb9fad00b7f0b7"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/S01_night_table_50_night_v1.png",
+      "bytes": 2353999,
+      "sha256": "f39e1b9b6c98f415ec8ae968b3216e754885117194390dc63baa59b3146e6e9e",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_26e332c1f01fd3c65184b8ab"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/S01_night_table_85_night_v1.png",
+      "bytes": 2282832,
+      "sha256": "df564a9506c5044a52d7431e64c0db65dbc9f780ea1d480327f36d6f1c7258af",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_7d9d49bdd50ce7cb6665cc3d"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/S01_night_wide_35_night_v1.png",
+      "bytes": 2417694,
+      "sha256": "792ef46e2b742cf02dc4d3cf9505cb82da1d45f60c0de6e8b9c30e0714cc094b",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_fc0e764062651a879afa5aa1"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S01/S01_table_macro_night_v1.png",
+      "bytes": 2448556,
+      "sha256": "3b5c4306fa9a6f77c3ff3c6f8474673d538c167285232180802e63a0673ac61d",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_277895b93352154d4cd8cc0a"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/A01_ECU_eye_day_v1.png",
+      "bytes": 1963533,
+      "sha256": "8613953c67f1dc64d0b3ce84ec653a8138c55b9f6f6f750be955184357ddf423",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_0b9d6d1ffcd8889c30216b45"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/A01_ECU_hoof_dusk_v1.png",
+      "bytes": 1973094,
+      "sha256": "e40d409f95fc847d514635e23f8a2a78c4d567f3212c08e7a7caad9ec2b3b7cd",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_9ebd445c89bcacbd74d49e33"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/A01_MLS_gate_dusk_v1.png",
+      "bytes": 2037714,
+      "sha256": "eddf9b926fa38d422095022f35f406a1f21ef278a9bd61293babbc03d2ae23bc",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_f63683dd2fa30c121d6ef167"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/A01_WS_escape_dusk_v1.png",
+      "bytes": 1920446,
+      "sha256": "baf283c3dd0abc72c8f17f297f66322a4aad3618ceb97c8d2af72b554e64fa04",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_abb0d854b2e0da6704d121b0"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/A03_blade_macro_dusk_v1.png",
+      "bytes": 1920746,
+      "sha256": "5750091dd088e0eed9f6ba8fd4d7d3a084e438cd6cf5db7cad1597efbf0badb1",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_8df87060f6bd3413f61b1a22"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/C01_CU_3q_dusk_v1.png",
+      "bytes": 2035552,
+      "sha256": "d0bb9b16d7a65e3109677c3e78d35035b9d9084d9778ba2ace935e22424234f9",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_03888e8036d148ddf559911d"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/C01_CU_day_day_v1.png",
+      "bytes": 1947721,
+      "sha256": "6231453485d5b9d89e7fb3e7502686ea26fc59aa84b7dbae8dfeac06d465624f",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_4f5453c9a118e2d181642b02"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/C01_CU_dusk_dusk_v1.png",
+      "bytes": 2032005,
+      "sha256": "4fd0ffdb7f7b368d61ed5574f92cf84e8ecb25d075b6aadad5939b3a9fc93ad3",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_efd4b4db5e2b4dc0d25952c8"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/C01_ECU_3q_dusk_v1.png",
+      "bytes": 2095813,
+      "sha256": "caeb8072772788eec3482fdc6f0fe7d762b74a2651fbe5dcf8de82b520d990d1",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_a395234e7ffacd87587bcb42"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/C01_MS_dusk_dusk_v1.png",
+      "bytes": 2049013,
+      "sha256": "695a0891286f2b9a9417ec5daff9625af1e7140a3a630678dfa23c21511894f9",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_74b318f9487ac8b99ed37de0"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/C01_MS_gate_dusk_v1.png",
+      "bytes": 2039514,
+      "sha256": "be0eb876e9af6f6cda401c1d5acc211e9607c17f8e17294f7d9b05adafc9ea2c",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_e0ab235e909fb20fedf03ab1"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/C02_MCU_crouch_dusk_v1.png",
+      "bytes": 2083470,
+      "sha256": "5a6579e419e858f6335858f5915ea07ab1c0eee7d3291615e89848ee8a4ad4a2",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_ca38f063f5987407ef60ffc8"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/C02_MCU_day_day_v1.png",
+      "bytes": 1981546,
+      "sha256": "de740afa1d07e8bb49d680df2c3d3d132bd04e82a812bf28cfd04eeb1bba5bb4",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_ad94fcf431fd5070b8e410e6"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/C02_MLS_collapse_dusk_v1.png",
+      "bytes": 2078986,
+      "sha256": "7ebf29a792b847a65b5c32a23df69f59616d5aa1ccabdaf15b2e66bb50c42d92",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_3b48a4303ae2974d59253a35"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/C02_MS_back_dusk_v1.png",
+      "bytes": 2069358,
+      "sha256": "196b3d6b957a41ee42b4a15bcdf78fd7dcc9fef956cd13c983863125a501097b",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_3352022f5acb20a5f56d40ff"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/C02_MS_env_dusk_v1.png",
+      "bytes": 2030461,
+      "sha256": "5de705502b929a128f35c67342f30ac762ee9f4fd21086555228e7e75495b43e",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_f39d99931a2ba0a2ddbea724"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/C02_MS_stand_day_v1.png",
+      "bytes": 1765605,
+      "sha256": "a8de8d1b565dfeb73f2b25b0d651abb89c768d7f6e77b885f5e1fd5351dc56b9",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_c64430e0a9d979df45394f86"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/C03_MCU_squat_dusk_v1.png",
+      "bytes": 2068428,
+      "sha256": "acc7e9c7103b0923928883059a5ac643275fbf36470dd7bcccbac130d1f595c9",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_b708f3cfcb50d2e0b9d5d15c"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/C04_MCU_day_day_v1.png",
+      "bytes": 1911981,
+      "sha256": "d138bce1d07f98643ac2ac9d9b3342c198e4b9d793ecd03542ea8a46a18327c7",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_5c8c635895f65339bf73b653"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/C04_MS_day_day_v1.png",
+      "bytes": 1811038,
+      "sha256": "59a53c178c032af92cd7958825f43179c18832adc38a5c979d515fc72115aabd",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_c19a9f1e749c25ad5995a940"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/C04_MS_stand_dusk_v1.png",
+      "bytes": 1991573,
+      "sha256": "410bbcabe140caaec5a6fc4270bbe1bb8edeeb2e26e07c7119aa83596be731bd",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_386ca3f322408f18b8a05d32"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/C06_MCU_kneel_day_v1.png",
+      "bytes": 2006356,
+      "sha256": "70c075ff09aed1f68df64a828befff34f49bf76291e554268d621dd4007472aa",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_2325658cc2601b06e5cdcc12"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/C06_MLS_kneel_day_v1.png",
+      "bytes": 2007320,
+      "sha256": "351d7e64d402f02703765518f0e6eaf33b6a0bb4ea93533850fc5a94a0406c0a",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_3b23557ce812ad7364b675f6"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/C06_MLS_walk_day_v1.png",
+      "bytes": 1910385,
+      "sha256": "075f61af897af08e5d2ac7a0a25f1776b09bd860988731fb98f3d7292c441fec",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_295d530b1a3312da463a430c"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/C06_hand_examine_day_v1.png",
+      "bytes": 2157699,
+      "sha256": "3ce399e19c557f1bbdcece3ecb3de6589c98483898e3ca3d2ee556697c9ef443",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_8310df1cbcdc460d3df0f0d9"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/S02_day_35_day_v1.png",
+      "bytes": 2335551,
+      "sha256": "0d5f9adf702177cbf14f2e5c71307bcdec3af72149b365870d84b50dda5a1afd",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_fcce3c10fc8d4cf70c6df111"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/S02_day_50_day_v1.png",
+      "bytes": 2319370,
+      "sha256": "5d0aded4e7994074fe9f6fde3358e04f7e7f79e736123e7099080a5f4451f4f9",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_4cd429a8f436d8084a25ac67"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/S02_day_85_day_v1.png",
+      "bytes": 2293290,
+      "sha256": "01ebf40e03123a97ea9afd6d60e53e459e438dd9e382b4a766173c141698f244",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_69ad52d4e9ba9f05542104ef"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/S02_day_macro_100_day_v1.png",
+      "bytes": 2660639,
+      "sha256": "84ef9d9bb9a0b1e94651c241a4d348319849b8b7861c81007a7386dbafd3f51d",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_d3ee06d1e93ba98d0273ab65"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/S02_day_wide_24_day_v1.png",
+      "bytes": 2231316,
+      "sha256": "b0c802c37643fd8db5873fb12e7ab649359fc8a639f2a20843e9b136e7e5ee0d",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_2393b2ec5cd234c5a0af733f"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/S02_dusk_50_dusk_v1.png",
+      "bytes": 2509385,
+      "sha256": "b8af5d351aa561c68d88b310da23095f8889b77cd07c43fea3e413706f7dde6e",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_d197b29ffd65accd5fb253f6"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/S02_dusk_85_dusk_v1.png",
+      "bytes": 2269220,
+      "sha256": "8c3a32fa24e37763045926013b4d0634e6f441bf3eee41d3a89ef1feab929dbc",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_6510d3860be78b9c5d0e0702"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/S02_dusk_crowd_dusk_v1.png",
+      "bytes": 2264455,
+      "sha256": "af655124ce8c971c4fcbbc72b06495b2b77996334a4af8314d4e5db568f2872d",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_a2a5c5b62ea39b5278e481b3"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/S02_dusk_door_35_dusk_v1.png",
+      "bytes": 2539483,
+      "sha256": "14f5159385b293fae6d7cd39db1e1829481208a3ebce9ce5edfe1775527986d6",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_a9121d5710ff83dde7b68f3c"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/S02_dusk_gate_35_dusk_v1.png",
+      "bytes": 2422694,
+      "sha256": "1518e104f630210083db48b69c3c6cab31c054e557fceda3d550fcc04292e5b1",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_53838f9a2a206cf1eb27f848"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/S02_dusk_overhead_35_dusk_v1.png",
+      "bytes": 2415611,
+      "sha256": "a774c820b33f5ebe63aa7693d27dccd0c0f92cc1a46425385dd2af416dfe9403",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_4e9abfb10a1c2b80768746c4"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/S02_dusk_pen_24_dusk_v1.png",
+      "bytes": 2286823,
+      "sha256": "5ae98dfe642d67685260675bf165b0b13195d7e1eb7939395a0eadf9788f7a1b",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_941b96effc30c95c4d5989ff"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/S02_dusk_west_24_dusk_v1.png",
+      "bytes": 2260282,
+      "sha256": "121b46358567b438b0a301d6c38276d4825ba8f4b2137ccb8ce9d3f0a6bb6242",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_182bf6b8c421b2760a982675"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/S02_dusk_west_35_dusk_v1.png",
+      "bytes": 2361075,
+      "sha256": "4b4c9793baf80385092ab3be53d8efb3f60dbfeacc7dcd20cd242f9149f41c81",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_2aa2913a9a327e313caf3e37"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/S02_dusk_west_85_dusk_v1.png",
+      "bytes": 2350773,
+      "sha256": "1b9d0d81670b04366792a7662455374efa3350eec565a6083669b46b145f7f62",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_3a2a9157dbd91d63f20eb339"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/S02_dusk_wide_24_dusk_v1.png",
+      "bytes": 2233238,
+      "sha256": "fa5743b90c4923fa90e3065acd1df0d63ca355239f1d07ae72780bccf54171b0",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_72192b838f4e8f1798e74fb8"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S02/S02_ground_macro_dusk_v1.png",
+      "bytes": 2732932,
+      "sha256": "0643ea3bbe33e0d7c6890bb3fa896a14c53b71848d69759b95862eb4e233dede",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_dd4d534c7c513ad61f0ab099"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S03/C01_MLS_run_dusk_v1.png",
+      "bytes": 2090216,
+      "sha256": "1de98a086cb34be0fba632599be816b7238935a202cfbb9180deadf97b909eff",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_1f50d89f75592e3f84b03ff9"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S03/C01_hand_knee_dusk_v1.png",
+      "bytes": 2125968,
+      "sha256": "e829159906b979fcc4209aa3a412d1bcef72a1ca5cf2cc378e8fbf3e4f7e3c9a",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_2624c279417b9bf256b1a558"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S03/C03_CU_panic_dusk_v1.png",
+      "bytes": 1966671,
+      "sha256": "3f8dcfad68046399b5d040a9327177419f622b3377f75778f25ea514e6023bc2",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_0c5154e236612c2fef5abb38"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S03/C04_CU_road_dusk_v1.png",
+      "bytes": 1956280,
+      "sha256": "17af45436cab69cf819bb49f82b3ecd2bedba149b748500fc78d55ea1fc6bf57",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_063f3a8a2d1c28f8ab4f361b"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S03/C04_MCU_road_dusk_v1.png",
+      "bytes": 1989014,
+      "sha256": "5817854b10407e3aea6f92392329b730fb6c655c26543b0c77a4907c5ccf9a7f",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_4e24f9bc9c59e4747cf243e3"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S03/S03_dusk_50_dusk_v1.png",
+      "bytes": 2465093,
+      "sha256": "209728c412e0aa15f3a44208769096e25ebc4088ffc6037bf31ac0515cabff9d",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_3fb9ebdb182239a4b88a99eb"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S03/S03_dusk_85_dusk_v1.png",
+      "bytes": 2263687,
+      "sha256": "f03145b9f543796bf8c9b86a95e1b8ab27e42e74e85b490dac9ccc9c921aff2d",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_4599110fae96fa5c7a5e1b55"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S03/S03_dusk_empty_35_dusk_v1.png",
+      "bytes": 2424281,
+      "sha256": "ca357f5ec5af5b835bf0ecab76f402f2a10e6eb271f05b3de94bc39aad73409c",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_c64023e676335c6ada610a81"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S03/S03_dusk_macro_dusk_v1.png",
+      "bytes": 2611900,
+      "sha256": "3866437e9a4df7249e2aba224a12db90fc60943f07684c0c824f7082800e2acc",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_8e8ddf177bc17e91c3035d91"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S03/S03_dusk_road_35_dusk_v1.png",
+      "bytes": 2483732,
+      "sha256": "b944d4a69a367aa00065a11fbdc94a8659c1eba883aef4eb2700f7ad9acc6ebf",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_431ae4622bd56bd94dc9299c"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S03/S03_dusk_wide_24_dusk_v1.png",
+      "bytes": 2612168,
+      "sha256": "cb55b4126f67fc1752866a6fed16ba0b844d107b3e74f83fdefdb2a5edcc5025",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_5cad356d06c7eb3a5ba41336"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S03/S03_ground_macro_dusk_v1.png",
+      "bytes": 2596446,
+      "sha256": "46bf306bdd68211c3a3e81a2a278c3a83aac689883595618fb77c35ae39bf72d",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_5c3b5e807024c0dcdc5ebdad"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S03/S03_hoofprints_dusk_v1.png",
+      "bytes": 2682408,
+      "sha256": "9f9d06696abe74e8917562f24af5e09fdcc7fd64c5ca838641a52e5f87d2c818",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_a980481fec2418c5ef23431f"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S04/A05_medicine_bowl_day_v1.png",
+      "bytes": 2036663,
+      "sha256": "81d5760e24538c38c7a591f7db0880eda3184e26141776ebe945ad9b274a6c86",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_fc41d8ca5cf722c068cc4e61"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S04/C01_CU_down_day_v1.png",
+      "bytes": 2048329,
+      "sha256": "d8df9f8e5554fefc34a8f45b21921697d85dab0c31f5fe960d18facc53e2518b",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_afbe89a5e82368ee6ab188d9"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S04/C01_CU_empty_day_v1.png",
+      "bytes": 1974615,
+      "sha256": "d5bf020823a3a00b3c7b93fc6f630bc5b9bcd2e3c482bc6fec6108e610c860ef",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_3fc57e71b3c8c577c4b69937"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S04/C01_MS_nurse_day_v1.png",
+      "bytes": 2007291,
+      "sha256": "89d725c02855832e3c7aa36e04cc954e76ddeddf15ce35b2cca02854e6e01902",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_c3ff7088dde8c55b6f2506bf"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S04/C02_MCU_bed_night_v1.png",
+      "bytes": 2139720,
+      "sha256": "65df873e1085c79d695c2b662f81c041e7013961e314f6839bf60600fde156a3",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_f89eb6b4dc4cc3cab75e472d"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S04/C02_MCU_weak_day_v1.png",
+      "bytes": 2091963,
+      "sha256": "913cd1a6117857b05295e9efb4f1bfc18ecac343b90850578ba680ba41d72864",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_b3a8a25ab26ff80c62f674b7"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S04/C02_MS_bed_night_v1.png",
+      "bytes": 2082108,
+      "sha256": "9ab02b959fea1d61cea37aead0df0cda4a6fe12e5675f5d642af7cc7b7ef5e88",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_dddc8cbe96322e2eaafe30fd"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S04/C02_hand_scratch_night_v1.png",
+      "bytes": 2201791,
+      "sha256": "a4259c836247b7d4744f1a056c13c15a17e41b181218af927bf8bb4370e3d479",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_237c417a926571993c75b065"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S04/C05_CU_bedside_night_v1.png",
+      "bytes": 2047940,
+      "sha256": "420a4de7bdbe22ad375d29e5a9514b054b8a568fee1e5941a48148197e01500e",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_039a60d6cd9413b2f3fb14eb"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S04/C05_MLS_bedside_night_v1.png",
+      "bytes": 1996602,
+      "sha256": "0be45624218662abea486cec32268df30ab160229ce6648b0eddc4f7c80ec054",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_0f6a5f6cc2ac570a771a8ca0"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S04/S04_bowl_macro_day_v1.png",
+      "bytes": 2579198,
+      "sha256": "3a21c13e6897fbd7845090bdf7cc311a4efbbd5db4db66d1d10de77b5d9c6dec",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_c94dbebbfb1921fe26c1403b"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S04/S04_day_50_day_v1.png",
+      "bytes": 2306219,
+      "sha256": "bb9887b4003f45022c402c2c3058750be7c8768788903fa58df28e9b445acdbd",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_e2124977530a13ff4f159455"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S04/S04_day_85_day_v1.png",
+      "bytes": 2313037,
+      "sha256": "0ed3ff5269737339534c1c3a56b9e713b3ff9cb9f2dc532650643d5588060a6f",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_6f6bf0074b1bba5826240199"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S04/S04_night_50_night_v1.png",
+      "bytes": 2350593,
+      "sha256": "c5daebed9e614900d07d0ef92abe1c9c992ac56fb548758277b43598388998c3",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_02b05932a5e94d15137fa633"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S04/S04_night_85_night_v1.png",
+      "bytes": 2386506,
+      "sha256": "e5062a3202b4383ff04ce5ede2abb0222cd28fbed6fb805c589b89e259233016",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_66f8e8f503b7f8bf4b822743"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/S04/S04_night_macro_night_v1.png",
+      "bytes": 2360388,
+      "sha256": "e487f9c3ef66d935a3d7cbaa1cd742ee9c35b355bba973b8f03a46db697435aa",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_e91d003251c4f3b9f0a941f7"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/三视图/C01_三视图_v1.png",
+      "bytes": 3016820,
+      "sha256": "b43c909fcbcacff21a6a61d5325673498e8adc4e8a15159266142ec60c5ed4bb",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_8657df5b008e866720ab8c00"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/三视图/C02_三视图_v1.png",
+      "bytes": 3080541,
+      "sha256": "056076ec20bef31723f58b1dd672890cb8dab0f56e87f55270c61ce3a8329d9c",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_e4258120c313d61691f2bb3a"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/三视图/C03_三视图_v1.png",
+      "bytes": 3130029,
+      "sha256": "71923908121ced7018ae38ba79f489b7cb4ea31d97abd37217fbabc74a0682f3",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_b589196ad355bad99c9bd5b9"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/三视图/C04_三视图_v1.png",
+      "bytes": 3170170,
+      "sha256": "4118abcb38645ccf15d638728b15fc88e40a37eb3d4aacd5ea35c48468ca9225",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_5c20ca97d9122f13b9175244"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/三视图/C05_三视图_v1.png",
+      "bytes": 2890873,
+      "sha256": "783e3c67190df63f3541cc843c93d09f958e9f9ada11ffbc50112cf8662a8fe7",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_01936fe473d42c8d089c8977"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/重构资产_20261019/三视图/C06_三视图_v1.png",
+      "bytes": 2792166,
+      "sha256": "723809a659b74d1fc45071df0e3fa1676bca8b0faff0c360b79359ee87bf6e6a",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_de5f202e18d5ecf0f5a73b37"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/角色设定/WorkFisher直生_20261018/A01_小羊_活羊.png",
+      "bytes": 1690937,
+      "sha256": "5912e900a00e58318dffc6713c6209ce4caef858687fc22c19ab4718cc51ccfd",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_36127f533a4cf87bf580db5e"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/角色设定/WorkFisher直生_20261018/A02_小羊_倒地奄奄.png",
+      "bytes": 2831677,
+      "sha256": "8017bd2df3dd7189b92b7f62b9c6b8daaa2bc394ff046cb49dd9062d93ea8055",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_dfde6942d60dca8429506140"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/角色设定/WorkFisher直生_20261018/A03_小羊_死羊吊钩.png",
+      "bytes": 3071653,
+      "sha256": "42361ec0b0fe672f0d1eceaf346e077f239a03978e38772c852fccc2724e3aa5",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_83e77d96620a3a622626a18f"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/角色设定/WorkFisher直生_20261018/A04_小羊_剥皮剪影.png",
+      "bytes": 1477058,
+      "sha256": "39cc89c00a79a85d99d378ba1955a6fe923813c5d8a471798fa484cd84d600eb",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_c6ab023fba690eaf4cea77fd"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/角色设定/WorkFisher直生_20261018/A05_小羊_剥皮挂姿.png",
+      "bytes": 3199043,
+      "sha256": "65738faab2a60d9816c6e0da21fbe99596984f992c168af68cad11e147f761fb",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_3f12585b9f11ea8a10cac48d"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/角色设定/WorkFisher直生_20261018/A06_小羊_半剥门板.png",
+      "bytes": 3568131,
+      "sha256": "6c1442987b21802b3d8fb4a913eb28e619a2ef5087ec02eb6d206305a322fb65",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_dc708a2bd90c6988c0eeb92d"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/角色设定/WorkFisher直生_20261018/A07_小羊_解剖特写.png",
+      "bytes": 3321742,
+      "sha256": "08c96d9a0536fc4e5c1c0ebc24d8b39ab5b96b6b9171a43ca6a105b32e2d2c55",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_c4c821091af5ff312dcf7336"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/角色设定/WorkFisher直生_20261018/C01_桂英.png",
+      "bytes": 1785466,
+      "sha256": "8b281d1f14d701cbe2a65005bda26a98e16585b7a0046c93badc6dfda66b63c5",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_7197232cb501b86e11691593"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/角色设定/WorkFisher直生_20261018/C02_李宗平.png",
+      "bytes": 1663689,
+      "sha256": "54ed0ad911c1ce6cd1a1aa7a1a2234221e177fccad3343810c119042058d2ac9",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_3539fa1dae2ef3e92eaea638"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/角色设定/WorkFisher直生_20261018/C02_李宗平_病卧.png",
+      "bytes": 2744784,
+      "sha256": "f2f4297be83fbd292da0f974744663dfd1430a76ac078a8be6810b863772e18a",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_85028abea44d536e0867cd36"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/角色设定/WorkFisher直生_20261018/C02_李宗平_红疹手.png",
+      "bytes": 2995248,
+      "sha256": "cb647a149d1a2d11caffb49655244f4760dc00c2e578505a24d035d68d32205b",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_b2704be7543b8007ec209bef"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/角色设定/WorkFisher直生_20261018/C03_丁婆婆.png",
+      "bytes": 1791987,
+      "sha256": "ee5a37d0ff12d9269b285088cd3b3b6e94ab0db10e39a6db44dba2b0d1225cd9",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_a5ec9b0b5d0bbf35a4aa80cd"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/角色设定/WorkFisher直生_20261018/C04_主任.png",
+      "bytes": 1648128,
+      "sha256": "47e1b4f23128482e8a8ec69f4daafe9a0351c7698feede7f8e3aee7dce91d7e2",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_7484d633a69f2f3ec170ea66"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/角色设定/WorkFisher直生_20261018/C05_李妻_侧身.png",
+      "bytes": 1610875,
+      "sha256": "4847c1812b3b84850d931908a58e5a295bfe37c9fcfdc654cb854481b6f2bafa",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_0b5d1a945f7624e21de1b23d"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/角色设定/WorkFisher直生_20261018/C05_李妻_正脸.png",
+      "bytes": 2715851,
+      "sha256": "bba61e711e12a4d88d7d483e7e600e2f0f29b7ee0fa59415911709e974091319",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_cdd8c2e63684be685473f6e6"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/角色设定/WorkFisher直生_20261018/C06_兽医.png",
+      "bytes": 1634982,
+      "sha256": "2faf0b5f38fce5b9a564c00a3e7f7a06a049750d22fb314ecf5834c9b801fced",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_dc5705294f64bd4b0a9dfbe7"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/角色设定/WorkFisher直生_20261018/G01_围观村民.png",
+      "bytes": 1909675,
+      "sha256": "ce71b5e10f2feae2991eb7e3fc3c86b6fb8ce1207ee1e9d4c0ea60161f844949",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_13f6bb07d9075837d55a5105"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/场景设定/WorkFisher直生_20261018/S01_堂屋.png",
+      "bytes": 2222895,
+      "sha256": "2011c9571f9dcb6524a60f7286f7ceadcd25bda53b47548ecf419a3000680ab2",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_a10f85a4a22392b233b305d1"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/场景设定/WorkFisher直生_20261018/S02_院坝.png",
+      "bytes": 2717630,
+      "sha256": "87bf9df172c08ec4dcd311c0f52fcaf0f3a4587191fd97f2407497018d552ba3",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_2709e6a5a9010ab015952b6a"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/场景设定/WorkFisher直生_20261018/S02_院坝_暮光.png",
+      "bytes": 3810262,
+      "sha256": "8442e27967ddba301d50ae89f642400771ae7335bc678b694dfb707143c03b22",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_c8fa30d3cac0cc566199a91f"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/场景设定/WorkFisher直生_20261018/S03_村道_暮光.png",
+      "bytes": 4232502,
+      "sha256": "bf0cdbd1ab2be57e786d573a4db2a03c11ecaaf9aa41ac8e288dc516ee463c5f",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_d87202f8471eef41a897788f"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/场景设定/WorkFisher直生_20261018/S04_父母卧房.png",
+      "bytes": 2266486,
+      "sha256": "a02e84c1e3f7d04d95e64a9a5b15ed2fb28b1067640f45472cf9eaf0738b06a2",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_c78a660c04cff8e3ff33d60e"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/道具设定/WorkFisher直生_20261018/P12_吊钩与接血盆.png",
+      "bytes": 2168798,
+      "sha256": "4078e2efe7cc3be70f624d22a5036436f5ba10d64e1bb9e3096fe2618bfd54e5",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_ef91b381baa6ecd2d0c25fbd"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/道具设定/WorkFisher直生_20261018/P15_羊皮.png",
+      "bytes": 2022040,
+      "sha256": "b9f45f034750cd95afd2251492d43f474d746f92e0fc3e8c679be7ec9f29f509",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_42889c9c3c0da06517f82480"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/道具设定/WorkFisher直生_20261018/P1_油灰灰盆.png",
+      "bytes": 2517608,
+      "sha256": "0f3271d23f0ee588512b523ad7fc05a0f5a7b970633a0410682568db6bb85022",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_4cd9c37d200ad585e0723236"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/道具设定/WorkFisher直生_20261018/P2_蜡烛.png",
+      "bytes": 1818803,
+      "sha256": "dfaaf53d6edf9977a6a528ad21f5840d1b83d370b94b2b804b9993ff9bed5282",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_892c255fc41e16ba6d0fd7d9"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/道具设定/WorkFisher直生_20261018/P3_猪肉纸包.png",
+      "bytes": 2170130,
+      "sha256": "b6cb81a0a47d32a5015f458e144298f53ec234a154a4f5cdc3daebf32698990b",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_fbcf82446d5eff7a275e2d97"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/道具设定/WorkFisher直生_20261018/P4_新木椅.png",
+      "bytes": 1985936,
+      "sha256": "5a49f4d76a6adb988b16d2ce9e835dffa5ab524d62821c6e48d382b022a1c258",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_a5d4772b5f34b5c423997ea4"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/道具设定/WorkFisher直生_20261018/P5_门板与两条凳.png",
+      "bytes": 2171923,
+      "sha256": "a936339883e7d5906e6c501741f453ef2ad36dea80143aadbc87b6d6b4949993",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_6435cf59efa4c12322d10a35"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/道具设定/WorkFisher直生_20261018/P6_分肉刀.png",
+      "bytes": 2218855,
+      "sha256": "e9d8f0ebe216eba4a0a738a15b86bae86adcf3f781bf23945d9d08517d1c617c",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_64aa9fe5d99c0fe33a5ac561"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/道具设定/WorkFisher直生_20261018/P7_空羊圈.png",
+      "bytes": 2619496,
+      "sha256": "547790392b35131fee4cd14495a509505e06def68b85d28c0e6e0a87b951f6a5",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_c2c9e6b943977156f5a2d394"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/道具设定/WorkFisher直生_20261018/P8_油灯.png",
+      "bytes": 1973634,
+      "sha256": "446d0dec0c9ba6a13b1c24ccb1fcbc4d3e2fba04a72238b182e8c64ff32660c0",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_eb68e242d600368a99f09f28"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/道具设定/WorkFisher直生_20261018/P9_盛桐油粗瓷碗.png",
+      "bytes": 1982701,
+      "sha256": "037ce2cf28e3d393ba88244981358d4f9bf636f4fb296417aa518761d3c86524",
+      "namespace": "images",
+      "storageKey": "image:sheep_image_d0d83d84afc7f75c840244e1"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/项目音频/导演定稿_20261003/foley/1-7_06_single_hoof_5s.wav",
+      "bytes": 960044,
+      "sha256": "8e475de1322b5ef04a6269c293dbbf6b8933e1148e0d67ad9a911a6981954c32",
+      "namespace": "media",
+      "storageKey": "audio:sheep_audio_cc859d4f3a45f30ef1f101f9"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/项目音频/导演定稿_20261003/foley/hoof_hit_A.wav",
+      "bytes": 37542,
+      "sha256": "b6f65dfde665d4c3015cf64f1d2ca86524577ba7bbe141e02f5d7de92df593b2",
+      "namespace": "media",
+      "storageKey": "audio:sheep_audio_3a69d75d7f32a5fc793c8fec"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/项目音频/导演定稿_20261003/foley/hoof_hit_B.wav",
+      "bytes": 44742,
+      "sha256": "18ef57eeaab641b9fe430ebc9edb7915567506c0eee821f9d834220b22e46cb8",
+      "namespace": "media",
+      "storageKey": "audio:sheep_audio_0f1dc54bd61564416fa767b1"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/项目音频/导演定稿_20261003/分轨预混/music_420s_48k24_stage.flac",
+      "bytes": 4104940,
+      "sha256": "ccb0ce90627a66d10f5c4d3aee8b090a11e47af39ca6565eccc1635e5bac11ee",
+      "namespace": "media",
+      "storageKey": "audio:sheep_audio_8f87d93e70fdf418530f3b1f"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/项目音频/导演定稿_20261003/声线参考/C01_桂英_已批1-5实际输入参考.wav",
+      "bytes": 192044,
+      "sha256": "930842e2c9199a538159082052177323095341a69583f08baf0c2ea3c5f3ee65",
+      "namespace": "media",
+      "storageKey": "audio:sheep_audio_504a0cc2d8dd37be47613320"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/项目音频/导演定稿_20261003/声线参考/C03_丁婆婆_成片人声参考_1-8_01.wav",
+      "bytes": 450638,
+      "sha256": "79b764a8a50d07ccba4826c56b199474c01ec8f24912ed68dd5b3c8e10665a5f",
+      "namespace": "media",
+      "storageKey": "audio:sheep_audio_9254f8fcef5d3abfa4af3724"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/项目音频/导演定稿_20261003/环境底声/S01_静夜远虫_11秒125.wav",
+      "bytes": 3204102,
+      "sha256": "40d02298cb0a2c459c9adbe39fbe0132ecb5ceb1ce21b199154229cdf3844a1f",
+      "namespace": "media",
+      "storageKey": "audio:sheep_audio_21659428060a3ca063769756"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/项目音频/导演定稿_20261003/配乐/病程_室内弦乐_Music3_20261003.flac",
+      "bytes": 1687888,
+      "sha256": "ec79c851e2252d3544acb4246ae2a9915462d77f94a961a6ff799eebb14e12fa",
+      "namespace": "media",
+      "storageKey": "audio:sheep_audio_86ce8bec4b048d955840c34d"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/项目音频/音色参考_v1/丁婆婆_音色参考.wav",
+      "bytes": 591404,
+      "sha256": "43d2bc1995d9c2b835b2d2827dd37a3963bf5470f80faff14b7ccfe44573c749",
+      "namespace": "media",
+      "storageKey": "audio:sheep_audio_c84b0d7a8928806649618155"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/项目音频/音色参考_v1/主任_音色参考.wav",
+      "bytes": 560684,
+      "sha256": "c2385ccef2098074ea7ec965d8de3e98a0a60cabbc6533bdf28ac22f92bea8b7",
+      "namespace": "media",
+      "storageKey": "audio:sheep_audio_fe2060773f6e64c689b43eb8"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/项目音频/音色参考_v1/兽医_音色参考.wav",
+      "bytes": 399404,
+      "sha256": "fce6ffd833295d0c4e11e583f870cd2e0372aed4be142c64e5789f157de0fccb",
+      "namespace": "media",
+      "storageKey": "audio:sheep_audio_62d69499982fdb0a02e2b75b"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/项目音频/音色参考_v1/李妻_音色参考.wav",
+      "bytes": 330284,
+      "sha256": "07703d7ad876b62494f42230328d9ec5145cbd26da1e65887744a92bcbf83849",
+      "namespace": "media",
+      "storageKey": "audio:sheep_audio_0b3deb43c3014b3e0c13ced1"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/项目音频/音色参考_v1/李宗平_音色参考.wav",
+      "bytes": 445484,
+      "sha256": "689ce0973269c0a68f613fbc13f97b79d64b58cf2076eedb8d31d30b4d64ccc6",
+      "namespace": "media",
+      "storageKey": "audio:sheep_audio_8f7dfd428dd7b197496a8568"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/03_项目素材/项目音频/音色参考_v1/桂英_音色参考.wav",
+      "bytes": 545324,
+      "sha256": "ba7fe4294891b769b48dfb26713779636555fbe051058b2824cba98c9c17db3b",
+      "namespace": "media",
+      "storageKey": "audio:sheep_audio_eac9e49f2ea56c4efbc8ff0d"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/00_项目说明/README.md",
+      "bytes": 2562,
+      "sha256": "cca648e442f90a4b3c64b4be7d2e521f6b2637d8039b5be14eed669d319f84df"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/01_需求与脚本/裸羊逃跑事件_Fisher分镜重写_20261019.md",
+      "bytes": 91530,
+      "sha256": "0ecf634a16f8dd3554a85a73523d2d80b71c04f37fcc34e9963251a4085377c8"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/01_需求与脚本/裸羊逃跑事件_Fisher分镜重写_导演复核_20261020.md",
+      "bytes": 25409,
+      "sha256": "00d104247f181fd396cb733f4b1b777a829a80e8a5f3aa54af3d799e0c5691d7"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/01_需求与脚本/裸羊逃跑事件_人物与道具资产.md",
+      "bytes": 33162,
+      "sha256": "b4e58f8cf8f8ea7d586a089cd59e9dca05e1136f77ae9cafedcc7c3a5d930b17"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/01_需求与脚本/裸羊逃跑事件_单集剧本.md",
+      "bytes": 17844,
+      "sha256": "b45b40216db28327b4dfbf7f4813de8554813a1bbcedcecd56a6eba32c4f994c"
+    },
+    {
+      "source": "01_项目/内容作品/裸羊逃跑事件/01_需求与脚本/裸羊逃跑事件_年代服装文字描述_v1.md",
+      "bytes": 9005,
+      "sha256": "c9e3d4a1ea88aee5c22ad351472b70bec6d6762432df8a243f42cf112a5104ec"
+    },
+    {
+      "source": "04_知识与模板/workflows/WorkFisher_原版API_20261019/01_角色_作者原文_API.json",
+      "bytes": 4649,
+      "sha256": "ddb0c259ade5be587c7f1a7e3908dfc1f9c2306a747391572b7921f6171bb12a"
+    },
+    {
+      "source": "04_知识与模板/workflows/WorkFisher_原版API_20261019/01_角色_作者原文_API.json",
+      "bytes": 4649,
+      "sha256": "ddb0c259ade5be587c7f1a7e3908dfc1f9c2306a747391572b7921f6171bb12a",
+      "destination": "/Users/ethanhuang/Desktop/codespace/test/flowharbor/verification/naked-sheep-import/导入资料/workflows/01_角色_作者原文_API.json"
+    },
+    {
+      "source": "04_知识与模板/workflows/WorkFisher_原版API_20261019/02_三视图_作者原文_API.json",
+      "bytes": 4375,
+      "sha256": "d53979c8e5989340601f944c3cb8ba91dda4e8d45674c01e036cec57fcf8ec3b"
+    },
+    {
+      "source": "04_知识与模板/workflows/WorkFisher_原版API_20261019/02_三视图_作者原文_API.json",
+      "bytes": 4375,
+      "sha256": "d53979c8e5989340601f944c3cb8ba91dda4e8d45674c01e036cec57fcf8ec3b",
+      "destination": "/Users/ethanhuang/Desktop/codespace/test/flowharbor/verification/naked-sheep-import/导入资料/workflows/02_三视图_作者原文_API.json"
+    },
+    {
+      "source": "04_知识与模板/workflows/WorkFisher_原版API_20261019/03_场景_作者原文_API.json",
+      "bytes": 5176,
+      "sha256": "3219d6abbcdde299696242b2a6516ed46ea8f6869edd5b9658c9c3d2192c0646"
+    },
+    {
+      "source": "04_知识与模板/workflows/WorkFisher_原版API_20261019/03_场景_作者原文_API.json",
+      "bytes": 5176,
+      "sha256": "3219d6abbcdde299696242b2a6516ed46ea8f6869edd5b9658c9c3d2192c0646",
+      "destination": "/Users/ethanhuang/Desktop/codespace/test/flowharbor/verification/naked-sheep-import/导入资料/workflows/03_场景_作者原文_API.json"
+    },
+    {
+      "source": "04_知识与模板/workflows/WorkFisher_原版API_20261019/04_H3_作者原文_双参考_API.json",
+      "bytes": 10800,
+      "sha256": "61dab91562cdbd3d1aeb5e266a3d7711880629f6d1a6bdfbcf9bd366fff21c30"
+    },
+    {
+      "source": "04_知识与模板/workflows/WorkFisher_原版API_20261019/04_H3_作者原文_双参考_API.json",
+      "bytes": 10800,
+      "sha256": "61dab91562cdbd3d1aeb5e266a3d7711880629f6d1a6bdfbcf9bd366fff21c30",
+      "destination": "/Users/ethanhuang/Desktop/codespace/test/flowharbor/verification/naked-sheep-import/导入资料/workflows/04_H3_作者原文_双参考_API.json"
+    },
+    {
+      "source": "04_知识与模板/workflows/WorkFisher_原版API_20261019/04_H3_作者原文_六参考_API.json",
+      "bytes": 11900,
+      "sha256": "99597843750ae28fac0b2d45034e0be2e06bef5c11dd117822f59499565dee7a"
+    },
+    {
+      "source": "04_知识与模板/workflows/WorkFisher_原版API_20261019/04_H3_作者原文_六参考_API.json",
+      "bytes": 11900,
+      "sha256": "99597843750ae28fac0b2d45034e0be2e06bef5c11dd117822f59499565dee7a",
+      "destination": "/Users/ethanhuang/Desktop/codespace/test/flowharbor/verification/naked-sheep-import/导入资料/workflows/04_H3_作者原文_六参考_API.json"
+    },
+    {
+      "source": "04_知识与模板/workflows/WorkFisher_原版API_20261019/05_角色含SeedVR2_作者原文_API.json",
+      "bytes": 7160,
+      "sha256": "8fff431b53c9a89fe68969d3dec5ef5f21a56608d939d6f3fd13f180ad72ae00"
+    },
+    {
+      "source": "04_知识与模板/workflows/WorkFisher_原版API_20261019/05_角色含SeedVR2_作者原文_API.json",
+      "bytes": 7160,
+      "sha256": "8fff431b53c9a89fe68969d3dec5ef5f21a56608d939d6f3fd13f180ad72ae00",
+      "destination": "/Users/ethanhuang/Desktop/codespace/test/flowharbor/verification/naked-sheep-import/导入资料/workflows/05_角色含SeedVR2_作者原文_API.json"
+    },
+    {
+      "source": "04_知识与模板/workflows/【Work-Fisher】AI短剧制作全流程.json",
+      "bytes": 128156,
+      "sha256": "b9e7f7cc0a0666df6d48701262acc516b0e3b2b4c4b51f505d3576a0feb7c658",
+      "destination": "/Users/ethanhuang/Desktop/codespace/test/flowharbor/verification/naked-sheep-import/导入资料/workflows/【Work-Fisher】AI短剧制作全流程.json"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/.gitignore",
+      "bytes": 51,
+      "sha256": "a4d2777ec0f27dec1c36c6ce933a89ba3f8939a78f895eb4af2dd8d3526bdce9",
+      "destination": "/Users/ethanhuang/Desktop/codespace/test/flowharbor/verification/naked-sheep-import/导入资料/fisher-storylens/.gitignore"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/README.md",
+      "bytes": 8174,
+      "sha256": "32ef79a6ddc3da02a6b7d50829e11e89a787854a70c6805c6a3cf1dacd24138b",
+      "destination": "/Users/ethanhuang/Desktop/codespace/test/flowharbor/verification/naked-sheep-import/导入资料/fisher-storylens/README.md"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/SKILL.md",
+      "bytes": 9751,
+      "sha256": "79ed0e6183c4812fbc83fe624042260c9f1b16dd4f813dc1ef3e28a238f0f7cc",
+      "destination": "/Users/ethanhuang/Desktop/codespace/test/flowharbor/verification/naked-sheep-import/导入资料/fisher-storylens/SKILL.md"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/docs/assets/storylens-overview.png",
+      "bytes": 113627,
+      "sha256": "4199f0c2b4a98574dd4db9fab0fdd46f090b12971b8547bf4eef216957a9036c",
+      "destination": "/Users/ethanhuang/Desktop/codespace/test/flowharbor/verification/naked-sheep-import/导入资料/fisher-storylens/docs/assets/storylens-overview.png"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/docs/assets/workflow-demo.gif",
+      "bytes": 130203,
+      "sha256": "32d1716066b6db4c5a2112fa7065e1942875bf458485fcbd85210bb3e973ef47",
+      "destination": "/Users/ethanhuang/Desktop/codespace/test/flowharbor/verification/naked-sheep-import/导入资料/fisher-storylens/docs/assets/workflow-demo.gif"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/docs/models-and-workflows.md",
+      "bytes": 8185,
+      "sha256": "c33f84bb8b8987bdb7ba6ca21586d33ed141dd159377e521c1fb4d0a6ccbc4e9",
+      "destination": "/Users/ethanhuang/Desktop/codespace/test/flowharbor/verification/naked-sheep-import/导入资料/fisher-storylens/docs/models-and-workflows.md"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/references/asset-continuity.md",
+      "bytes": 3638,
+      "sha256": "11f322706efe55498bfe63afd9663b03cb5f8823859c4ff8df968bdc3862eadb",
+      "destination": "/Users/ethanhuang/Desktop/codespace/test/flowharbor/verification/naked-sheep-import/导入资料/fisher-storylens/references/asset-continuity.md"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/references/emotion-performance-library.md",
+      "bytes": 80477,
+      "sha256": "341531c44ebf803ac42758078734572b527378b1c1a1990e0bc83b554b854972",
+      "destination": "/Users/ethanhuang/Desktop/codespace/test/flowharbor/verification/naked-sheep-import/导入资料/fisher-storylens/references/emotion-performance-library.md"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/references/flashback-example.md",
+      "bytes": 3749,
+      "sha256": "2f50df17e8084fb510179f7e537a1dbf7f3a36ca4f9976052483d54f0dae747d",
+      "destination": "/Users/ethanhuang/Desktop/codespace/test/flowharbor/verification/naked-sheep-import/导入资料/fisher-storylens/references/flashback-example.md"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/references/image-assets.md",
+      "bytes": 7738,
+      "sha256": "246d4a197ef69cfd83e3f26706e2f2de19ab1668dc6d68aa3fb2edbcd4ab07bd",
+      "destination": "/Users/ethanhuang/Desktop/codespace/test/flowharbor/verification/naked-sheep-import/导入资料/fisher-storylens/references/image-assets.md"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/references/video-contract.md",
+      "bytes": 8147,
+      "sha256": "bac7a98c7a309fa67c8327afc13e9f6f433839db51cca1d44ec459aaa96ec007",
+      "destination": "/Users/ethanhuang/Desktop/codespace/test/flowharbor/verification/naked-sheep-import/导入资料/fisher-storylens/references/video-contract.md"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/references/worked-example.md",
+      "bytes": 8473,
+      "sha256": "b20d73bfd23081d016a490bea033544e24603d64264b5aeae12a99394d49b43f",
+      "destination": "/Users/ethanhuang/Desktop/codespace/test/flowharbor/verification/naked-sheep-import/导入资料/fisher-storylens/references/worked-example.md"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/.gitignore",
+      "bytes": 51,
+      "sha256": "a4d2777ec0f27dec1c36c6ce933a89ba3f8939a78f895eb4af2dd8d3526bdce9",
+      "destination": "/Users/ethanhuang/.flowharbor/codex-workspaces/site/.agents/skills/korean-thriller-asset-to-video/.gitignore"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/README.md",
+      "bytes": 8174,
+      "sha256": "32ef79a6ddc3da02a6b7d50829e11e89a787854a70c6805c6a3cf1dacd24138b",
+      "destination": "/Users/ethanhuang/.flowharbor/codex-workspaces/site/.agents/skills/korean-thriller-asset-to-video/README.md"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/SKILL.md",
+      "bytes": 9751,
+      "sha256": "79ed0e6183c4812fbc83fe624042260c9f1b16dd4f813dc1ef3e28a238f0f7cc",
+      "destination": "/Users/ethanhuang/.flowharbor/codex-workspaces/site/.agents/skills/korean-thriller-asset-to-video/SKILL.md"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/docs/assets/storylens-overview.png",
+      "bytes": 113627,
+      "sha256": "4199f0c2b4a98574dd4db9fab0fdd46f090b12971b8547bf4eef216957a9036c",
+      "destination": "/Users/ethanhuang/.flowharbor/codex-workspaces/site/.agents/skills/korean-thriller-asset-to-video/docs/assets/storylens-overview.png"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/docs/assets/workflow-demo.gif",
+      "bytes": 130203,
+      "sha256": "32d1716066b6db4c5a2112fa7065e1942875bf458485fcbd85210bb3e973ef47",
+      "destination": "/Users/ethanhuang/.flowharbor/codex-workspaces/site/.agents/skills/korean-thriller-asset-to-video/docs/assets/workflow-demo.gif"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/docs/models-and-workflows.md",
+      "bytes": 8185,
+      "sha256": "c33f84bb8b8987bdb7ba6ca21586d33ed141dd159377e521c1fb4d0a6ccbc4e9",
+      "destination": "/Users/ethanhuang/.flowharbor/codex-workspaces/site/.agents/skills/korean-thriller-asset-to-video/docs/models-and-workflows.md"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/references/asset-continuity.md",
+      "bytes": 3638,
+      "sha256": "11f322706efe55498bfe63afd9663b03cb5f8823859c4ff8df968bdc3862eadb",
+      "destination": "/Users/ethanhuang/.flowharbor/codex-workspaces/site/.agents/skills/korean-thriller-asset-to-video/references/asset-continuity.md"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/references/emotion-performance-library.md",
+      "bytes": 80477,
+      "sha256": "341531c44ebf803ac42758078734572b527378b1c1a1990e0bc83b554b854972",
+      "destination": "/Users/ethanhuang/.flowharbor/codex-workspaces/site/.agents/skills/korean-thriller-asset-to-video/references/emotion-performance-library.md"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/references/flashback-example.md",
+      "bytes": 3749,
+      "sha256": "2f50df17e8084fb510179f7e537a1dbf7f3a36ca4f9976052483d54f0dae747d",
+      "destination": "/Users/ethanhuang/.flowharbor/codex-workspaces/site/.agents/skills/korean-thriller-asset-to-video/references/flashback-example.md"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/references/image-assets.md",
+      "bytes": 7738,
+      "sha256": "246d4a197ef69cfd83e3f26706e2f2de19ab1668dc6d68aa3fb2edbcd4ab07bd",
+      "destination": "/Users/ethanhuang/.flowharbor/codex-workspaces/site/.agents/skills/korean-thriller-asset-to-video/references/image-assets.md"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/references/video-contract.md",
+      "bytes": 8147,
+      "sha256": "bac7a98c7a309fa67c8327afc13e9f6f433839db51cca1d44ec459aaa96ec007",
+      "destination": "/Users/ethanhuang/.flowharbor/codex-workspaces/site/.agents/skills/korean-thriller-asset-to-video/references/video-contract.md"
+    },
+    {
+      "source": ".agents/skills/fisher-storylens/references/worked-example.md",
+      "bytes": 8473,
+      "sha256": "b20d73bfd23081d016a490bea033544e24603d64264b5aeae12a99394d49b43f",
+      "destination": "/Users/ethanhuang/.flowharbor/codex-workspaces/site/.agents/skills/korean-thriller-asset-to-video/references/worked-example.md"
+    },
+    {
+      "source": "../../../codespace/test/flowharbor/verification/naked-sheep-e2e/naked_sheep_character_00001_.png",
+      "bytes": 1688899,
+      "sha256": "ce99bd7adf92aa7fc794ea27574619ed9aa0b4dd51193fb23be3697b91ba70eb",
+      "namespace": "images",
+      "storageKey": "image:sheep_e2e_c7ea12cfee26b25736badba8"
+    }
+  ],
+  "skillName": "korean-thriller-asset-to-video",
+  "merge": {
+    "status": "merged",
+    "targetId": "sheep_page_0f854d8c15297ac88c176b74",
+    "mergedAt": "2026-10-21T13:05:08.695Z",
+    "backup": "/Users/ethanhuang/Desktop/codespace/test/flowharbor/verification/naked-sheep-import/backups/merge-2026-10-21T13-05-08.695Z",
+    "sourcePages": [
+      {
+        "id": "sheep_page_0f854d8c15297ac88c176b74",
+        "title": "重构资产_20261019 · 1",
+        "projectFolderId": "sheep_folder_5a6c0fb001068ebf1cf451ed",
+        "createdAt": "2026-10-21T10:18:08.802Z",
+        "updatedAt": "2026-10-21T10:18:08.802Z",
+        "chatSessions": [],
+        "activeChatId": null,
+        "backgroundMode": "lines",
+        "showImageInfo": true,
+        "viewport": {
+          "x": 60,
+          "y": 80,
+          "k": 0.6
+        },
+        "nodeIds": [
+          "sheep_image_56cdcae10c116d4c9b0796f2",
+          "sheep_image_7735c12ed13736514dec627b",
+          "sheep_image_b91bd44e8c99018ed7ab6a30",
+          "sheep_image_283e1acd63eec1f60e8b5af6",
+          "sheep_image_03f77d22fd90bf38e3fdcd11",
+          "sheep_image_b045d8cba520946dc84c4d49",
+          "sheep_image_7378d6c1b39f92ee2c3a4cad",
+          "sheep_image_05a12d761ea62cd6b3e92723",
+          "sheep_image_d1408eeda181dd470455efab",
+          "sheep_image_36e6df34c70f57a014da819a",
+          "sheep_image_d3b099672c2232fe2087fb5a",
+          "sheep_image_77fac01ecd161f513d2e586c",
+          "sheep_image_93ae83c5bbf4b0c43a3f206a",
+          "sheep_image_b51638db6071bd064316c77a",
+          "sheep_image_5e9ca954e66eef28831e3e25",
+          "sheep_image_38d4888f72fdc870d6b41e3b",
+          "sheep_image_1bd974f3b6c5fa5df823dc9a",
+          "sheep_image_d8ee681839b318e11dd5c687",
+          "sheep_image_57000bd77e0d4de28709e18a",
+          "sheep_image_afcfca859a93deeebaf391f0",
+          "sheep_image_dcf1bdbb918a302f2985b0ef",
+          "sheep_image_ffb2d0768bd02628bab82486",
+          "sheep_image_e976aaac383267ab032e1289",
+          "sheep_image_24a8f0be77fbc7d01d10250a"
+        ],
+        "connectionIds": []
+      },
+      {
+        "id": "sheep_page_570648019cb25acf1638a3c3",
+        "title": "重构资产_20261019 · 2",
+        "projectFolderId": "sheep_folder_5a6c0fb001068ebf1cf451ed",
+        "createdAt": "2026-10-21T10:18:08.802Z",
+        "updatedAt": "2026-10-21T10:18:08.802Z",
+        "chatSessions": [],
+        "activeChatId": null,
+        "backgroundMode": "lines",
+        "showImageInfo": true,
+        "viewport": {
+          "x": 60,
+          "y": 80,
+          "k": 0.6
+        },
+        "nodeIds": [
+          "sheep_image_0e0b4650f8192fb7b2792af6",
+          "sheep_image_8d29ed522dc9519c9e930bc3",
+          "sheep_image_6472d981caeb9d69d491279f",
+          "sheep_image_53ac871f279dbb5ad799a041",
+          "sheep_image_875cdf385b876f714addaecf",
+          "sheep_image_8e8811e5d1ccb25bea631973",
+          "sheep_image_617c9c3b5641c2975d57e46b",
+          "sheep_image_844316c7d1e641b4bb4bb307",
+          "sheep_image_352583a7f6ef3b5b941ec13d",
+          "sheep_image_ffb725316179a6db92bbe268",
+          "sheep_image_68e812b7478ea859b032c0cf",
+          "sheep_image_a8d39494adfb9fad00b7f0b7",
+          "sheep_image_26e332c1f01fd3c65184b8ab",
+          "sheep_image_7d9d49bdd50ce7cb6665cc3d",
+          "sheep_image_fc0e764062651a879afa5aa1",
+          "sheep_image_277895b93352154d4cd8cc0a",
+          "sheep_image_0b9d6d1ffcd8889c30216b45",
+          "sheep_image_9ebd445c89bcacbd74d49e33",
+          "sheep_image_f63683dd2fa30c121d6ef167",
+          "sheep_image_abb0d854b2e0da6704d121b0",
+          "sheep_image_8df87060f6bd3413f61b1a22",
+          "sheep_image_03888e8036d148ddf559911d",
+          "sheep_image_4f5453c9a118e2d181642b02",
+          "sheep_image_efd4b4db5e2b4dc0d25952c8"
+        ],
+        "connectionIds": []
+      },
+      {
+        "id": "sheep_page_820238fcac23d2c81f01afdb",
+        "title": "重构资产_20261019 · 3",
+        "projectFolderId": "sheep_folder_5a6c0fb001068ebf1cf451ed",
+        "createdAt": "2026-10-21T10:18:08.802Z",
+        "updatedAt": "2026-10-21T10:18:08.802Z",
+        "chatSessions": [],
+        "activeChatId": null,
+        "backgroundMode": "lines",
+        "showImageInfo": true,
+        "viewport": {
+          "x": 60,
+          "y": 80,
+          "k": 0.6
+        },
+        "nodeIds": [
+          "sheep_image_a395234e7ffacd87587bcb42",
+          "sheep_image_74b318f9487ac8b99ed37de0",
+          "sheep_image_e0ab235e909fb20fedf03ab1",
+          "sheep_image_ca38f063f5987407ef60ffc8",
+          "sheep_image_ad94fcf431fd5070b8e410e6",
+          "sheep_image_3b48a4303ae2974d59253a35",
+          "sheep_image_3352022f5acb20a5f56d40ff",
+          "sheep_image_f39d99931a2ba0a2ddbea724",
+          "sheep_image_c64430e0a9d979df45394f86",
+          "sheep_image_b708f3cfcb50d2e0b9d5d15c",
+          "sheep_image_5c8c635895f65339bf73b653",
+          "sheep_image_c19a9f1e749c25ad5995a940",
+          "sheep_image_386ca3f322408f18b8a05d32",
+          "sheep_image_2325658cc2601b06e5cdcc12",
+          "sheep_image_3b23557ce812ad7364b675f6",
+          "sheep_image_295d530b1a3312da463a430c",
+          "sheep_image_8310df1cbcdc460d3df0f0d9",
+          "sheep_image_fcce3c10fc8d4cf70c6df111",
+          "sheep_image_4cd429a8f436d8084a25ac67",
+          "sheep_image_69ad52d4e9ba9f05542104ef",
+          "sheep_image_d3ee06d1e93ba98d0273ab65",
+          "sheep_image_2393b2ec5cd234c5a0af733f",
+          "sheep_image_d197b29ffd65accd5fb253f6",
+          "sheep_image_6510d3860be78b9c5d0e0702"
+        ],
+        "connectionIds": []
+      },
+      {
+        "id": "sheep_page_68182a2664aede19ef32f62f",
+        "title": "重构资产_20261019 · 4",
+        "projectFolderId": "sheep_folder_5a6c0fb001068ebf1cf451ed",
+        "createdAt": "2026-10-21T10:18:08.802Z",
+        "updatedAt": "2026-10-21T10:18:08.802Z",
+        "chatSessions": [],
+        "activeChatId": null,
+        "backgroundMode": "lines",
+        "showImageInfo": true,
+        "viewport": {
+          "x": 60,
+          "y": 80,
+          "k": 0.6
+        },
+        "nodeIds": [
+          "sheep_image_a2a5c5b62ea39b5278e481b3",
+          "sheep_image_a9121d5710ff83dde7b68f3c",
+          "sheep_image_53838f9a2a206cf1eb27f848",
+          "sheep_image_4e9abfb10a1c2b80768746c4",
+          "sheep_image_941b96effc30c95c4d5989ff",
+          "sheep_image_182bf6b8c421b2760a982675",
+          "sheep_image_2aa2913a9a327e313caf3e37",
+          "sheep_image_3a2a9157dbd91d63f20eb339",
+          "sheep_image_72192b838f4e8f1798e74fb8",
+          "sheep_image_dd4d534c7c513ad61f0ab099",
+          "sheep_image_1f50d89f75592e3f84b03ff9",
+          "sheep_image_2624c279417b9bf256b1a558",
+          "sheep_image_0c5154e236612c2fef5abb38",
+          "sheep_image_063f3a8a2d1c28f8ab4f361b",
+          "sheep_image_4e24f9bc9c59e4747cf243e3",
+          "sheep_image_3fb9ebdb182239a4b88a99eb",
+          "sheep_image_4599110fae96fa5c7a5e1b55",
+          "sheep_image_c64023e676335c6ada610a81",
+          "sheep_image_8e8ddf177bc17e91c3035d91",
+          "sheep_image_431ae4622bd56bd94dc9299c",
+          "sheep_image_5cad356d06c7eb3a5ba41336",
+          "sheep_image_5c3b5e807024c0dcdc5ebdad",
+          "sheep_image_a980481fec2418c5ef23431f",
+          "sheep_image_fc41d8ca5cf722c068cc4e61"
+        ],
+        "connectionIds": []
+      },
+      {
+        "id": "sheep_page_07b5d39c1fa78cb6cd0837d5",
+        "title": "重构资产_20261019 · 5",
+        "projectFolderId": "sheep_folder_5a6c0fb001068ebf1cf451ed",
+        "createdAt": "2026-10-21T10:18:08.802Z",
+        "updatedAt": "2026-10-21T10:18:08.802Z",
+        "chatSessions": [],
+        "activeChatId": null,
+        "backgroundMode": "lines",
+        "showImageInfo": true,
+        "viewport": {
+          "x": 60,
+          "y": 80,
+          "k": 0.6
+        },
+        "nodeIds": [
+          "sheep_image_afbe89a5e82368ee6ab188d9",
+          "sheep_image_3fc57e71b3c8c577c4b69937",
+          "sheep_image_c3ff7088dde8c55b6f2506bf",
+          "sheep_image_f89eb6b4dc4cc3cab75e472d",
+          "sheep_image_b3a8a25ab26ff80c62f674b7",
+          "sheep_image_dddc8cbe96322e2eaafe30fd",
+          "sheep_image_237c417a926571993c75b065",
+          "sheep_image_039a60d6cd9413b2f3fb14eb",
+          "sheep_image_0f6a5f6cc2ac570a771a8ca0",
+          "sheep_image_c94dbebbfb1921fe26c1403b",
+          "sheep_image_e2124977530a13ff4f159455",
+          "sheep_image_6f6bf0074b1bba5826240199",
+          "sheep_image_02b05932a5e94d15137fa633",
+          "sheep_image_66f8e8f503b7f8bf4b822743",
+          "sheep_image_e91d003251c4f3b9f0a941f7",
+          "sheep_image_8657df5b008e866720ab8c00",
+          "sheep_image_e4258120c313d61691f2bb3a",
+          "sheep_image_b589196ad355bad99c9bd5b9",
+          "sheep_image_5c20ca97d9122f13b9175244",
+          "sheep_image_01936fe473d42c8d089c8977",
+          "sheep_image_de5f202e18d5ecf0f5a73b37"
+        ],
+        "connectionIds": []
+      },
+      {
+        "id": "sheep_page_27af9e75282c1f6f551fd5db",
+        "title": "角色设定 · 1",
+        "projectFolderId": "sheep_folder_5a6c0fb001068ebf1cf451ed",
+        "createdAt": "2026-10-21T10:18:08.802Z",
+        "updatedAt": "2026-10-21T10:18:08.802Z",
+        "chatSessions": [],
+        "activeChatId": null,
+        "backgroundMode": "lines",
+        "showImageInfo": true,
+        "viewport": {
+          "x": 60,
+          "y": 80,
+          "k": 0.6
+        },
+        "nodeIds": [
+          "sheep_image_36127f533a4cf87bf580db5e",
+          "sheep_image_dfde6942d60dca8429506140",
+          "sheep_image_83e77d96620a3a622626a18f",
+          "sheep_image_c6ab023fba690eaf4cea77fd",
+          "sheep_image_3f12585b9f11ea8a10cac48d",
+          "sheep_image_dc708a2bd90c6988c0eeb92d",
+          "sheep_image_c4c821091af5ff312dcf7336",
+          "sheep_image_7197232cb501b86e11691593",
+          "sheep_image_3539fa1dae2ef3e92eaea638",
+          "sheep_image_85028abea44d536e0867cd36",
+          "sheep_image_b2704be7543b8007ec209bef",
+          "sheep_image_a5ec9b0b5d0bbf35a4aa80cd",
+          "sheep_image_7484d633a69f2f3ec170ea66",
+          "sheep_image_0b5d1a945f7624e21de1b23d",
+          "sheep_image_cdd8c2e63684be685473f6e6",
+          "sheep_image_dc5705294f64bd4b0a9dfbe7",
+          "sheep_image_13f6bb07d9075837d55a5105"
+        ],
+        "connectionIds": []
+      },
+      {
+        "id": "sheep_page_0cf47f789ca7d2f303e90321",
+        "title": "场景设定 · 1",
+        "projectFolderId": "sheep_folder_5a6c0fb001068ebf1cf451ed",
+        "createdAt": "2026-10-21T10:18:08.802Z",
+        "updatedAt": "2026-10-21T10:18:08.802Z",
+        "chatSessions": [],
+        "activeChatId": null,
+        "backgroundMode": "lines",
+        "showImageInfo": true,
+        "viewport": {
+          "x": 60,
+          "y": 80,
+          "k": 0.6
+        },
+        "nodeIds": [
+          "sheep_image_a10f85a4a22392b233b305d1",
+          "sheep_image_2709e6a5a9010ab015952b6a",
+          "sheep_image_c8fa30d3cac0cc566199a91f",
+          "sheep_image_d87202f8471eef41a897788f",
+          "sheep_image_c78a660c04cff8e3ff33d60e"
+        ],
+        "connectionIds": []
+      },
+      {
+        "id": "sheep_page_08f5364d41949c1027fc1837",
+        "title": "道具设定 · 1",
+        "projectFolderId": "sheep_folder_5a6c0fb001068ebf1cf451ed",
+        "createdAt": "2026-10-21T10:18:08.802Z",
+        "updatedAt": "2026-10-21T10:18:08.802Z",
+        "chatSessions": [],
+        "activeChatId": null,
+        "backgroundMode": "lines",
+        "showImageInfo": true,
+        "viewport": {
+          "x": 60,
+          "y": 80,
+          "k": 0.6
+        },
+        "nodeIds": [
+          "sheep_image_ef91b381baa6ecd2d0c25fbd",
+          "sheep_image_42889c9c3c0da06517f82480",
+          "sheep_image_4cd9c37d200ad585e0723236",
+          "sheep_image_892c255fc41e16ba6d0fd7d9",
+          "sheep_image_fbcf82446d5eff7a275e2d97",
+          "sheep_image_a5d4772b5f34b5c423997ea4",
+          "sheep_image_6435cf59efa4c12322d10a35",
+          "sheep_image_64aa9fe5d99c0fe33a5ac561",
+          "sheep_image_c2c9e6b943977156f5a2d394",
+          "sheep_image_eb68e242d600368a99f09f28",
+          "sheep_image_d0d83d84afc7f75c840244e1"
+        ],
+        "connectionIds": []
+      },
+      {
+        "id": "sheep_page_e02072b1534de99ebb9e44ba",
+        "title": "项目音频",
+        "projectFolderId": "sheep_folder_5a6c0fb001068ebf1cf451ed",
+        "createdAt": "2026-10-21T10:18:08.802Z",
+        "updatedAt": "2026-10-21T10:18:08.802Z",
+        "chatSessions": [],
+        "activeChatId": null,
+        "backgroundMode": "lines",
+        "showImageInfo": true,
+        "viewport": {
+          "x": 60,
+          "y": 80,
+          "k": 0.6
+        },
+        "nodeIds": [
+          "sheep_audio_cc859d4f3a45f30ef1f101f9",
+          "sheep_audio_3a69d75d7f32a5fc793c8fec",
+          "sheep_audio_0f1dc54bd61564416fa767b1",
+          "sheep_audio_8f87d93e70fdf418530f3b1f",
+          "sheep_audio_504a0cc2d8dd37be47613320",
+          "sheep_audio_9254f8fcef5d3abfa4af3724",
+          "sheep_audio_21659428060a3ca063769756",
+          "sheep_audio_86ce8bec4b048d955840c34d",
+          "sheep_audio_c84b0d7a8928806649618155",
+          "sheep_audio_fe2060773f6e64c689b43eb8",
+          "sheep_audio_62d69499982fdb0a02e2b75b",
+          "sheep_audio_0b3deb43c3014b3e0c13ced1",
+          "sheep_audio_8f7dfd428dd7b197496a8568",
+          "sheep_audio_eac9e49f2ea56c4efbc8ff0d"
+        ],
+        "connectionIds": []
+      },
+      {
+        "id": "sheep_page_7b1ee1e36916bf8ed3468fc5",
+        "title": "项目说明与脚本",
+        "projectFolderId": "sheep_folder_5a6c0fb001068ebf1cf451ed",
+        "createdAt": "2026-10-21T10:18:08.802Z",
+        "updatedAt": "2026-10-21T10:18:08.802Z",
+        "chatSessions": [],
+        "activeChatId": null,
+        "backgroundMode": "lines",
+        "showImageInfo": true,
+        "viewport": {
+          "x": 60,
+          "y": 80,
+          "k": 0.6
+        },
+        "nodeIds": [
+          "sheep_text_cfb9d4a5995c53d13837e7fc",
+          "sheep_text_58b0ceacb45ed469b96f4bbc",
+          "sheep_text_89d05794ece92817fedfa8ae",
+          "sheep_text_971b5c7111413890ddbdb72a",
+          "sheep_text_632954a028fd2bdeb76dc646",
+          "sheep_text_f5e59196f50d22dee0d83db8"
+        ],
+        "connectionIds": []
+      },
+      {
+        "id": "sheep_page_874583c30354abfece5189f8",
+        "title": "ComfyUI 模板",
+        "projectFolderId": "sheep_folder_5a6c0fb001068ebf1cf451ed",
+        "createdAt": "2026-10-21T10:18:08.802Z",
+        "updatedAt": "2026-10-21T10:18:08.802Z",
+        "chatSessions": [],
+        "activeChatId": null,
+        "backgroundMode": "lines",
+        "showImageInfo": true,
+        "viewport": {
+          "x": 60,
+          "y": 80,
+          "k": 0.6
+        },
+        "nodeIds": [
+          "sheep_comfy_c46cdc91a4fb235a8d5d8445",
+          "sheep_comfy_2b343834c694afd0176af479",
+          "sheep_comfy_203a7ed5da2014b3b6a5359f",
+          "sheep_comfy_29edb56d109fa72fdbf67b32",
+          "sheep_comfy_f994ec9021f61205a1820c1f",
+          "sheep_comfy_b02594538f84738aefc15d6d"
+        ],
+        "connectionIds": []
+      },
+      {
+        "id": "sheep_page_fcb7023916272e7699d19842",
+        "title": "E2E生成验收",
+        "projectFolderId": "sheep_folder_5a6c0fb001068ebf1cf451ed",
+        "createdAt": "2026-10-21T10:18:53.203Z",
+        "updatedAt": "2026-10-21T13:00:40.645Z",
+        "chatSessions": [],
+        "activeChatId": null,
+        "backgroundMode": "lines",
+        "showImageInfo": true,
+        "viewport": {
+          "x": 60,
+          "y": 80,
+          "k": 0.6
+        },
+        "nodeIds": [
+          "sheep_e2e_c7ea12cfee26b25736badba8",
+          "sheep_receipt_c7ea12cfee26b25736badba8",
+          "sheep_run-reference_c7ea12cfee26b25736badba8"
+        ],
+        "connectionIds": []
+      }
+    ],
+    "originalNodeCount": 179,
+    "originalConnectionCount": 0,
+    "addedGroups": [
+      {
+        "id": "sheep_merge_group_b076a2f69e954109f9f88d96",
+        "title": "角色资产 · 17"
+      },
+      {
+        "id": "sheep_merge_group_0dd7eabb988a0cfefe327c29",
+        "title": "角色三视图 · 6"
+      },
+      {
+        "id": "sheep_merge_group_586bad3f17aa7dc9c1dd028e",
+        "title": "基础场景 · 5"
+      },
+      {
+        "id": "sheep_merge_group_683d528c3ac0906ef6142900",
+        "title": "道具资产 · 11"
+      },
+      {
+        "id": "sheep_merge_group_4940fd19ebcc0686530d7540",
+        "title": "重构资产 · S01 堂屋 · 40"
+      },
+      {
+        "id": "sheep_merge_group_73176090ab6db1bcc10bbbe7",
+        "title": "重构资产 · S02 院坝 · 42"
+      },
+      {
+        "id": "sheep_merge_group_3592ad96afda0dd1a112a743",
+        "title": "重构资产 · S03 村道 · 13"
+      },
+      {
+        "id": "sheep_merge_group_e09b6cab0ab6b2227a5337c9",
+        "title": "重构资产 · S04 卧房 · 16"
+      },
+      {
+        "id": "sheep_merge_group_e02072b1534de99ebb9e44ba",
+        "title": "项目音频 · 14"
+      },
+      {
+        "id": "sheep_merge_group_7b1ee1e36916bf8ed3468fc5",
+        "title": "项目说明与脚本 · 6"
+      },
+      {
+        "id": "sheep_merge_group_1957c991fedcdbe1e5dd2220",
+        "title": "ComfyUI 工作流 · 6"
+      },
+      {
+        "id": "sheep_merge_group_3aa2975e8c459f1e594a2c4f",
+        "title": "E2E 生成验收（非定稿） · 3"
+      }
+    ],
+    "mediaReferences": 165,
+    "bounds": {
+      "width": 10740,
+      "height": 5790
+    },
+    "checks": "node/connection IDs, metadata, media references and unrelated projects preserved"
+  }
+}

@@ -1,3 +1,5 @@
+import type { ComfyMode, ComfyRunStatus } from "@/types/comfyui";
+
 export type Position = {
     x: number;
     y: number;
@@ -16,6 +18,7 @@ export enum CanvasNodeType {
     Video = "video",
     Audio = "audio",
     Group = "group",
+    ComfyUI = "comfyui",
 }
 
 // Node types are open strings: built-ins use CanvasNodeType and plugins use "<pluginId>:<name>".
@@ -53,6 +56,7 @@ export type CanvasNodeMetadata = {
     fontSize?: number;
     generationMode?: CanvasGenerationMode;
     generationType?: CanvasImageGenerationType;
+    imageChannel?: "api" | "codex";
     model?: string;
     reasoningEffort?: "auto" | "low" | "medium" | "high" | "xhigh";
     size?: string;
@@ -85,6 +89,23 @@ export type CanvasNodeMetadata = {
     videoTaskProvider?: "openai" | "gemini";
     groupId?: string;
     interactive?: boolean; // Plugin node interaction/move state; see CanvasNodeDefinition.interactionToggle.
+    codexImageRun?: {
+        requestId: string;
+        status: "preparing" | "running" | "saving" | "success" | "error" | "cancelled";
+        error?: string;
+        threadId?: string;
+        turnId?: string;
+        outputNodeIds?: string[];
+    };
+    // ComfyUI node state. These persist with the canvas project so a run can resume by prompt ID.
+    comfyMode?: ComfyMode;
+    comfyWorkflowId?: string;
+    comfyValues?: Record<string, unknown>;
+    comfyRandomEnabled?: Record<string, boolean>;
+    comfyRunStatus?: ComfyRunStatus;
+    comfyPromptId?: string;
+    comfyError?: string;
+    comfyOutputNodeIds?: string[];
 };
 
 export type CanvasNodeData = {
@@ -101,6 +122,7 @@ export type CanvasConnection = {
     id: string;
     fromNodeId: string;
     toNodeId: string;
+    targetFieldId?: string;
 };
 
 export type CanvasAssistantReference = {
@@ -140,6 +162,7 @@ export type CanvasAssistantSession = {
 export type ConnectionHandle = {
     nodeId: string;
     handleType: "source" | "target";
+    fieldId?: string;
 };
 
 export type SelectionBox = {

@@ -1,0 +1,44 @@
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+const vm = require('node:vm');
+const { createRequire } = require('node:module');
+const electron = require('electron');
+const { app, BrowserWindow, protocol } = electron;
+const root = path.resolve(__dirname, '../..');
+const requireDesktop = createRequire(path.join(root, 'desktop/package.json'));
+const ts = requireDesktop('typescript');
+const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'framedock-fullscreen-'));
+app.setName('FrameDock Fullscreen Verification');
+app.setPath('userData', profile);
+protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { standard: true, secure: true, supportFetchAPI: true, stream: true } }]);
+const source = ts.transpileModule(fs.readFileSync(path.join(root, 'desktop/src/security.ts'), 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
+const exportsSecurity = {};
+vm.runInNewContext(source, { exports: exportsSecurity, URL, require: () => electron });
+let window;
+let stage = "startup";
+const timeout = setTimeout(() => { fs.writeFileSync(path.join(__dirname, "result.json"), JSON.stringify({ error: "test timeout", stage })); window?.destroy(); app.exit(1); }, 20000);
+app.whenReady().then(async () => {
+    stage = "ready";
+    exportsSecurity.applyAppSecurity();
+    protocol.handle('app', () => new Response('<!doctype html><video id="video" controls style="width:320px;height:180px;background:#222"></video>', { headers: { 'content-type': 'text/html' } }));
+    window = new BrowserWindow({ show: false, width: 800, height: 600, webPreferences: { sandbox: true, nodeIntegration: false, contextIsolation: true, backgroundThrottling: false, disableHtmlFullscreenWindowResize: true } });
+    exportsSecurity.applyWindowSecurity(window, 'app://framedock');
+    const events = [];
+    window.on('enter-html-full-screen', () => events.push('enter'));
+    window.on('leave-html-full-screen', () => events.push('leave'));
+    await window.loadURL('app://framedock/');
+    window.showInactive();
+    stage = 'request-fullscreen';
+    const result = await window.webContents.executeJavaScript(`(async()=>{try{await document.querySelector('video').requestFullscreen();return {entered:document.fullscreenElement?.tagName==='VIDEO'};}catch(error){return {entered:false,error:error.message};}})()`, true);
+    stage = "exit-fullscreen";
+    if (result.entered) {
+        await window.webContents.executeJavaScript('document.exitFullscreen()');
+        result.exited = await window.webContents.executeJavaScript('document.fullscreenElement === null');
+    }
+    result.events = events;
+    fs.writeFileSync(path.join(__dirname, 'result.json'), JSON.stringify(result, null, 2));
+    console.log(JSON.stringify(result));
+    clearTimeout(timeout);
+    window.destroy(); app.exit(result.entered && result.exited ? 0 : 1);
+}).catch(error => { console.error(error.message); window?.destroy(); app.exit(1); });

@@ -5,10 +5,8 @@ import { localizePath, type Locale } from '@/lib/i18n';
 import type { Metadata } from 'next';
 
 const githubUrl = `https://github.com/${gitConfig.user}/${gitConfig.repo}`;
-const demoUrl = 'https://canvas.best/';
+const issuesUrl = `${githubUrl}/issues`;
 const starHistoryUrl = `https://www.star-history.com/?repos=${gitConfig.user}%2F${gitConfig.repo}&type=date`;
-const starHistoryChart = `https://api.star-history.com/chart?repos=${gitConfig.user}/${gitConfig.repo}&type=date&transparent=true`;
-const darkStarHistoryChart = `${starHistoryChart}&theme=dark`;
 
 const previewImages = [
   {
@@ -35,7 +33,7 @@ const messages = {
     center: 'Documentation',
     description: 'An infinite canvas for image creation that brings canvas composition, AI generation, reference editing, prompt libraries, and reusable assets into one workflow.',
     quickStart: 'Quick Start',
-    demo: 'Live Demo',
+    issues: 'Report an Issue',
     gallery: 'Gallery',
     features: 'Explore Features',
     previewAlt: 'Infinite Canvas preview',
@@ -48,7 +46,7 @@ const messages = {
     center: '文档中心',
     description: '面向图片创作的无限画布，把画布编排、AI 生成、参考图编辑、提示词库和素材沉淀放在同一个工作流里。',
     quickStart: '快速开始',
-    demo: '在线体验',
+    issues: '问题反馈',
     gallery: '效果展示',
     features: '功能介绍',
     previewAlt: '无限画布效果图',
@@ -97,12 +95,12 @@ export default async function HomePage({ params }: PageProps<'/[lang]'>) {
               GitHub
             </a>
             <a
-              href={demoUrl}
+              href={issuesUrl}
               target="_blank"
               rel="noreferrer noopener"
               className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-300 px-5 py-3 text-sm font-medium text-zinc-900 transition hover:border-zinc-900 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-100 dark:hover:border-zinc-500 dark:hover:bg-zinc-900"
             >
-              {text.demo}
+              {text.issues}
               <ArrowUpRight className="size-4" />
             </a>
           </div>
@@ -182,23 +180,7 @@ export default async function HomePage({ params }: PageProps<'/[lang]'>) {
             rel="noreferrer noopener"
             className="block w-full max-w-4xl"
           >
-            <picture>
-              <source
-                media="(prefers-color-scheme: dark)"
-                srcSet={darkStarHistoryChart}
-              />
-              <source
-                media="(prefers-color-scheme: light)"
-                srcSet={starHistoryChart}
-              />
-              <img
-                src={starHistoryChart}
-                alt="Star History Chart"
-                loading="lazy"
-                decoding="async"
-                className="mx-auto w-full"
-              />
-            </picture>
+            {locale === 'zh-CN' ? '查看仓库 Star 历史' : 'View repository star history'}
           </a>
         </div>
       </section>

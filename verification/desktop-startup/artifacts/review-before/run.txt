@@ -1,0 +1,5 @@
+PASS route：保存握手完成，窗口正常退出
+FAIL blocked：electronApplication.waitForEvent: Timeout 30000ms exceeded while waiting for event "close"
+PASS reload：保存握手完成，窗口正常退出
+
+[exited with code 1]

@@ -3,10 +3,11 @@ import { getPluginRuntime } from "@/lib/canvas/plugin-runtime";
 import { usePluginStore, type InstalledPlugin } from "@/stores/canvas/use-plugin-store";
 import type { CanvasPlugin } from "@/types/canvas-plugin";
 import i18n from "@/i18n";
+import { fetchBundledPluginUrls, isBundledPluginUrl } from "@/lib/canvas/plugin-registry";
 
 const cleanups = new Map<string, () => void>();
 
-// A remote plugin may export CanvasPlugin directly or a factory that receives runtime and returns CanvasPlugin.
+// A bundled plugin may export CanvasPlugin directly or a factory that receives runtime and returns CanvasPlugin.
 // The factory uses runtime.React so the bundle does not need its own React copy.
 async function evaluatePluginSource(source: string): Promise<CanvasPlugin> {
     const blob = new Blob([source], { type: "text/javascript" });
@@ -46,42 +47,37 @@ export function deactivatePlugin(pluginId: string) {
 }
 
 async function fetchPluginSource(url: string) {
-    const response = await fetch(url);
+    if (!isBundledPluginUrl(url) || !(await fetchBundledPluginUrls()).includes(url)) {
+        throw new Error("仅允许加载随应用提供的插件");
+    }
+    const response = await fetch(url, { redirect: "error", cache: "no-store" });
     if (!response.ok) throw new Error(i18n.t("canvas.pluginErrors.downloadFailed", { status: response.status }));
     return response.text();
 }
 
-// Add a cache-busting parameter so watch builds load the latest output.
-function withCacheBust(url: string) {
-    return `${url}${url.includes("?") ? "&" : "?"}t=${Date.now()}`;
-}
-
-// Install or replace a plugin from a URL and enable it immediately.
-// bustCache bypasses HTTP/CDN caches during upgrades while persisting a clean URL without the timestamp query.
-export async function installPluginFromUrl(url: string, opts?: { official?: boolean; bustCache?: boolean }) {
-    const source = await fetchPluginSource(opts?.bustCache ? withCacheBust(url) : url);
-    const plugin = await evaluatePluginSource(source);
-    deactivatePlugin(plugin.id); // Replace the previous version.
-    usePluginStore.getState().upsert({ id: plugin.id, name: plugin.name || plugin.id, version: plugin.version || "0.0.0", description: plugin.description, url, source, enabled: true, official: opts?.official });
+// The legacy entry point is retained, but flags cannot authorize an unbundled URL.
+export async function installPluginFromUrl(url: string, _opts?: { official?: boolean; bustCache?: boolean }) {
+    const plugin = await evaluatePluginSource(await fetchPluginSource(url));
+    deactivatePlugin(plugin.id);
+    usePluginStore.getState().upsert({ id: plugin.id, name: plugin.name || plugin.id, version: plugin.version || "0.0.0", description: plugin.description, url, source: "", enabled: true, local: true });
     activatePlugin(plugin);
     return plugin;
 }
 
 export async function updatePlugin(record: InstalledPlugin) {
-    // Upgrades must fetch the latest output and therefore always bypass caches.
-    return installPluginFromUrl(record.url, { official: record.official, bustCache: true });
+    return installPluginFromUrl(record.url);
 }
 
 export async function setPluginEnabled(record: InstalledPlugin, enabled: boolean) {
-    usePluginStore.getState().setEnabled(record.id, enabled);
     if (!enabled) {
+        usePluginStore.getState().setEnabled(record.id, false);
         deactivatePlugin(record.id);
         return;
     }
-    // Reload local plugins from their URL when enabled because the cached source may be stale.
-    const source = record.local ? await fetchPluginSource(withCacheBust(record.url)) : record.source;
-    const plugin = await evaluatePluginSource(source);
+    const plugin = await evaluatePluginSource(await fetchPluginSource(record.url));
+    if (plugin.id !== record.id) throw new Error("随包插件标识不匹配");
     activatePlugin(plugin);
+    usePluginStore.getState().setEnabled(record.id, true);
 }
 
 export function uninstallPlugin(id: string) {
@@ -91,79 +87,40 @@ export function uninstallPlugin(id: string) {
 
 let loaded = false;
 
-// Load installed and enabled plugins at application startup.
+// Discover bundled plugins first; persisted source and trust flags are never executed.
 export async function ensurePluginsLoaded() {
     if (loaded) return;
     loaded = true;
     await usePluginStore.persist.rehydrate();
-    await loadLocalPlugins(); // Discover disabled local plugins first, then activate all enabled records.
-    const records = usePluginStore.getState().plugins.filter((record) => record.enabled);
-    await Promise.all(
-        records.map(async (record) => {
-            try {
-                // Local plugins use the latest output; other plugins use their cached source.
-                const source = record.local ? await fetchPluginSource(withCacheBust(record.url)) : record.source;
-                activatePlugin(await evaluatePluginSource(source));
-            } catch (error) {
-                console.error(`[plugin] Failed to load: ${record.id}`, error);
-            }
-        }),
-    );
-    await loadDevPlugins();
+    try {
+        await loadLocalPlugins();
+    } catch (error) {
+        console.error("[plugin] Failed to load bundled plugins", error);
+    }
 }
 
-// Discover local plugins from web/public/plugins, add them disabled, and expose them in the manager without a URL.
-// Refresh metadata and source for existing records while preserving the enabled flag so persisted versions stay current.
 async function loadLocalPlugins() {
-    let urls: unknown;
-    try {
-        const response = await fetch("/plugins/index.json");
-        if (!response.ok) return;
-        urls = await response.json();
-    } catch {
-        return; // Skip when no local manifest exists, such as production builds without plugins.
-    }
-    if (!Array.isArray(urls) || !urls.length) return;
-    const store = usePluginStore.getState();
+    const urls = await fetchBundledPluginUrls();
     await Promise.all(
-        urls.map(async (url: string) => {
+        urls.map(async (url) => {
             try {
-                const source = await fetchPluginSource(withCacheBust(url));
-                const plugin = await evaluatePluginSource(source);
-                const existing = store.plugins.find((item) => item.id === plugin.id);
+                const plugin = await evaluatePluginSource(await fetchPluginSource(url));
+                const store = usePluginStore.getState();
+                const existing = store.plugins.find((item) => item.id === plugin.id && item.url === url);
+                const enabled = existing?.enabled ?? false;
                 store.upsert({
                     id: plugin.id,
                     name: plugin.name || plugin.id,
                     version: plugin.version || "0.0.0",
                     description: plugin.description,
                     url,
-                    source,
-                    enabled: existing?.enabled ?? false, // Preserve the user setting; new discoveries default to disabled.
+                    source: "",
+                    enabled,
                     local: true,
                 });
+                if (enabled) activatePlugin(plugin);
             } catch (error) {
-                console.error(`[plugin] Failed to discover local plugin: ${url}`, error);
-            }
-        }),
-    );
-}
-
-// During local development, refetch VITE_DEV_PLUGINS URLs without caching or persistence on every startup.
-// Together with watch builds, refreshing the page loads code changes without reinstalling the plugin.
-async function loadDevPlugins() {
-    const raw = import.meta.env.VITE_DEV_PLUGINS;
-    if (!raw) return;
-    const urls = raw.split(",").map((item) => item.trim()).filter(Boolean);
-    await Promise.all(
-        urls.map(async (url) => {
-            try {
-                const source = await fetchPluginSource(withCacheBust(url));
-                const plugin = await evaluatePluginSource(source);
-                deactivatePlugin(plugin.id);
-                activatePlugin(plugin);
-                console.info(`[plugin] Dev plugin loaded: ${plugin.id} (${url})`);
-            } catch (error) {
-                console.error(`[plugin] Failed to load dev plugin: ${url}`, error);
+                console.error(`[plugin] Failed to discover bundled plugin: ${url}`, error);
             }
         }),
     );

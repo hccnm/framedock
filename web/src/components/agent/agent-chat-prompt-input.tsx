@@ -28,6 +28,7 @@ export function AgentChatPromptInput({ value, disabled, placeholder, theme, onCh
     const containerRef = useRef<HTMLDivElement>(null);
     const editorRef = useRef<HTMLDivElement>(null);
     const composingRef = useRef(false);
+    const [isComposing, setIsComposing] = useState(false);
     const lastEmittedRef = useRef(value);
     const skills = useAgentSkillStore((state) => state.skills);
     const skillsLoading = useAgentSkillStore((state) => state.loading);
@@ -169,7 +170,7 @@ export function AgentChatPromptInput({ value, disabled, placeholder, theme, onCh
 
     return (
         <div ref={containerRef} className="relative">
-            {!value.trim() ? <div className="pointer-events-none absolute left-1 top-1 text-sm leading-6" style={{ color: theme.node.placeholder }}>{placeholder}</div> : null}
+            {!value.trim() && !isComposing ? <div className="pointer-events-none absolute left-1 top-1 text-sm leading-6" style={{ color: theme.node.placeholder }}>{placeholder}</div> : null}
             <div
                 ref={editorRef}
                 contentEditable={!disabled}
@@ -182,9 +183,13 @@ export function AgentChatPromptInput({ value, disabled, placeholder, theme, onCh
                 onInput={() => {
                     if (!composingRef.current) syncFromEditor();
                 }}
-                onCompositionStart={() => { composingRef.current = true; }}
+                onCompositionStart={() => {
+                    composingRef.current = true;
+                    setIsComposing(true);
+                }}
                 onCompositionEnd={() => {
                     composingRef.current = false;
+                    setIsComposing(false);
                     syncFromEditor();
                 }}
                 onPaste={(event) => {

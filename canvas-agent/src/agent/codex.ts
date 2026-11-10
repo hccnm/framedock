@@ -16,8 +16,10 @@ import type { AgentAttachment, AgentEmit, AgentPermissionMode } from "./types.js
 type CodexRunOptions = { threadId?: string; cwd?: string; permissionMode?: AgentPermissionMode; model?: string; effort?: CodexReasoningEffort; skill?: CodexSkillSelector; messageText?: string; appEmit?: AgentEmit; onStart?: () => void; onThread?: (threadId: string) => void; onTurn?: (turnId: string) => void; onFinish?: () => void };
 type CodexSkillDraftInput = { model?: string; effort?: CodexReasoningEffort } & ({ source: "conversation"; threadId: string } | { source: "canvas"; snapshot: CanvasSnapshot });
 
+import { resolveCodexLaunch } from "../runtime/registry.js";
+
 const skillNamePattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-const skillDraftSchema = z.object({
+export const skillDraftSchema = z.object({
     name: z.string().trim().min(1).max(64).regex(skillNamePattern),
     displayName: z.string().trim().max(64),
     description: z.string().trim().min(1).max(1024).refine((value) => !/[<>]/.test(value)),
@@ -54,6 +56,8 @@ export class CodexSkillLookupError extends Error {
 let codexQueue: Promise<unknown> = Promise.resolve();
 let codexApp: CodexAppClient | null = null;
 let codexAppStart: Promise<CodexAppClient> | null = null;
+/** 切换代数：旧 app-server 的退出事件不得清空新实例的状态。 */
+let codexAppGeneration = 0;
 /** 仅表示最近主动加载/选择的线程；运行中的 turn 身份由 CodexAppClient 自己维护。 */
 let loadedThreadId = "";
 
@@ -453,19 +457,43 @@ async function resumeLoadedThread(app: CodexAppClient, threadId: string, cwd?: s
     return thread;
 }
 
-/** 获取已启动的 Codex app-server 客户端。 */
+/** 获取已启动的 Codex app-server 客户端，启动参数来自当前选中的本机 CLI。 */
 async function getCodexApp(emit: AgentEmit) {
-    if (codexApp) return codexApp;
-    codexAppStart ||= CodexAppClient.start(emit, () => {
+    while (true) {
+        if (codexApp) return codexApp;
+        const generation = codexAppGeneration;
+        const start = codexAppStart ||= startCodexApp(emit, generation);
+        try {
+            const app = await start;
+            if (generation === codexAppGeneration) {
+                codexApp = app;
+                return codexApp;
+            }
+            // 等待期间发生了运行时切换：丢弃过期实例并按新代数重新启动。
+            app.stop();
+        } finally {
+            if (codexAppStart === start) codexAppStart = null;
+        }
+    }
+}
+
+/** 同步创建启动 Promise，保证并发调用共享同一次 app-server 启动。 */
+function startCodexApp(emit: AgentEmit, generation: number) {
+    return resolveCodexLaunch().then((launch) => CodexAppClient.start(emit, () => {
+        if (generation !== codexAppGeneration) return;
         codexApp = null;
         loadedThreadId = "";
-    });
-    try {
-        codexApp = await codexAppStart;
-        return codexApp;
-    } finally {
-        codexAppStart = null;
-    }
+    }, launch));
+}
+
+/** 切换本机 CLI 后关闭旧 app-server 并清空进程内状态；运行中的 turn 由调用方先行阻止。 */
+export async function restartCodexApp() {
+    codexAppGeneration += 1;
+    const app = codexApp;
+    codexApp = null;
+    codexAppStart = null;
+    loadedThreadId = "";
+    app?.stop();
 }
 
 /** 校验线程是否属于指定工作空间。 */

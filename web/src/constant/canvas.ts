@@ -17,6 +17,7 @@ export const NODE_DEFAULT_SIZE = {
     [CanvasNodeType.Video]: { width: 420, height: 236, get title() { return i18n.t("canvas.nodeTypes.video"); } },
     [CanvasNodeType.Audio]: { width: 340, height: 120, get title() { return i18n.t("canvas.nodeTypes.audio"); } },
     [CanvasNodeType.Group]: { width: 760, height: 480, get title() { return i18n.t("canvas.nodeTypes.group"); } },
+    [CanvasNodeType.ComfyUI]: { width: 340, height: 240, get title() { return i18n.t("canvas.nodeTypes.comfyui"); } },
 } satisfies Record<CanvasNodeType, { width: number; height: number; title: string }>;
 
 export const NODE_SPECS = {
@@ -43,6 +44,11 @@ export const NODE_SPECS = {
     [CanvasNodeType.Group]: {
         width: 760, height: 480, get title() { return NODE_DEFAULT_SIZE[CanvasNodeType.Group].title; },
         metadata: { status: "idle" },
+    },
+    [CanvasNodeType.ComfyUI]: {
+        width: 340, height: 240, get title() { return NODE_DEFAULT_SIZE[CanvasNodeType.ComfyUI].title; },
+        // No `status`, so the generic loading/error body never replaces the ComfyUI renderer.
+        metadata: { comfyMode: "text", comfyRunStatus: "idle", comfyValues: {}, comfyRandomEnabled: {} },
     },
 } satisfies Record<CanvasNodeType, CanvasNodeSpec>;
 

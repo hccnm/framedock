@@ -1,0 +1,15 @@
+{
+  "name": "framedock",
+  "version": "0.1.0",
+  "private": true,
+  "description": "FrameDock desktop creative workspace, based on Infinite Canvas",
+  "scripts": {
+    "start": "sh script/start-desktop.sh",
+    "dev": "npm --prefix web run dev",
+    "setup": "sh script/setup.sh",
+    "dist:mac": "npm run build && npm run pack:mac --",
+    "pack:mac": "node script/prepare-desktop.mjs && npm --prefix desktop run pack:mac --",
+    "build": "npm --prefix canvas-agent run build && sh script/build-plugins.sh && npm --prefix web run build && npm --prefix desktop run build"
+  },
+  "engines": { "node": ">=22" }
+}

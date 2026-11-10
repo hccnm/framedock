@@ -1,0 +1,29 @@
+{
+  "ok": true,
+  "result": {
+    "total": 1,
+    "summary": {
+      "idle": 0,
+      "queued": 0,
+      "running": 0,
+      "succeeded": 1,
+      "failed": 0
+    },
+    "tasks": [
+      {
+        "id": "comfyui-1794007323822-hizg4",
+        "source": "canvas",
+        "status": "succeeded",
+        "kind": "comfyui",
+        "title": "019关键帧 · Qwen2.1三参考 · 肥鱼左/东青中/菜包右",
+        "projectId": "YPGguXUHDBMZ3wgCfpzu8",
+        "error": "",
+        "workflowId": "general-qwen-edit",
+        "promptId": "977452bf-1119-4294-baf8-585123f89fa4",
+        "outputNodeIds": [
+          "image-1794007399640-16whz"
+        ]
+      }
+    ]
+  }
+}

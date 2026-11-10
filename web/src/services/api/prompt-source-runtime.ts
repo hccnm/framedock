@@ -1,4 +1,5 @@
 import i18n from "@/i18n";
+import { withLocalProxy } from "@/stores/use-config-store";
 import type { PromptSource } from "./prompt-source-presets";
 
 export type RawPrompt = {
@@ -23,7 +24,7 @@ export type RawPrompt = {
 type RunOptions = { signal?: AbortSignal };
 
 async function fetchSource(source: PromptSource, options?: RunOptions) {
-    const response = await fetch(source.url, { cache: "no-store", signal: options?.signal });
+    const response = await fetch(withLocalProxy(source.url), { cache: "no-store", signal: options?.signal });
     if (!response.ok) throw new Error(i18n.t("config.promptSources.runtime.requestFailed", { status: response.status }));
     return response.json();
 }

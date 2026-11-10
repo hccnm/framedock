@@ -1,0 +1,210 @@
+{
+  "202": {
+    "inputs": {
+      "samples": [
+        "211",
+        0
+      ],
+      "vae": [
+        "219",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE解码"
+    }
+  },
+  "206": {
+    "inputs": {
+      "prompt": [
+        "214",
+        0
+      ],
+      "negative_prompt": "",
+      "resolution": 1024,
+      "clip": [
+        "225",
+        0
+      ],
+      "images.image_1": [
+        "215",
+        0
+      ],
+      "vae": [
+        "219",
+        0
+      ]
+    },
+    "class_type": "TextEncodeQwenImage21",
+    "_meta": {
+      "title": "文本编码 Qwen Image 2.1"
+    }
+  },
+  "207": {
+    "inputs": {
+      "switch": true,
+      "on_false": [
+        "206",
+        2
+      ],
+      "on_true": [
+        "209",
+        0
+      ]
+    },
+    "class_type": "ComfySwitchNode",
+    "_meta": {
+      "title": "切换"
+    }
+  },
+  "209": {
+    "inputs": {
+      "width": [
+        "213",
+        0
+      ],
+      "height": [
+        "213",
+        1
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "空Latent图像"
+    }
+  },
+  "211": {
+    "inputs": {
+      "seed": 198047328250634,
+      "steps": 25,
+      "cfg": 1,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1,
+      "model": [
+        "217",
+        0
+      ],
+      "positive": [
+        "206",
+        0
+      ],
+      "negative": [
+        "206",
+        1
+      ],
+      "latent_image": [
+        "207",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "K采样器"
+    }
+  },
+  "212": {
+    "inputs": {
+      "filename_prefix": "2026-10-19/20261019_214058_QwenEdit",
+      "images": [
+        "285",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "保存图像"
+    }
+  },
+  "213": {
+    "inputs": {
+      "aspect_ratio": "16:9 (Widescreen)",
+      "megapixels": 2,
+      "multiple": 32
+    },
+    "class_type": "ResolutionSelector",
+    "_meta": {
+      "title": "分辨率选择器"
+    }
+  },
+  "214": {
+    "inputs": {
+      "prompt": "超写实摄影风格的人物三视图设定照，纯白背景。严格参照参考图中的人物，保持面部五官、发型、体型、服装款式、颜色、材质、配饰及手持道具一致，保留原有站姿与手势，仅改变观察角度。\n\n画面左侧 2/3 区域从左到右依次排列人物的正面、侧面、背面全身照，三个人物大小一致，头顶与脚底对齐，完整呈现头部至鞋底，彼此不重叠。画面右侧 1/3 区域为同一人物的正面大头特写，完整呈现发型与面部细节。参考图未展示的服装背面与侧面结构，依据已有设计合理补全，保持统一。\n\n柔和均匀的专业影棚布光，真实自然的皮肤纹理与服装质感，细节清晰，高分辨率。画面干净，无文字、标签、色卡、标尺或水印。"
+    },
+    "class_type": "CR Prompt Text",
+    "_meta": {
+      "title": "⚙️ CR Prompt Text"
+    }
+  },
+  "215": {
+    "inputs": {
+      "image": "Work-Fisher_00004_spszx_1791903529.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "加载图像"
+    }
+  },
+  "217": {
+    "inputs": {
+      "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "UNet加载器"
+    }
+  },
+  "219": {
+    "inputs": {
+      "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "加载VAE"
+    }
+  },
+  "225": {
+    "inputs": {
+      "clip_name": "qwen3vl_8b_bf16.safetensors",
+      "type": "qwen_image",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "加载CLIP"
+    }
+  },
+  "284": {
+    "inputs": {
+      "clean_file_cache": true,
+      "clean_processes": true,
+      "clean_dlls": true,
+      "retry_times": 3,
+      "anything": [
+        "202",
+        0
+      ]
+    },
+    "class_type": "RAMCleanup",
+    "_meta": {
+      "title": "释放内存"
+    }
+  },
+  "285": {
+    "inputs": {
+      "offload_model": true,
+      "offload_cache": true,
+      "anything": [
+        "284",
+        0
+      ]
+    },
+    "class_type": "VRAMCleanup",
+    "_meta": {
+      "title": "释放显存"
+    }
+  }
+}

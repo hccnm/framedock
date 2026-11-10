@@ -1,0 +1,336 @@
+{
+  "prompt": [
+    462,
+    "fcd8060c-4fe4-4127-acce-153435ceda4a",
+    {
+      "1": {
+        "class_type": "UNETLoader",
+        "inputs": {
+          "unet_name": "z_image_bf16.safetensors",
+          "weight_dtype": "default"
+        },
+        "_meta": {
+          "title": "模型"
+        }
+      },
+      "2": {
+        "class_type": "CLIPLoader",
+        "inputs": {
+          "clip_name": "qwen_3_4b.safetensors",
+          "type": "lumina2",
+          "device": "default"
+        },
+        "_meta": {
+          "title": "文本编码器"
+        }
+      },
+      "3": {
+        "class_type": "VAELoader",
+        "inputs": {
+          "vae_name": "ae.safetensors"
+        },
+        "_meta": {
+          "title": "VAE"
+        }
+      },
+      "4": {
+        "class_type": "TextEncodeZImageOmni",
+        "inputs": {
+          "clip": [
+            "9",
+            1
+          ],
+          "vae": [
+            "3",
+            0
+          ],
+          "prompt": "重新生成参考图1的同一关键帧，保持原图镜头角度、景别、床铺环境、床品、人物大小、身体姿态和三人位置完全一致。横向写实影视画面，恰好三名成年人物同床躺卧。画面中央是东青，严格沿用图1中央男性的面容、发型和睡衣，平躺睁眼朝上，右手拢握被口。画面左侧是肥鱼，面容、蓝色头发、鲸鱼发饰和服装依据参考图2，保持图1左侧人物睡卧姿态，脸上无伤。画面右侧是菜包，面容、发型依据参考图3，穿图1中的黑衣与红围巾，保持图1右侧睡卧姿态。严格保持左肥鱼、中东青、右菜包的顺序和原有头部位置、人物间距与遮挡关系，不镜像，不交换身份，不增加人物。自然清晨光，真实皮肤和织物细节，统一透视与光影，无文字。",
+          "auto_resize_images": true,
+          "image1": [
+            "21",
+            0
+          ],
+          "image2": [
+            "22",
+            0
+          ],
+          "image3": [
+            "23",
+            0
+          ]
+        },
+        "_meta": {
+          "title": "通用提示词与参考图"
+        }
+      },
+      "5": {
+        "class_type": "EmptySD3LatentImage",
+        "inputs": {
+          "width": 1216,
+          "height": 704,
+          "batch_size": 1
+        },
+        "_meta": {
+          "title": "输出尺寸"
+        }
+      },
+      "6": {
+        "class_type": "KSampler",
+        "inputs": {
+          "model": [
+            "9",
+            0
+          ],
+          "positive": [
+            "4",
+            0
+          ],
+          "negative": [
+            "8",
+            0
+          ],
+          "latent_image": [
+            "5",
+            0
+          ],
+          "seed": 8891089578341364,
+          "steps": 8,
+          "cfg": 1.0,
+          "sampler_name": "res_2s_ode",
+          "scheduler": "kl_optimal",
+          "denoise": 1.0
+        },
+        "_meta": {
+          "title": "采样参数"
+        }
+      },
+      "7": {
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "6",
+            0
+          ],
+          "vae": [
+            "3",
+            0
+          ]
+        },
+        "_meta": {
+          "title": "解码"
+        }
+      },
+      "8": {
+        "class_type": "CLIPTextEncode",
+        "inputs": {
+          "clip": [
+            "9",
+            1
+          ],
+          "text": ""
+        },
+        "_meta": {
+          "title": "负向提示词（CFG为1时不生效）"
+        }
+      },
+      "9": {
+        "class_type": "CR Load LoRA",
+        "inputs": {
+          "model": [
+            "12",
+            0
+          ],
+          "clip": [
+            "12",
+            1
+          ],
+          "switch": "On",
+          "lora_name": "Z-Image-Fun-Lora-Distill-8-Steps-2603-ComfyUI.safetensors",
+          "strength_model": 0.45,
+          "strength_clip": 0.0
+        },
+        "_meta": {
+          "title": "8步蒸馏 LoRA"
+        }
+      },
+      "10": {
+        "class_type": "SaveImage",
+        "inputs": {
+          "images": [
+            "7",
+            0
+          ],
+          "filename_prefix": "FrameDock/ZImage/general"
+        },
+        "_meta": {
+          "title": "保存图像"
+        }
+      },
+      "11": {
+        "class_type": "CR Load LoRA",
+        "inputs": {
+          "model": [
+            "1",
+            0
+          ],
+          "clip": [
+            "2",
+            0
+          ],
+          "switch": "On",
+          "lora_name": "Kook_Zimage_瑶光.safetensors",
+          "strength_model": 0.5,
+          "strength_clip": 0.0
+        },
+        "_meta": {
+          "title": "风格 LoRA 1"
+        }
+      },
+      "12": {
+        "class_type": "CR Load LoRA",
+        "inputs": {
+          "model": [
+            "11",
+            0
+          ],
+          "clip": [
+            "11",
+            1
+          ],
+          "switch": "On",
+          "lora_name": "Kook_Zimage_如梦似幻.safetensors",
+          "strength_model": 0.7,
+          "strength_clip": 0.0
+        },
+        "_meta": {
+          "title": "风格 LoRA 2"
+        }
+      },
+      "21": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": "canvas-ui13uEiO.png"
+        },
+        "_meta": {
+          "title": "参考图 1（可选）"
+        }
+      },
+      "22": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": "canvas-kr-k1VEZ.png"
+        },
+        "_meta": {
+          "title": "参考图 2（可选）"
+        }
+      },
+      "23": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": "canvas-lHkvuGZf.png"
+        },
+        "_meta": {
+          "title": "参考图 3（可选）"
+        }
+      }
+    },
+    {
+      "client_id": "infinite-canvas-OhJILTL-cAgOfi24jj2FU",
+      "create_time": 1794005956846
+    },
+    [
+      "10"
+    ]
+  ],
+  "outputs": {},
+  "status": {
+    "status_str": "error",
+    "completed": false,
+    "messages": [
+      [
+        "execution_start",
+        {
+          "prompt_id": "fcd8060c-4fe4-4127-acce-153435ceda4a",
+          "timestamp": 1794005956847
+        }
+      ],
+      [
+        "execution_cached",
+        {
+          "nodes": [
+            "1",
+            "3"
+          ],
+          "prompt_id": "fcd8060c-4fe4-4127-acce-153435ceda4a",
+          "timestamp": 1794005956889
+        }
+      ],
+      [
+        "execution_error",
+        {
+          "prompt_id": "fcd8060c-4fe4-4127-acce-153435ceda4a",
+          "node_id": "6",
+          "node_type": "KSampler",
+          "executed": [
+            "12",
+            "9",
+            "5",
+            "11",
+            "22",
+            "4",
+            "8",
+            "21",
+            "2",
+            "23"
+          ],
+          "exception_message": "shape '[1, 16, 1, 48, 2, 84, 2]' is invalid for input of size 260736\n",
+          "exception_type": "RuntimeError",
+          "traceback": [
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\execution.py\", line 548, in execute\n    output_data, output_ui, has_subgraph, has_pending_tasks = await get_output_data(prompt_id, unique_id, obj, input_data_all, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)\n                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\execution.py\", line 353, in get_output_data\n    return_values = await _async_map_node_over_list(prompt_id, unique_id, obj, input_data_all, obj.FUNCTION, allow_interrupt=True, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\execution.py\", line 327, in _async_map_node_over_list\n    await process_inputs(input_dict, i)\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\execution.py\", line 315, in process_inputs\n    result = f(**inputs)\n             ^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\nodes.py\", line 1633, in sample\n    return common_ksampler(model, seed, steps, cfg, sampler_name, scheduler, positive, negative, latent_image, denoise=denoise)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\nodes.py\", line 1597, in common_ksampler\n    samples = comfy.sample.sample(model, noise, steps, cfg, sampler_name, scheduler, positive, negative, latent_image,\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\sample.py\", line 82, in sample\n    samples = sampler.sample(noise, positive, negative, cfg=cfg, latent_image=latent_image, start_step=start_step, last_step=last_step, force_full_denoise=force_full_denoise, denoise_mask=noise_mask, sigmas=sigmas, callback=callback, disable_pbar=disable_pbar, seed=seed)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\samplers.py\", line 1464, in sample\n    return sample(self.model, noise, positive, negative, cfg, self.device, sampler, sigmas, self.model_options, latent_image=latent_image, denoise_mask=denoise_mask, callback=callback, disable_pbar=disable_pbar, seed=seed)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\samplers.py\", line 1354, in sample\n    return cfg_guider.sample(noise, latent_image, sampler, sigmas, denoise_mask, callback, disable_pbar, seed)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\samplers.py\", line 1336, in sample\n    output = executor.execute(noise, latent_image, sampler, sigmas, denoise_mask, callback, disable_pbar, seed, latent_shapes=latent_shapes)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\patcher_extension.py\", line 113, in execute\n    return self.original(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\samplers.py\", line 1263, in outer_sample\n    output = self.inner_sample(noise, latent_image, device, sampler, sigmas, denoise_mask, callback, disable_pbar, seed, latent_shapes=latent_shapes)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\samplers.py\", line 1238, in inner_sample\n    samples = executor.execute(self, sigmas, extra_args, callback, noise, latent_image, denoise_mask, disable_pbar)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\patcher_extension.py\", line 113, in execute\n    return self.original(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\samplers.py\", line 1005, in sample\n    samples = self.sampler_function(model_k, noise, sigmas, extra_args=extra_args, callback=k_callback, disable=disable_pbar, **self.extra_options)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\custom_nodes\\RES4LYF\\beta\\__init__.py\", line 186, in sample_res_2s_ode\n    return rk_sampler_beta.sample_rk_beta(model, x, sigmas, None, extra_args, callback, disable, rk_type=\"res_2s\", eta=0.0, eta_substep=0.0, )\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\python\\Lib\\site-packages\\torch\\utils\\_contextlib.py\", line 120, in decorate_context\n    return func(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\custom_nodes\\RES4LYF\\beta\\rk_sampler_beta.py\", line 1758, in sample_rk_beta\n    eps_[row], data_[row] = RK(x_tmp, s_tmp, x_0, sigma, transformer_options={'row': row, 'x_tmp': x_tmp, 'sigma_next': sigma_next})\n                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\custom_nodes\\RES4LYF\\beta\\rk_method_beta.py\", line 949, in __call__\n    denoised = self.model_denoised(x.to(self.model_device), sub_sigma.to(self.model_device), **self.extra_args).to(sigma.device)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\custom_nodes\\RES4LYF\\beta\\rk_method_beta.py\", line 276, in model_denoised\n    denoised = self.model(x, sigma * s_in, **extra_args)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\samplers.py\", line 640, in __call__\n    out = self.inner_model(x, sigma, model_options=model_options, seed=seed)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\samplers.py\", line 1208, in __call__\n    return self.outer_predict_noise(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\samplers.py\", line 1215, in outer_predict_noise\n    ).execute(x, timestep, model_options, seed)\n      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\patcher_extension.py\", line 113, in execute\n    return self.original(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\samplers.py\", line 1218, in predict_noise\n    return sampling_function(self.inner_model, x, timestep, self.conds.get(\"negative\", None), self.conds.get(\"positive\", None), self.cfg, model_options=model_options, seed=seed)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\samplers.py\", line 620, in sampling_function\n    out = calc_cond_batch(model, conds, x, timestep, model_options)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\samplers.py\", line 211, in calc_cond_batch\n    return _calc_cond_batch_outer(model, conds, x_in, timestep, model_options)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\samplers.py\", line 219, in _calc_cond_batch_outer\n    return executor.execute(model, conds, x_in, timestep, model_options)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\patcher_extension.py\", line 113, in execute\n    return self.original(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\samplers.py\", line 335, in _calc_cond_batch\n    output = model.apply_model(input_x, timestep_, **c).chunk(batch_chunks)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\model_base.py\", line 213, in apply_model\n    return comfy.patcher_extension.WrapperExecutor.new_class_executor(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\patcher_extension.py\", line 113, in execute\n    return self.original(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\model_base.py\", line 257, in _apply_model\n    model_output = self.diffusion_model(xc, t, context=context, control=control, transformer_options=transformer_options, **extra_conds)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\python\\Lib\\site-packages\\torch\\nn\\modules\\module.py\", line 1773, in _wrapped_call_impl\n    return self._call_impl(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\python\\Lib\\site-packages\\torch\\nn\\modules\\module.py\", line 1784, in _call_impl\n    return forward_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\ldm\\lumina\\model.py\", line 835, in forward\n    return comfy.patcher_extension.WrapperExecutor.new_class_executor(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\patcher_extension.py\", line 113, in execute\n    return self.original(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\ldm\\lumina\\model.py\", line 873, in _forward\n    img, mask, img_size, cap_size, freqs_cis, timestep_zero_index = self.patchify_and_embed(x, cap_feats, cap_mask, adaln_input, num_tokens, ref_latents=ref_latents, ref_contexts=ref_contexts, siglip_feats=siglip_feats, direct_context=direct_context, ref_frames=ref_frames, transformer_options=transformer_options)\n                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\ldm\\lumina\\model.py\", line 759, in patchify_and_embed\n    out = self.embed_all(ref, ref_con, sig_feat, offset=start_t, omni=omni, transformer_options=transformer_options)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\data\\ComfyUI-aki-v2\\ComfyUI\\comfy\\ldm\\lumina\\model.py\", line 717, in embed_all\n    x = self.x_embedder(x.view(B, C, F, H // pH, pH, W // pW, pW).permute(0, 2, 3, 5, 4, 6, 1).flatten(4).flatten(1, 3))\n                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
+          ],
+          "timestamp": 1794005966832
+        }
+      ]
+    ]
+  },
+  "meta": {}
+}

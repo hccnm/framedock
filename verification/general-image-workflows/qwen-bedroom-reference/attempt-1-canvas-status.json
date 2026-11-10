@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "result": {
+    "total": 1,
+    "summary": {
+      "idle": 0,
+      "queued": 0,
+      "running": 1,
+      "succeeded": 0,
+      "failed": 0
+    },
+    "tasks": [
+      {
+        "id": "comfyui-1794008020008-rqc4f",
+        "source": "canvas",
+        "status": "running",
+        "kind": "comfyui",
+        "title": "019关键帧 · Qwen2.1 · 厦门卧室床铺重做",
+        "projectId": "YPGguXUHDBMZ3wgCfpzu8",
+        "error": "",
+        "workflowId": "general-qwen-edit",
+        "promptId": "141bc89d-011b-4c25-88d9-3c9e4fc9853a",
+        "outputNodeIds": []
+      }
+    ]
+  }
+}

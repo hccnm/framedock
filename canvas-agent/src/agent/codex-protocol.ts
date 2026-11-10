@@ -58,6 +58,8 @@ type ThreadOptions = {
 };
 
 type CodexRequestSpec = {
+    "config/read": { params: { cwd: string }; result: { config: JsonRecord } };
+    "modelProvider/capabilities/read": { params: Record<string, never>; result: { imageGeneration: boolean } };
     initialize: {
         params: {
             clientInfo: { name: string; title: string; version: string };

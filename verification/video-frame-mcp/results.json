@@ -1,0 +1,59 @@
+{
+  "projectId": "L8QCNwFklV1vhKbeuTfMN",
+  "frames": [
+    {
+      "position": "first",
+      "projectId": "L8QCNwFklV1vhKbeuTfMN",
+      "sourceNodeId": "video-frame-test",
+      "nodeId": "LgE36Ry2TAUeqDxPkLles",
+      "storageKey": "image:ivUcLErMiH5AnGs_6Ll6g",
+      "width": 640,
+      "height": 360,
+      "time": 0
+    },
+    {
+      "position": "last",
+      "projectId": "L8QCNwFklV1vhKbeuTfMN",
+      "sourceNodeId": "video-frame-test",
+      "nodeId": "KEQrq4sIKzS4fFUNDtMDv",
+      "storageKey": "image:ZmhCS05sV4yWIBiEZdyoL",
+      "width": 640,
+      "height": 360,
+      "time": 5.165667
+    },
+    {
+      "position": "current",
+      "projectId": "L8QCNwFklV1vhKbeuTfMN",
+      "sourceNodeId": "video-frame-test",
+      "nodeId": "hvP1MGr2slkyKRssmLAxk",
+      "storageKey": "image:4j-lH6Q8pL7InnOHgJ-Ul",
+      "width": 640,
+      "height": 360,
+      "time": 1.5
+    },
+    {
+      "position": "time",
+      "time": 2.5,
+      "projectId": "L8QCNwFklV1vhKbeuTfMN",
+      "sourceNodeId": "video-frame-test",
+      "nodeId": "tNYTZMyX6zo_DH9nCZJyV",
+      "storageKey": "image:4v2YdYygYVXpocjOW2er8",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "position": "time",
+      "time": 0,
+      "projectId": "L8QCNwFklV1vhKbeuTfMN",
+      "sourceNodeId": "video-frame-test",
+      "nodeId": "NCZA04xvFJ1KeQfLgHuGG",
+      "storageKey": "image:aNt0sbLzA8RWEaaM3Gi3I",
+      "width": 640,
+      "height": 360
+    }
+  ],
+  "referenceTarget": "config-7f64c75c-aed0-4ff4-92ef-34056ae14d2e",
+  "invalidRequestsRejected": 5,
+  "nodeCount": 7,
+  "connectionCount": 6
+}

@@ -22,8 +22,8 @@ const tabs: DocsSection[] = [
   { title: { en: 'Canvas Guide', 'zh-CN': '操作手册' }, description: { en: 'Canvas nodes and shortcuts', 'zh-CN': '画布节点与快捷键' }, href: '/docs/canvas/canvas-node-manual', prefix: '/docs/canvas', pages: ['canvas-node-manual', 'canvas-shortcuts'], icon: MousePointer2 },
   { title: { en: 'Development', 'zh-CN': '开发文档' }, description: { en: 'Local development and internals', 'zh-CN': '本地开发与内部结构' }, href: '/docs/development/local-development', prefix: '/docs/development', pages: ['local-development', 'local-codex-canvas', 'canvas-data-structure'], icon: Code2 },
   { title: { en: 'Progress', 'zh-CN': '项目进度' }, description: { en: 'Changelog, plans, and testing', 'zh-CN': '变更、计划与待测试项' }, href: '/docs/progress/changelog', prefix: '/docs/progress', pages: ['changelog', 'todo', 'pending-test', 'local-agent-integration-plan', 'prompt-chip-input-plan'], icon: ListChecks },
-  { title: { en: 'Business', 'zh-CN': '商务合作' }, description: { en: 'Cooperation and licensing', 'zh-CN': '合作方式与开源许可' }, href: '/docs/business/business', prefix: '/docs/business', pages: ['business', 'license'], icon: Handshake },
-  { title: { en: 'Support', 'zh-CN': '赞助支持' }, description: { en: 'Sponsorship and security', 'zh-CN': '赞助项目与安全说明' }, href: '/docs/support/sponsor', prefix: '/docs/support', pages: ['sponsor', 'security'], icon: HeartHandshake },
+  { title: { en: 'Commercial Use', 'zh-CN': '商用与许可' }, description: { en: 'MIT commercial use and licensing', 'zh-CN': 'MIT 商用说明与开源许可' }, href: '/docs/business/business', prefix: '/docs/business', pages: ['business', 'license'], icon: Handshake },
+  { title: { en: 'Contributing', 'zh-CN': '贡献与安全' }, description: { en: 'Issues, pull requests, and security', 'zh-CN': '问题反馈、贡献与安全说明' }, href: '/docs/support/sponsor', prefix: '/docs/support', pages: ['sponsor', 'security'], icon: HeartHandshake },
 ];
 
 export function DocsSidebarTabs() {

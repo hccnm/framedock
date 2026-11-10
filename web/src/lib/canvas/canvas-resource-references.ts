@@ -14,6 +14,8 @@ export type CanvasResourceReference = {
     label: string;
     title: string;
     previewUrl?: string;
+    /** Local blob key, so consumers can read the original bytes instead of the display URL. */
+    storageKey?: string;
     text?: string;
     active: boolean;
 };
@@ -67,6 +69,18 @@ export function getGenerationResourceNodes(nodeId: string, nodes: CanvasNodeData
     return [];
 }
 
+/**
+ * Direct upstream resources of one node: connections in canvas order, groups expanded in project node order.
+ * Field-specific callers pass only the connections assigned to that field.
+ */
+export function getDirectUpstreamResources(nodeId: string, nodes: CanvasNodeData[], connections: CanvasConnection[]) {
+    const directInputs = connections
+        .filter((connection) => connection.toNodeId === nodeId)
+        .map((connection) => nodes.find((node) => node.id === connection.fromNodeId))
+        .filter((node): node is CanvasNodeData => Boolean(node));
+    return labelResourceNodes(expandGroupResourceNodes(directInputs, nodes), true);
+}
+
 function getContextInputNodes(nodeId: string, nodes: CanvasNodeData[], connections: CanvasConnection[]) {
     return connections
         .filter((connection) => connection.toNodeId === nodeId)
@@ -113,6 +127,7 @@ function labelResourceNodes(nodes: CanvasNodeData[], active: boolean) {
                 label,
                 title: node.title || label,
                 previewUrl: node.metadata?.content || resource?.url,
+                storageKey: node.metadata?.storageKey,
                 text: resourceText(node),
                 active,
             },

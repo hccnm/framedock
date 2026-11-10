@@ -1,0 +1,206 @@
+{
+  "227": {
+    "inputs": {
+      "unet_name": "z_image_bf16.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "UNet加载器"
+    }
+  },
+  "228": {
+    "inputs": {
+      "text": "泛黄，发绿，模糊，低分辨率，低质量图像，扭曲的肢体，诡异的外观，丑陋，AI感，噪点，网格感，JPEG压缩条纹，异常的肢体，水印，乱码，意义不明的字符，泛蓝",
+      "clip": [
+        "245",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP文本编码"
+    }
+  },
+  "235": {
+    "inputs": {
+      "seed": 413189552079340,
+      "steps": 8,
+      "cfg": 1,
+      "sampler_name": "res_2s_ode",
+      "scheduler": "kl_optimal",
+      "denoise": 1,
+      "model": [
+        "250",
+        0
+      ],
+      "positive": [
+        "247",
+        0
+      ],
+      "negative": [
+        "228",
+        0
+      ],
+      "latent_image": [
+        "244",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "K采样器"
+    }
+  },
+  "236": {
+    "inputs": {
+      "samples": [
+        "235",
+        0
+      ],
+      "vae": [
+        "246",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE解码"
+    }
+  },
+  "240": {
+    "inputs": {
+      "lora_name": "Kook_Zimage_如梦似幻.safetensors",
+      "strength_model": 0.7000000000000002,
+      "model": [
+        "249",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoRA加载器（仅模型）"
+    }
+  },
+  "241": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "236",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "保存图像"
+    }
+  },
+  "244": {
+    "inputs": {
+      "width": [
+        "251",
+        0
+      ],
+      "height": [
+        "252",
+        0
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "空Latent图像"
+    }
+  },
+  "245": {
+    "inputs": {
+      "clip_name": "qwen_3_4b.safetensors",
+      "type": "qwen_image",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "加载CLIP"
+    }
+  },
+  "246": {
+    "inputs": {
+      "vae_name": "ae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "加载VAE"
+    }
+  },
+  "247": {
+    "inputs": {
+      "text": [
+        "248",
+        0
+      ],
+      "clip": [
+        "245",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP文本编码"
+    }
+  },
+  "248": {
+    "inputs": {
+      "text": "最高画质，杰作，超精细，一位年轻韩国女生，亚洲面孔，东亚五官，19 岁，财阀千金，霸凌者，骄纵刻薄，身高 168，身形纤细，哑光妆效，冷白皮，无油光，不泛油，精致浓妆，酒红色哑光唇，栗棕色长卷发，大波浪，发丝蓬松有光泽，挑眉，上挑眼线，浅棕色瞳孔，双眼都睁开，对称双眼，眼神居高临下充满鄙夷，高挺的鼻子，指甲做了精致钻饰美甲，耳朵和脖子是成套名牌珠宝，穿一件奶白色名牌针织开衫，内搭真丝吊带，下身格纹百褶短裙，脚踩裸粉色细高跟尖头鞋，标准站立姿势，单手叉腰，全身可见，从头到脚都在画面内，正常透视，50mm 标准镜头，干净浅灰色棚拍背景，柔和均匀漫射光，正常身材比例，纤细。\n\n光影层次感，电影质感，艺术氛围，高级的氛围感，梦幻，"
+    },
+    "class_type": "CR Text",
+    "_meta": {
+      "title": "🔤 CR Text"
+    }
+  },
+  "249": {
+    "inputs": {
+      "lora_name": "Kook_Zimage_瑶光.safetensors",
+      "strength_model": 0.5000000000000001,
+      "model": [
+        "227",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoRA加载器（仅模型）"
+    }
+  },
+  "250": {
+    "inputs": {
+      "lora_name": "Z-Image-Fun-Lora-Distill-8-Steps-2603-ComfyUI.safetensors",
+      "strength_model": 0.45000000000000007,
+      "model": [
+        "240",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoRA加载器（仅模型）"
+    }
+  },
+  "251": {
+    "inputs": {
+      "value": 1024
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "INT Constant"
+    }
+  },
+  "252": {
+    "inputs": {
+      "value": 1680
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "INT Constant"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "projectId": "X6lqhBYUIL7AftcCdNIsF",
+  "nodeId": "config-1794016101448-3jd7q",
+  "requestId": "m_6Kmb8-EGm395vdKZdya",
+  "threadId": "01a1b3b8-d66e-7e52-b6e0-47b1891af524",
+  "turnId": "01a1b3b8-ea68-78e1-a4c1-507318d8739d",
+  "referenceCount": 1,
+  "options": {
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "opaque",
+    "count": 1
+  },
+  "images": [
+    {
+      "itemId": "01a1b3b8-ea68-78e1-a4c1-507318d8739d:exec-7ac7ac67-7fbe-4831-9db2-80f1efceeb07",
+      "revisedPrompt": "请基于参考图编辑并生成唯一一张独立图片，不要拼图、联系表或多面板。目标画幅为1536x1024、3:2横向构图；画质要求high，精细纸张纹理、清晰纸雕边缘、高品质细节与渲染。保持参考图中同一只可爱狐狸的脸型、五官比例、巨大竖耳、棕色明亮大眼睛、白色脸颊和口鼻、粉色腮红、开心张嘴表情、橙色主配色，以及坐姿、蓬松大尾巴和原有多层立体纸雕造型。只做以下指定修改：给狐狸脖子戴上一条漂亮的蓝色围巾，围巾也采用有质感的分层纸雕工艺，自然环绕颈部并有垂下的围巾尾端，不遮住脸部；将原来的深色发光背景完整替换为干净均匀的浅米色背景，柔和自然投影，简洁无杂物。保留完整耳朵、爪子和尾巴，主体居中，画面边缘适当留白。保持狐狸原本的身份特征和橙白纸雕层次，不添加文字、水印或其他角色。背景完全不透明。",
+      "turnId": "01a1b3b8-ea68-78e1-a4c1-507318d8739d",
+      "transparentBackground": false,
+      "file": "real-edit-1.png"
+    }
+  ],
+  "elapsedMs": 54001
+}

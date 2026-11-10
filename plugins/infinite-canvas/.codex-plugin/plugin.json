@@ -4,10 +4,10 @@
   "description": "Use Codex to read and operate Infinite Canvas through the local Canvas Agent MCP server.",
   "author": {
     "name": "basketikun",
-    "url": "https://canvas.best/"
+    "url": "https://github.com/basketikun/infinite-canvas"
   },
-  "homepage": "https://canvas.best/",
-  "repository": "https://github.com/basketikun/infinite-canvas",
+  "homepage": "https://github.com/hccnm/framedock",
+  "repository": "https://github.com/hccnm/framedock",
   "license": "MIT",
   "keywords": ["infinite-canvas", "canvas", "mcp", "agent"],
   "skills": "./skills/",
@@ -19,7 +19,7 @@
     "developerName": "basketikun",
     "category": "Productivity",
     "capabilities": ["Canvas", "MCP", "Creative Workflow"],
-    "websiteURL": "https://canvas.best/",
+    "websiteURL": "https://github.com/hccnm/framedock",
     "defaultPrompt": [
       "打开 Infinite Canvas",
       "读取当前画布并总结节点结构",

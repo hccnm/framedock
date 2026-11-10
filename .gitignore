@@ -15,3 +15,17 @@ web/public/plugins
 plugins/canvas/*/dist
 plugins/canvas/*/node_modules
 web/public/plugins
+
+# 桌面安装包、打包暂存资源与 Apple 私钥
+desktop/.packaging/
+desktop/release/
+*.p12
+*.pfx
+*.p8
+
+# 本地启动脚本与运行日志，仅本机使用
+scripts/
+.dev/
+
+# 技能市场媒体预览资源体积过大，不入库，仅保留 catalog.json 与 packages
+web/public/skill-market/media/

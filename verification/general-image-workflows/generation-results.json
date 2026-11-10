@@ -1,0 +1,62 @@
+[
+  {
+    "tag": "general-z-image-text",
+    "success": true,
+    "promptId": "718bfe0c-9da1-47c3-9e3e-9043d5bf7b65",
+    "output": {
+      "filename": "general_00001_.png",
+      "subfolder": "FrameDock\\ZImage",
+      "type": "output",
+      "metadata": {
+        "kind": "image",
+        "width": 768,
+        "height": 768
+      }
+    }
+  },
+  {
+    "tag": "general-z-image-references",
+    "success": true,
+    "promptId": "63216b4c-7163-4e2d-9710-840343cea5c7",
+    "output": {
+      "filename": "general_00002_.png",
+      "subfolder": "FrameDock\\ZImage",
+      "type": "output",
+      "metadata": {
+        "kind": "image",
+        "width": 768,
+        "height": 768
+      }
+    }
+  },
+  {
+    "tag": "general-qwen-edit-text",
+    "success": true,
+    "promptId": "8d9174f7-2977-4c75-a14c-a9140b08579a",
+    "output": {
+      "filename": "general_00001_.png",
+      "subfolder": "FrameDock\\QwenEdit",
+      "type": "output",
+      "metadata": {
+        "kind": "image",
+        "width": 768,
+        "height": 768
+      }
+    }
+  },
+  {
+    "tag": "general-qwen-edit-references",
+    "success": true,
+    "promptId": "bcd56710-c458-474b-83a0-37d362a9f19a",
+    "output": {
+      "filename": "general_00002_.png",
+      "subfolder": "FrameDock\\QwenEdit",
+      "type": "output",
+      "metadata": {
+        "kind": "image",
+        "width": 768,
+        "height": 768
+      }
+    }
+  }
+]

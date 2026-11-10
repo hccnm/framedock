@@ -1,0 +1,51 @@
+{
+  "pass": false,
+  "workflowId": "sheep_workflow_f994ec9021f61205a1820c1f",
+  "vaes": [
+    {
+      "nodeId": "149",
+      "name": "minimax_h3_video_vae_fp16.safetensors",
+      "available": false,
+      "defaultMatchesGraph": true
+    },
+    {
+      "nodeId": "150",
+      "name": "minimax_h3_audio_vae_fp32.safetensors",
+      "available": false,
+      "defaultMatchesGraph": true
+    }
+  ],
+  "protectedNodes": [
+    "123",
+    "124",
+    "125",
+    "126",
+    "129",
+    "131",
+    "148",
+    "151",
+    "153",
+    "154",
+    "155",
+    "157",
+    "163",
+    "288"
+  ],
+  "referenceCounts": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "submitted": false,
+  "errors": [
+    "VAELoader 149: Value not in list: minimax_h3_video_vae_fp16.safetensors",
+    "VAELoader 149: differs from successful workflow",
+    "VAELoader 150: Value not in list: minimax_h3_audio_vae_fp32.safetensors",
+    "VAELoader 150: differs from successful workflow",
+    "Run VAE 149: Value not in list",
+    "Run VAE 150: Value not in list"
+  ]
+}

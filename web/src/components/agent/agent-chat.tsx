@@ -1,4 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { MessageSquare } from "lucide-react";
 import { motion, useSpring, useTransform } from "motion/react";
 import { useTranslation } from "react-i18next";
 
@@ -41,7 +42,7 @@ export function AgentChatTimeline({
     const followMessagesRef = useRef(true);
     const [showScrollToBottom, setShowScrollToBottom] = useState(false);
     const streaming = messages.some((message) => message.streamId);
-    const showBootstrap = Boolean(bootstrapStatus && !messages.some((message) => message.role === "user" || message.role === "assistant"));
+    const showBootstrap = Boolean(bootstrapStatus && bootstrapStatus.status !== "ready" && !messages.some((message) => message.role === "user" || message.role === "assistant"));
     const working = showBootstrap ? bootstrapStatus! : workingActivity(messages.at(-1));
     const updateScrollState = useCallback(() => {
         const list = listRef.current;
@@ -78,7 +79,8 @@ export function AgentChatTimeline({
     return (
         <div className="relative min-h-0 flex-1">
             <div ref={listRef} className="thin-scrollbar h-full select-text overflow-y-auto" onScroll={updateScrollState}>
-                <div ref={contentRef} className="space-y-4 px-4 pt-4">
+                <div ref={contentRef} className="space-y-4 px-5 pb-6 pt-4">
+                    {!timeline.length && !sending && !waiting && !showBootstrap && <div className="agent-chat-empty"><MessageSquare size={28} strokeWidth={1.2} /><h2>从一个想法开始创作</h2><p>描述你想完成的内容，或选择一个技能。<br />使用 @ 引用画布素材，使用 / 调用技能。</p></div>}
                     {timeline.map((entry) => entry.type === "commands"
                         ? <AgentCommandGroupRow key={entry.id} items={entry.items} theme={theme} />
                         : <AgentChatMessageRow key={entry.item.id} item={entry.item} theme={theme} />)}

@@ -1,0 +1,264 @@
+{
+  "prompt": [
+    468,
+    "27f128b3-552d-452d-b75c-cb553b6bc9c1",
+    {
+      "1": {
+        "class_type": "UNETLoader",
+        "inputs": {
+          "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+          "weight_dtype": "default"
+        },
+        "_meta": {
+          "title": "模型"
+        }
+      },
+      "2": {
+        "class_type": "CLIPLoader",
+        "inputs": {
+          "clip_name": "qwen3vl_8b_bf16.safetensors",
+          "type": "qwen_image",
+          "device": "default"
+        },
+        "_meta": {
+          "title": "文本编码器"
+        }
+      },
+      "3": {
+        "class_type": "VAELoader",
+        "inputs": {
+          "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+        },
+        "_meta": {
+          "title": "VAE"
+        }
+      },
+      "4": {
+        "class_type": "TextEncodeQwenImage21",
+        "inputs": {
+          "clip": [
+            "11",
+            1
+          ],
+          "vae": [
+            "3",
+            0
+          ],
+          "prompt": "Photorealistic television drama keyframe, landscape. Recreate the actual small Xiamen bedroom and bed in <image1>: plain light-wood headboard, WHITE METAL bed frame and tubular guardrails, plain pale cotton pillows and duvet, narrow window with cream curtains, daylight. Camera is ABOVE the foot of the bed, looking DOWN at the mattress at 45 degrees. Exactly THREE ADULTS are lying down next to each other, their heads resting on the same row of pillows at approximately the same height. Their bodies and shoulders lie flat against the mattress. LEFT: Feiyu, use the woman's identity, long blue hair, whale accessories and blue-and-white maid outfit from <image3>; asleep, eyes closed, lying on her side with her head resting beside the man's shoulder on the left side of the image. CENTER: Dongqing, use only the man's facial identity, messy black hair and white T-shirt from <image2>; fully SUPINE, lying FLAT on his BACK, the back of his head visibly sunk into a pillow, shoulders against mattress, relaxed extended neck, face tilted UP toward the ceiling, eyes open looking at the ceiling as he has just woken, right hand gripping the duvet at his chest. RIGHT: Caibao, use only the woman's identity, short black hair, purple hair clip, black shirt and red scarf from <image4>; asleep, eyes closed, lying on her side with her head beside the man's shoulder on the right side of the image. All three are resting horizontally on the bed. Their lower bodies are naturally covered by the same plain cotton duvet. Identity references supply faces and clothing only: do not transfer their standing poses or their direct gaze at the camera. Natural morning window light, coherent realistic anatomy and bedding, a single continuous image.",
+          "negative_prompt": "",
+          "resolution": 1024,
+          "images.image_1": [
+            "21",
+            0
+          ],
+          "images.image_2": [
+            "22",
+            0
+          ],
+          "images.image_3": [
+            "23",
+            0
+          ],
+          "images.image_4": [
+            "24",
+            0
+          ]
+        },
+        "_meta": {
+          "title": "通用提示词与参考图"
+        }
+      },
+      "5": {
+        "class_type": "EmptySD3LatentImage",
+        "inputs": {
+          "width": 1344,
+          "height": 768,
+          "batch_size": 1
+        },
+        "_meta": {
+          "title": "输出尺寸"
+        }
+      },
+      "6": {
+        "class_type": "KSampler",
+        "inputs": {
+          "model": [
+            "11",
+            0
+          ],
+          "positive": [
+            "4",
+            0
+          ],
+          "negative": [
+            "4",
+            1
+          ],
+          "latent_image": [
+            "5",
+            0
+          ],
+          "seed": 20261109,
+          "steps": 25,
+          "cfg": 1.0,
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "denoise": 1.0
+        },
+        "_meta": {
+          "title": "采样参数"
+        }
+      },
+      "7": {
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "6",
+            0
+          ],
+          "vae": [
+            "3",
+            0
+          ]
+        },
+        "_meta": {
+          "title": "解码"
+        }
+      },
+      "10": {
+        "class_type": "SaveImage",
+        "inputs": {
+          "images": [
+            "7",
+            0
+          ],
+          "filename_prefix": "FrameDock/QwenEdit/general"
+        },
+        "_meta": {
+          "title": "保存图像"
+        }
+      },
+      "11": {
+        "class_type": "CR Load LoRA",
+        "inputs": {
+          "model": [
+            "1",
+            0
+          ],
+          "clip": [
+            "2",
+            0
+          ],
+          "switch": "Off",
+          "lora_name": "None",
+          "strength_model": 1.0,
+          "strength_clip": 0.0
+        },
+        "_meta": {
+          "title": "可选 LoRA 1（默认关闭）"
+        }
+      },
+      "21": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": "canvas-jAbmZJ1W.png"
+        },
+        "_meta": {
+          "title": "参考图 1（可选）"
+        }
+      },
+      "22": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": "canvas-8LEQbJLw.png"
+        },
+        "_meta": {
+          "title": "参考图 2（可选）"
+        }
+      },
+      "23": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": "canvas-EkgvRKgM.png"
+        },
+        "_meta": {
+          "title": "参考图 3（可选）"
+        }
+      },
+      "24": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": "canvas-54APOhyq.png"
+        },
+        "_meta": {
+          "title": "参考图 4（可选）"
+        }
+      }
+    },
+    {
+      "client_id": "infinite-canvas-HnYzaml-6QuMjLSX3GGl1",
+      "create_time": 1794008138555
+    },
+    [
+      "10"
+    ]
+  ],
+  "outputs": {
+    "10": {
+      "images": [
+        {
+          "filename": "general_00005_.png",
+          "subfolder": "FrameDock\\QwenEdit",
+          "type": "output",
+          "metadata": {
+            "kind": "image",
+            "width": 1344,
+            "height": 768
+          }
+        }
+      ]
+    }
+  },
+  "status": {
+    "status_str": "success",
+    "completed": true,
+    "messages": [
+      [
+        "execution_start",
+        {
+          "prompt_id": "27f128b3-552d-452d-b75c-cb553b6bc9c1",
+          "timestamp": 1794008138556
+        }
+      ],
+      [
+        "execution_cached",
+        {
+          "nodes": [
+            "1",
+            "2",
+            "3",
+            "5",
+            "11"
+          ],
+          "prompt_id": "27f128b3-552d-452d-b75c-cb553b6bc9c1",
+          "timestamp": 1794008138613
+        }
+      ],
+      [
+        "execution_success",
+        {
+          "prompt_id": "27f128b3-552d-452d-b75c-cb553b6bc9c1",
+          "timestamp": 1794008190747
+        }
+      ]
+    ]
+  },
+  "meta": {
+    "10": {
+      "node_id": "10",
+      "display_node": "10",
+      "parent_node": null,
+      "real_node_id": "10"
+    }
+  }
+}

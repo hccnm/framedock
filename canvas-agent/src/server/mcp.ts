@@ -9,18 +9,23 @@ type CanvasAgentToolResponse = { ok?: boolean; result?: unknown; error?: string 
 /** 启动通过标准输入输出通信的 MCP 服务。 */
 export async function startMcpServer() {
     const config = loadConfig(true);
-    const server = new McpServer({ name: "canvas-agent", version: VERSION }, { instructions: AGENT_PROMPT });
-    toolNames.forEach((name) => registerCanvasTool(server, config, name));
+    const server = createCanvasMcpServer((name, input) => postCanvasAgentTool(config, name, input));
     await server.connect(new StdioServerTransport());
 }
 
-/** 向 MCP Server 注册单个 Canvas Agent 工具。 */
-function registerCanvasTool(server: McpServer, config: CanvasAgentConfig, name: ToolName) {
-    const schema = toolInputSchemas[name];
-    server.registerTool(name, { description: toolDescriptions[name], inputSchema: schema.shape }, async (input: unknown) => {
-        const result = await postCanvasAgentTool(config, name, schema.parse(input));
-        return { content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }] };
+export type CanvasToolCaller = (name: ToolName, input: unknown) => Promise<unknown>;
+
+/** stdio 与外部 HTTP 共用工具定义、校验和返回格式。 */
+export function createCanvasMcpServer(callTool: CanvasToolCaller) {
+    const server = new McpServer({ name: "canvas-agent", version: VERSION }, { instructions: AGENT_PROMPT });
+    toolNames.forEach((name) => {
+        const schema = toolInputSchemas[name];
+        server.registerTool(name, { description: toolDescriptions[name], inputSchema: schema.shape }, async (input: unknown) => {
+            const result = await callTool(name, schema.parse(input));
+            return { content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }] };
+        });
     });
+    return server;
 }
 
 /** 将 MCP 工具调用转发到本地 Canvas Agent HTTP 服务。 */

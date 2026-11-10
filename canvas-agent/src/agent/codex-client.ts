@@ -1,5 +1,4 @@
 import { spawn, type ChildProcess } from "node:child_process";
-import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -20,7 +19,6 @@ type ApprovalRequest = { id: number; method: string; params: JsonRecord; decisio
 type PendingTurnStart = { threadId: string; prompt: string; messageText?: string; turnId?: string; onTurn?: (turnId: string) => void };
 
 const canvasAgentMcp = canvasAgentMcpCommand();
-const require = createRequire(import.meta.url);
 const STREAM_UPDATE_INTERVAL_MS = 40;
 const supplementalItemTypes = new Set(["agent_message", "reasoning", "plan", "mcp_tool_call", "command_execution", "file_change", "dynamic_tool_call", "collab_tool_call", "web_search", "image_view", "image_generation", "context_compaction"]);
 const SKILL_DRAFT_INSTRUCTIONS = "你只负责根据已提供的对话或画布快照生成可编辑的 Codex Skill 草稿。不要调用任何工具，不要执行命令，不要读取文件，不要访问网络，不要修改任何状态。严格按 outputSchema 返回结果，并排除凭证、密钥、Token、本地路径、临时错误、调试日志和一次性结果。";
@@ -30,8 +28,12 @@ export class CodexReportedError extends Error {
     override name = "CodexReportedError";
 }
 
+/** Codex app-server 启动参数：可执行路径来自已验证的本机 CLI 选择。 */
+export type CodexLaunch = { executablePath: string; env?: NodeJS.ProcessEnv };
+
 /** 封装 Codex app-server 的 JSON-RPC 通信与事件转换。 */
 export class CodexAppClient {
+    private stopping = false;
     private nextId = 1;
     private buffer = "";
     private currentThreadId = "";
@@ -65,11 +67,15 @@ export class CodexAppClient {
     /** 保存 app-server 子进程和事件出口。 */
     private constructor(private child: ChildProcess, private emit: AgentEmit, private eventHistory: Pick<CodexEventHistory, "record" | "recordTurn"> = codexEventHistory) {}
 
-    /** 启动并初始化 Codex app-server。 */
-    static async start(emit: AgentEmit, onExit: () => void) {
-        logger.info("Starting Codex app-server", { executable: process.execPath, codex: codexBin() });
-        const child = spawn(process.execPath, [codexBin(), "app-server", "--stdio"], { stdio: ["pipe", "pipe", "pipe"], windowsHide: true });
-        const client = new CodexAppClient(child, emit);
+    /** 启动并初始化 Codex app-server，可执行文件来自已验证的本机 CLI。 */
+    static async start(emit: AgentEmit, onExit: () => void, launch: CodexLaunch, eventHistory = codexEventHistory as Pick<CodexEventHistory, "record" | "recordTurn">, signal?: AbortSignal) {
+        signal?.throwIfAborted();
+        logger.info("Starting Codex app-server", { executable: launch.executablePath });
+        const child = spawn(launch.executablePath, ["app-server", "--stdio"], { stdio: ["pipe", "pipe", "pipe"], windowsHide: true, env: launch.env });
+        const client = new CodexAppClient(child, emit, eventHistory);
+        const abort = () => { client.failAll("生成已取消"); client.stop(); };
+        signal?.addEventListener("abort", abort, { once: true });
+        child.once("exit", () => signal?.removeEventListener("abort", abort));
         let stopped = false;
         const stop = () => {
             if (stopped) return;
@@ -88,6 +94,7 @@ export class CodexAppClient {
         child.on("error", (error) => {
             stderr.flush();
             logger.error("Codex app-server process error", error);
+            if (client.stopping) return stop();
             emit("agent_error", { message: error.message });
             client.failAll(error.message, true);
             stop();
@@ -95,13 +102,41 @@ export class CodexAppClient {
         child.on("exit", (code) => {
             stderr.flush();
             logger.warn("Codex app-server exited", { code });
-            client.failAll(`Codex app-server exited: ${code ?? 0}`);
             stop();
+            if (client.stopping) return;
+            client.failAll(`Codex app-server exited: ${code ?? 0}`);
             emit("agent_log", { text: `Codex app-server exited: ${code ?? 0}` });
         });
-        await client.request("initialize", { clientInfo: { name: "canvas-agent", title: "Infinite Canvas Agent", version: VERSION }, capabilities: { experimentalApi: true, requestAttestation: false } });
-        client.notify("initialized");
-        return client;
+        try {
+            await client.request("initialize", { clientInfo: { name: "canvas-agent", title: "Infinite Canvas Agent", version: VERSION }, capabilities: { experimentalApi: true, requestAttestation: false } });
+            client.notify("initialized");
+            return client;
+        } catch (error) { client.stop(); throw error; }
+    }
+
+    /** 主动关闭 app-server 子进程；用于切换本机 CLI 后重启。 */
+    stop() {
+        if (this.stopping) return;
+        this.stopping = true;
+        this.failing = true;
+        try {
+            this.child.kill();
+        } catch {
+            // 进程已退出时忽略。
+        }
+    }
+
+    /** 节点生图使用独立临时线程，不继承画布工具或命令执行能力。 */
+    async startImageThread(cwd: string) {
+        const capabilities = await this.request("modelProvider/capabilities/read", {});
+        if (!capabilities.imageGeneration) throw new Error("当前 Codex 登录或模型提供方不支持内置生图，请检查本机 CLI 登录配置");
+        const { config } = await this.request("config/read", { cwd });
+        const servers = Object.keys((config.mcp_servers as JsonRecord) || {});
+        return this.request("thread/start", {
+            cwd, ephemeral: true, threadSource: "user", approvalPolicy: "never", sandbox: "workspace-write",
+            config: { mcp_servers: Object.fromEntries(servers.map((name) => [name, { enabled: false }])), features: { image_generation: true, shell_tool: false, apps: false, plugins: false } },
+            developerInstructions: "你是画布生图节点的 Codex 渠道。直接使用 Codex 原生 imagegen/image_generation 工具完成用户要求，参考图已提供为本地附件和绝对路径，必须按描述使用。不要使用 Skill、MCP、终端、外部 API 或其他生成渠道，不要要求用户上传已有附件或选择画布位置。只生成图像；能力不可用时明确失败，不要用代码绘图或假称成功。",
+        });
     }
 
     /** 创建新的 Codex 线程。 */
@@ -774,17 +809,23 @@ function turnCacheKey(threadId: string, turnId: string) {
     return `${threadId}\0${turnId}`;
 }
 
+/** 判断当前进程是否为以 Node 模式运行的 Electron：MCP 命令（process.execPath）也就是 Electron 本体。 */
+export function canvasAgentMcpEnv(env: NodeJS.ProcessEnv = process.env) {
+    return env.ELECTRON_RUN_AS_NODE === "1" ? { ELECTRON_RUN_AS_NODE: "1" } : undefined;
+}
+
 /** 生成 Codex 调用 Canvas Agent MCP 的启动命令。 */
-function canvasAgentMcpCommand() {
+export function canvasAgentMcpCommand(env: NodeJS.ProcessEnv = process.env) {
     const current = process.argv.find((arg) => /index\.(t|j)s$/.test(arg)) || "";
     const entry = path.resolve(current || fileURLToPath(new URL("../index.js", import.meta.url)));
     const tsx = path.join(path.dirname(entry), "..", "node_modules", "tsx", "dist", "cli.mjs");
-    return entry.endsWith(".ts") ? { command: process.execPath, args: [tsx, entry, "mcp"] } : { command: process.execPath, args: [entry, "mcp"] };
+    const mcpEnv = canvasAgentMcpEnv(env);
+    return { command: process.execPath, args: entry.endsWith(".ts") ? [tsx, entry, "mcp"] : [entry, "mcp"], env: mcpEnv };
 }
 
 /** 生成 Codex app-server 使用的 MCP 配置。 */
 function codexConfig(permissionMode: AgentPermissionMode) {
-    return { model_reasoning_summary: "auto", ...(permissionMode === "automatic" ? { approvals_reviewer: "auto_review" } : {}), mcp_servers: { "infinite-canvas": { command: canvasAgentMcp.command, args: canvasAgentMcp.args, default_tools_approval_mode: "approve", startup_timeout_sec: 20, tool_timeout_sec: 90 } } };
+    return { model_reasoning_summary: "auto", ...(permissionMode === "automatic" ? { approvals_reviewer: "auto_review" } : {}), mcp_servers: { "infinite-canvas": { command: canvasAgentMcp.command, args: canvasAgentMcp.args, ...(canvasAgentMcp.env ? { env: canvasAgentMcp.env } : {}), default_tools_approval_mode: "approve", startup_timeout_sec: 20, tool_timeout_sec: 90 } } };
 }
 
 function threadSettings(permissionMode: AgentPermissionMode) {
@@ -892,9 +933,4 @@ function parseMaybeJson(value: unknown) {
     } catch {
         return value;
     }
-}
-
-/** 定位当前依赖中 Codex CLI 的执行文件。 */
-function codexBin() {
-    return path.join(path.dirname(require.resolve("@openai/codex/package.json")), "bin", "codex.js");
 }

@@ -22,20 +22,24 @@ export function AgentPanel() {
         event.preventDefault();
         const startX = event.clientX;
         const startWidth = width;
+        const swapped = event.currentTarget.closest(".fh-shell")?.querySelector(".fh-creation")?.getAttribute("data-swapped") === "true";
         let nextWidth = startWidth;
         const onMove = (moveEvent: PointerEvent) => {
-            nextWidth = Math.min(760, Math.max(360, startWidth + startX - moveEvent.clientX));
+            const delta = moveEvent.clientX - startX;
+            nextWidth = Math.min(760, Math.max(360, startWidth + (swapped ? delta : -delta)));
             setAgentState({ width: nextWidth });
         };
         const onUp = () => {
             localStorage.setItem("canvas-agent-panel-width", String(nextWidth));
             window.removeEventListener("pointermove", onMove);
             window.removeEventListener("pointerup", onUp);
+            window.removeEventListener("pointercancel", onUp);
             setResizing(false);
         };
         setResizing(true);
         window.addEventListener("pointermove", onMove);
         window.addEventListener("pointerup", onUp);
+        window.addEventListener("pointercancel", onUp);
     };
 
     if (!panelMounted) return null;
@@ -43,6 +47,8 @@ export function AgentPanel() {
     return (
         <motion.div
             className="relative z-[70] flex h-full shrink-0"
+            inert={!panelOpen || panelClosing}
+            aria-hidden={!panelOpen || panelClosing}
             initial={{ width: 0, opacity: 0 }}
             animate={{ width: panelOpen ? width + 1 : 0, opacity: panelOpen ? 1 : 0 }}
             transition={{ duration: resizing ? 0 : PANEL_MOTION_SECONDS, ease: [0.22, 1, 0.36, 1] }}

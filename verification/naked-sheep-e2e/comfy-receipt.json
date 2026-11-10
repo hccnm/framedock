@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "source": "/Users/ethanhuang/Desktop/others/fnos/media/04_知识与模板/workflows/WorkFisher_原版API_20261019/01_角色_作者原文_API.json",
+  "prompt": "最高画质，杰作，超精细，干净棚拍光线，一位中国农村中年男性，亚洲面孔，东亚五官，45岁，朴实克制的农民，身形清瘦，哑光皮肤质感，日晒肤色，无油光，不泛油，黑色短发夹少量白发，双眼都睁开，对称双眼，神情平静，穿八十年代中国农村素色深蓝粗布上衣，灰黑长裤，旧黑布鞋，标准站立姿势，双手自然垂放，全身可见，从头到脚都在画面内，正常透视，50mm标准镜头，干净浅灰色棚拍背景，柔和均匀漫射光，正常身材比例，光影层次感，电影质感，艺术氛围，高级的氛围感，梦幻，",
+  "prompt_id": "184321ad-bb5f-4eff-812f-ba07cacbf385",
+  "number": 1168,
+  "node_errors": {},
+  "completed": true,
+  "files": [
+    "/Users/ethanhuang/Desktop/codespace/test/flowharbor/verification/naked-sheep-e2e/naked_sheep_character_00001_.png"
+  ]
+}

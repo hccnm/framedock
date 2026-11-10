@@ -1,0 +1,16 @@
+{
+  "frontendTests": {
+    "command": "bun test web/tests",
+    "passed": 177,
+    "failed": 0
+  },
+  "typecheck": {
+    "command": "npm --prefix web run typecheck",
+    "passed": true
+  },
+  "existingWorkflowCases": 78,
+  "existingWorkflowMismatches": 0,
+  "browserFixturePassed": true,
+  "realGenerationSubmitted": false,
+  "desktopResourcesRebuilt": false
+}

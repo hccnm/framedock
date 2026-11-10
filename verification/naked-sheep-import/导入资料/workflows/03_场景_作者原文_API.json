@@ -1,0 +1,236 @@
+{
+  "253": {
+    "inputs": {
+      "unet_name": "z_image_bf16.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "UNet加载器"
+    }
+  },
+  "254": {
+    "inputs": {
+      "text": "泛黄，发绿，模糊，低分辨率，低质量图像，扭曲的肢体，诡异的外观，丑陋，AI感，噪点，网格感，JPEG压缩条纹，异常的肢体，水印，乱码，意义不明的字符，泛蓝",
+      "clip": [
+        "270",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP文本编码"
+    }
+  },
+  "261": {
+    "inputs": {
+      "seed": 664488010448515,
+      "steps": 8,
+      "cfg": 1,
+      "sampler_name": "res_2s_ode",
+      "scheduler": "kl_optimal",
+      "denoise": 1,
+      "model": [
+        "274",
+        0
+      ],
+      "positive": [
+        "272",
+        0
+      ],
+      "negative": [
+        "254",
+        0
+      ],
+      "latent_image": [
+        "269",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "K采样器"
+    }
+  },
+  "262": {
+    "inputs": {
+      "samples": [
+        "261",
+        0
+      ],
+      "vae": [
+        "271",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE解码"
+    }
+  },
+  "266": {
+    "inputs": {
+      "lora_name": "Kook_Zimage_如梦似幻.safetensors",
+      "strength_model": 0.7000000000000002,
+      "model": [
+        "273",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoRA加载器（仅模型）"
+    }
+  },
+  "267": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "283",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "保存图像"
+    }
+  },
+  "269": {
+    "inputs": {
+      "width": [
+        "275",
+        0
+      ],
+      "height": [
+        "276",
+        0
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "空Latent图像"
+    }
+  },
+  "270": {
+    "inputs": {
+      "clip_name": "qwen_3_4b.safetensors",
+      "type": "qwen_image",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "加载CLIP"
+    }
+  },
+  "271": {
+    "inputs": {
+      "vae_name": "ae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "加载VAE"
+    }
+  },
+  "272": {
+    "inputs": {
+      "text": [
+        "277",
+        0
+      ],
+      "clip": [
+        "270",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP文本编码"
+    }
+  },
+  "273": {
+    "inputs": {
+      "lora_name": "Kook_Zimage_瑶光.safetensors",
+      "strength_model": 0.5000000000000001,
+      "model": [
+        "253",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoRA加载器（仅模型）"
+    }
+  },
+  "274": {
+    "inputs": {
+      "lora_name": "Z-Image-Fun-Lora-Distill-8-Steps-2603-ComfyUI.safetensors",
+      "strength_model": 0.45000000000000007,
+      "model": [
+        "266",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoRA加载器（仅模型）"
+    }
+  },
+  "275": {
+    "inputs": {
+      "value": 1920
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "INT Constant"
+    }
+  },
+  "276": {
+    "inputs": {
+      "value": 1080
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "INT Constant"
+    }
+  },
+  "277": {
+    "inputs": {
+      "text": "财阀豪宅顶层的一间私人密室，深夜，房间拉着厚重深色丝绒窗帘，遮光严密，一张宽大的深色真皮沙发，皮面有使用褶皱，沙发前是玻璃茶几，几上摆着两只喝了一半的红酒杯，杯壁挂着残酒，旁边散落着几张底片、一瓶打开的烈酒和一包白色药粉，地上铺着深色地毯，门口是一扇厚重实木门，墙上挂着暧昧的油画，只有沙发旁一盏落地灯亮着，灯罩是暗红色，光线昏黄浑浊，光圈照亮茶几一小块，房间其余部分浸在浓重阴影里，红酒在暗光里发黑，空气沉闷，混着烈酒、皮革和闷住的香水味，\n\n《老男孩》式密闭窒息，柯达Portra 800胶片，暖黄奶油调里透着病态，暗部浓郁偏棕，颗粒厚重，柔焦感，50mm镜头，f/1.8，极浅景深，\n\n光影层次感，电影质感，艺术氛围，高级的氛围感，梦幻，"
+    },
+    "class_type": "CR Text",
+    "_meta": {
+      "title": "🔤 CR Text"
+    }
+  },
+  "282": {
+    "inputs": {
+      "clean_file_cache": true,
+      "clean_processes": true,
+      "clean_dlls": true,
+      "retry_times": 3,
+      "anything": [
+        "262",
+        0
+      ]
+    },
+    "class_type": "RAMCleanup",
+    "_meta": {
+      "title": "释放内存"
+    }
+  },
+  "283": {
+    "inputs": {
+      "offload_model": true,
+      "offload_cache": true,
+      "anything": [
+        "282",
+        0
+      ]
+    },
+    "class_type": "VRAMCleanup",
+    "_meta": {
+      "title": "释放显存"
+    }
+  }
+}

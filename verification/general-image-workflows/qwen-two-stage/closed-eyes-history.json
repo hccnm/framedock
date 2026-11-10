@@ -1,0 +1,224 @@
+{
+  "prompt": [
+    472,
+    "cc54fcc4-b3ca-4ea8-a125-c5617fffdfbf",
+    {
+      "1": {
+        "class_type": "UNETLoader",
+        "inputs": {
+          "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+          "weight_dtype": "default"
+        },
+        "_meta": {
+          "title": "模型"
+        }
+      },
+      "2": {
+        "class_type": "CLIPLoader",
+        "inputs": {
+          "clip_name": "qwen3vl_8b_bf16.safetensors",
+          "type": "qwen_image",
+          "device": "default"
+        },
+        "_meta": {
+          "title": "文本编码器"
+        }
+      },
+      "3": {
+        "class_type": "VAELoader",
+        "inputs": {
+          "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+        },
+        "_meta": {
+          "title": "VAE"
+        }
+      },
+      "4": {
+        "class_type": "TextEncodeQwenImage21",
+        "inputs": {
+          "clip": [
+            "11",
+            1
+          ],
+          "vae": [
+            "3",
+            0
+          ],
+          "prompt": "Edit the approved overhead close shot in <image1>. Make ONLY this change: the CENTRAL YOUNG MAN has both eyes naturally and fully CLOSED, peacefully asleep, with relaxed eyelids and facial muscles. His face and head identity remain exactly the same. Keep everything else unchanged: the same overhead camera viewpoint, the same close framing of the three upper bodies, headboard at the top, exactly the same TWO original pillows, bed and plain cotton duvet. Preserve the left blue-haired maid Feiyu, center black-haired man Dongqing in a white T-shirt, right short black-haired Caibao in a black shirt with red scarf. Keep both women asleep with eyes closed, their faces, hair, clothes, head positions, body positions and their gentle leaning toward the man unchanged. Keep the man's supine pose and hand on the duvet unchanged. Same photorealistic texture, morning light, shadows, room and bed geometry. The final image shows all THREE people with eyes closed. No new pillow, no new object, no added person, no reframing.",
+          "negative_prompt": "",
+          "resolution": 1024,
+          "images.image_1": [
+            "21",
+            0
+          ]
+        },
+        "_meta": {
+          "title": "通用提示词与参考图"
+        }
+      },
+      "5": {
+        "class_type": "EmptySD3LatentImage",
+        "inputs": {
+          "width": 1280,
+          "height": 832,
+          "batch_size": 1
+        },
+        "_meta": {
+          "title": "输出尺寸"
+        }
+      },
+      "6": {
+        "class_type": "KSampler",
+        "inputs": {
+          "model": [
+            "11",
+            0
+          ],
+          "positive": [
+            "4",
+            0
+          ],
+          "negative": [
+            "4",
+            1
+          ],
+          "latent_image": [
+            "5",
+            0
+          ],
+          "seed": 20261114,
+          "steps": 25,
+          "cfg": 1.0,
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "denoise": 1.0
+        },
+        "_meta": {
+          "title": "采样参数"
+        }
+      },
+      "7": {
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "6",
+            0
+          ],
+          "vae": [
+            "3",
+            0
+          ]
+        },
+        "_meta": {
+          "title": "解码"
+        }
+      },
+      "10": {
+        "class_type": "SaveImage",
+        "inputs": {
+          "images": [
+            "7",
+            0
+          ],
+          "filename_prefix": "FrameDock/QwenEdit/approved-overhead-man-eyes-closed"
+        },
+        "_meta": {
+          "title": "保存图像"
+        }
+      },
+      "11": {
+        "class_type": "CR Load LoRA",
+        "inputs": {
+          "model": [
+            "1",
+            0
+          ],
+          "clip": [
+            "2",
+            0
+          ],
+          "switch": "Off",
+          "lora_name": "None",
+          "strength_model": 1.0,
+          "strength_clip": 0.0
+        },
+        "_meta": {
+          "title": "可选 LoRA 1（默认关闭）"
+        }
+      },
+      "21": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": "qwen-approved-close-overhead-reference.png"
+        },
+        "_meta": {
+          "title": "参考图 1（可选）"
+        }
+      }
+    },
+    {
+      "client_id": "framedock-qwen-two-stage-direct",
+      "create_time": 1794009052586
+    },
+    [
+      "10"
+    ]
+  ],
+  "outputs": {
+    "10": {
+      "images": [
+        {
+          "filename": "approved-overhead-man-eyes-closed_00001_.png",
+          "subfolder": "FrameDock\\QwenEdit",
+          "type": "output",
+          "metadata": {
+            "kind": "image",
+            "width": 1280,
+            "height": 832
+          }
+        }
+      ]
+    }
+  },
+  "status": {
+    "status_str": "success",
+    "completed": true,
+    "messages": [
+      [
+        "execution_start",
+        {
+          "prompt_id": "cc54fcc4-b3ca-4ea8-a125-c5617fffdfbf",
+          "timestamp": 1794009052587
+        }
+      ],
+      [
+        "execution_cached",
+        {
+          "nodes": [
+            "1",
+            "2",
+            "3",
+            "11"
+          ],
+          "prompt_id": "cc54fcc4-b3ca-4ea8-a125-c5617fffdfbf",
+          "timestamp": 1794009052605
+        }
+      ],
+      [
+        "execution_success",
+        {
+          "prompt_id": "cc54fcc4-b3ca-4ea8-a125-c5617fffdfbf",
+          "timestamp": 1794009091870
+        }
+      ]
+    ]
+  },
+  "meta": {
+    "10": {
+      "node_id": "10",
+      "display_node": "10",
+      "parent_node": null,
+      "real_node_id": "10"
+    }
+  }
+}

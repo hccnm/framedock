@@ -1,248 +1,321 @@
 ---
-title: 本地 Agent 接入规划
-description: 规划通过本地 Canvas Agent、MCP 和侧边栏助手连接 Codex / Claude Code 操作画布
+title: 本机 CLI 桌面接入方案
+description: 让桌面版自动发现并直接使用用户已安装的 Codex CLI，复用本机登录与 Provider 配置，不再要求 npx 启动 Canvas Agent
 ---
 
-# 本地 Agent 接入规划
+# 本机 CLI 桌面接入方案
 
-本文档规划个人用户在访问线上画布网页时，如何连接自己电脑上的 Codex / Claude Code，并让 Agent 通过对话和工具调用操作当前画布。
+## 1. 目标体验
 
-## 目标
+用户安装并打开 Infinite Canvas 桌面版后，在「设置 → Agent」中直接看到本机已安装的 CLI：
 
-- 用户打开线上画布后，可以启动本机服务连接当前画布。
-- 用户可以在 Codex 终端里通过 MCP 操作画布。
-- 用户也可以在网页侧边栏里和本地 Codex / Claude Code 对话。
-- 侧边栏需要展示普通消息、流式输出、工具调用、工具结果和错误提示。
-- 线上服务不保存用户本地 Codex / Claude Code 登录态、API Key 或本地文件权限。
+1. 应用启动时自动扫描 Codex CLI，展示名称、真实版本、可执行文件路径和登录状态。
+2. 用户选择 Codex CLI 后，模型列表和推理强度来自该 CLI 当前账号与配置。
+3. 点击「测试」即可验证 CLI，不需要打开终端，不需要运行 `npx`，也不使用 Canvas Agent 内置的 Codex 包。
+4. 对话时直接启动所选本机 CLI，复用它现有的登录态、`CODEX_HOME`、自定义 Provider 和代理环境。
+5. 后续以同一适配器协议增加 Claude Code CLI；首期只完成 Codex，避免同时改两套会话协议。
 
-## 核心结论
+本方案不把「复制启动命令、填写 Local URL、填写 Connect token」作为正常用户流程。开发模式仍可保留命令行启动，供调试和自动化测试使用。
 
-浏览器页面不能直接启动本地进程，也不应该直接控制本机 Codex / Claude Code。推荐增加一个用户本机运行的 `canvas-agent` 服务：
+## 2. 调研结论
+
+OpenDesign 的体验并不是普通网页获得了启动本地进程的权限，而是由 Electron 桌面应用托管本地 daemon：桌面进程负责 daemon/Web sidecar 生命周期，daemon 扫描本机 CLI 并通过 `child_process` 启动它们，React 页面只调用 daemon API。
+
+OpenDesign 值得复用的设计思想：
+
+- 桌面壳只负责进程生命周期、窗口和安全 IPC，本地 CLI 的业务逻辑放在 daemon。
+- CLI 注册表、可执行文件发现、版本探测、模型探测、进程启动和事件解析相互分层。
+- macOS GUI 进程不会读取交互式 shell 配置，因此除 `PATH` 外还扫描 Homebrew、npm/pnpm、nvm、fnm、mise、Volta、bun 等常见目录。
+- Codex 的选择顺序是「用户指定的绝对路径 → 应用内置工具（若有）→ PATH/常见目录 → macOS Codex.app 内的 CLI」。本项目不内置 Codex，因此去掉第二项。
+- 候选文件“存在”不等于可用；需要实际执行 `--version`，遇到坏 shim 时继续尝试后面的候选。
+- 模型优先从 CLI 实时读取，读取失败才使用最小 fallback；Codex 可通过 `debug models` 或 app-server 的 `model/list` 获取当前配置下的模型。
+- 子进程继承用户环境和配置目录，因而自然复用 CLI 登录态和自定义 Provider，而不是导入或复制 API Key。
+
+OpenDesign 当前采用 Apache-2.0。本项目应重写所需的最小实现，不直接复制大段源码；若实际复制代码，必须保留对应许可证与 NOTICE/修改声明。
+
+参考源码：
+
+- https://github.com/nexu-io/open-design/blob/main/apps/daemon/src/runtimes/detection.ts
+- https://github.com/nexu-io/open-design/blob/main/apps/daemon/src/runtimes/executables.ts
+- https://github.com/nexu-io/open-design/blob/main/apps/daemon/src/runtimes/defs/codex.ts
+- https://github.com/nexu-io/open-design/blob/main/packages/platform/src/toolchain.ts
+- https://github.com/nexu-io/open-design/blob/main/apps/packaged/src/sidecars.ts
+
+## 3. 当前项目差距
+
+当前链路是：
 
 ```txt
-线上画布网页 <-> 本机 canvas-agent <-> Codex / Claude Code
-                         |
-                         +-> MCP Server
-                         +-> 画布连接
+浏览器网页
+  -> 用户手动运行 npx canvas-agent
+  -> Canvas Agent 固定启动依赖包中的 @openai/codex
+  -> Codex app-server
 ```
 
-`canvas-agent` 是本地可信边界，负责启动或连接 Codex / Claude Code、暴露 MCP 工具、维护画布连接、转发侧边栏对话事件。
+已经可以保留的能力：
 
-## 推荐目录
+- Canvas Agent 的 HTTP、SSE、token、Origin 限制和画布会话管理。
+- Codex app-server 客户端、线程历史、模型查询、审批、Skill 和消息存储。
+- 浏览器侧 Agent 面板、画布同步、工具确认、撤销和多标签页归属。
 
-后续实现时建议在项目根目录新增独立 npm 包：
+必须替换的部分：
+
+- `canvas-agent/package.json` 固定依赖 `@openai/codex`。
+- `codex-client.ts` 通过 `require.resolve()` 启动随包附带的 Codex。
+- Agent 没有 CLI 注册表、扫描接口、选择状态和重扫能力。
+- 网页连接页仍把 `npx`、URL 和 token 暴露给普通用户。
+- 没有桌面壳自动启动、监控和关闭 Canvas Agent。
+
+## 4. 推荐架构
 
 ```txt
-canvas-agent/
+Infinite Canvas Desktop (Electron)
+  ├─ Renderer：复用现有 Vite React 页面
+  ├─ Preload：只暴露受限的 host 状态与选择文件能力
+  └─ Main：启动、监控、关闭 Canvas Agent sidecar
+                  |
+                  v
+Canvas Agent（随桌面安装包发布）
+  ├─ CLI registry / discovery / diagnostics
+  ├─ Codex adapter -> 用户本机 codex app-server --stdio
+  ├─ HTTP + SSE + MCP + conversation storage（复用现有实现）
+  └─ 仅监听 127.0.0.1，桌面握手后把连接信息交给 Renderer
+```
+
+桌面版是实现目标体验的必要宿主。纯浏览器页面不能枚举 `PATH`、执行本机二进制或管理子进程；线上网页可以继续存在，但「本机 CLI」应提示使用桌面版，而不是继续展示 `npx` 教程。
+
+## 5. 目录与模块
+
+新增桌面包，避免把 Node/Electron API 混入 `web/`：
+
+```txt
+desktop/
   package.json
   tsconfig.json
   src/
-    index.ts
-    config.ts
-    http-server.ts
-    canvas-session.ts
-    mcp-server.ts
-    agents.ts
-    schemas.ts
-    tools.ts
-    types.ts
+    main.ts                 # BrowserWindow 与应用生命周期
+    preload.ts              # contextBridge，禁止暴露任意命令执行
+    sidecar.ts              # Canvas Agent 启动、健康检查、退出与日志
+    paths.ts                # 用户数据、日志、sidecar 路径
+    security.ts             # 导航、外链、权限与 IPC 白名单
+
+canvas-agent/src/runtime/
+  types.ts                  # LocalCli、探测结果、诊断、适配器契约
+  registry.ts               # 首期只注册 Codex
+  executables.ts            # 候选路径解析与可执行校验
+  toolchain-paths.ts        # GUI 环境常见工具链目录
+  detection.ts              # 并行探测、坏 shim 跳过、重扫
+  process.ts                # 跨平台安全 spawn，不拼 shell 字符串
+  codex.ts                  # Codex 版本、认证、模型与 app-server 启动
 ```
 
-原因：
-
-- 这是用户本机运行的 Node 服务，不属于线上服务端，也不属于纯前端页面。
-- 后续可以发布成 npm 包，用户通过 `npx` 或全局安装启动。
-- Codex SDK、Codex MCP、Claude SDK 都更适合在本地 Node 进程中接入。
-- HTTP 路由使用 Express，MCP 协议层使用官方 `@modelcontextprotocol/sdk`，工具入参使用 `zod`，避免手写协议和松散 JSON。
-
-## 本机启动方式
-
-MVP 阶段优先提供 `npx`：
-
-```bash
-npx -y @basketikun/canvas-agent
-```
-
-在本仓库内开发调试时可直接运行：
-
-```bash
-cd canvas-agent
-npm install
-npm run build
-node dist/index.js
-```
-
-启动后输出：
+前端建议新增：
 
 ```txt
-Infinite Canvas Agent
-Local URL: http://127.0.0.1:17371
-Connect token: xxxxxx
+web/src/services/api/local-cli.ts
+web/src/stores/use-local-cli-store.ts
+web/src/components/agent/agent-runtime-view.tsx
+web/src/types/desktop-host.d.ts
 ```
 
-网页侧边栏填写或自动发现 `http://127.0.0.1:17371` 和 token 后连接本机服务。
+## 6. CLI 发现规则
 
-## 前端需要增加的能力
+### 6.1 候选顺序
 
-前端不直接暴露 HTTP 接口给本机服务，优先由网页主动连接本机 Canvas Agent。当前 MVP 使用 SSE 接收本机事件，HTTP POST 上报画布状态和工具结果：
+Codex 首期按以下顺序解析，首个通过真实探测的候选胜出：
+
+1. 用户在高级设置中选择的绝对路径。
+2. 当前进程 `PATH` 中所有名为 `codex` 的候选，而不是只取第一个。
+3. GUI 常见工具链目录：Homebrew、`~/.local/bin`、npm 自定义 prefix、pnpm、bun、Volta、asdf、mise、nvm、fnm。
+4. macOS：`/Applications/Codex.app/Contents/Resources/codex` 与 `~/Applications/...`。
+
+Windows 同时处理 `.exe`、`.cmd`、`.bat` 和 `PATHEXT`；macOS/Linux 必须校验普通文件与执行权限。路径去重后最多探测 8 个候选，防止大量坏 shim 拖慢重扫。
+
+### 6.2 真实探测
+
+每个候选执行 `codex --version`，5 秒超时。只有成功创建子进程才算已安装；版本无法解析应显示诊断，不应伪装成“未安装”。坏 shim 记录到本轮跳过集合，继续检查后续候选。
+
+选中后再执行：
+
+- `codex login status`：显示登录状态；失败不读取或展示凭据内容。
+- 优先通过已启动 app-server 的 `model/list` 获取模型；设置页重扫可用 `codex debug models` 快速预览。
+- 模型探测失败时保留“CLI 默认模型”，不要静默塞入可能过期的大型静态列表。
+
+### 6.3 环境继承
+
+子进程环境使用：
 
 ```txt
-网页 -> http://127.0.0.1:17371/events?token=xxx
-网页 -> http://127.0.0.1:17371/canvas/state?token=xxx
-网页 -> http://127.0.0.1:17371/canvas/result?token=xxx
+系统代理环境
+  < 桌面主进程继承环境
+  < 用户为该 CLI 设置的显式高级覆盖
 ```
 
-前端需要提供一个画布 Agent 控制层，内部调用现有 store / hook，不直接让外部操作 React 组件：
+必须保留 `HOME`、`PATH`、代理变量和用户原有 `CODEX_HOME`。只有 `CODEX_HOME` 缺失时才使用 `~/.codex`，不得把网页登录信息、API Key 或 Provider 配置复制进应用配置。
+
+## 7. Canvas Agent 接口调整
+
+新增最小接口：
+
+```http
+GET  /agent/runtimes
+POST /agent/runtimes/rescan
+PUT  /agent/runtime
+POST /agent/runtime/test
+```
+
+建议响应：
 
 ```ts
-canvasAgent.getState()
-canvasAgent.getSelection()
-canvasAgent.applyOps(ops)
-canvasAgent.focusNodes(ids)
-canvasAgent.exportSnapshot()
+type LocalCliRuntime = {
+    id: "codex" | "claude";
+    name: string;
+    available: boolean;
+    selected: boolean;
+    executablePath?: string;
+    version?: string;
+    authStatus?: "authenticated" | "unauthenticated" | "unknown";
+    models?: Array<{ id: string; label: string }>;
+    modelsSource?: "live" | "fallback";
+    reasoningOptions?: string[];
+    diagnostics?: Array<{ code: string; message: string }>;
+};
 ```
 
-建议先支持最小操作集：
+`PUT /agent/runtime` 只接受已探测到的 runtime id 与可执行文件指纹，不接受前端提交任意命令或任意 argv。若允许手选文件，只允许桌面 Main 通过受限文件选择器提交绝对路径，Agent 仍需重新校验与探测。
 
-- `add_node`：新增图片、文本、音频、视频、生成配置节点。
-- `update_node`：更新节点位置、尺寸、内容和配置。
-- `delete_node`：删除节点。
-- `connect_nodes`：连接两个节点。
-- `set_viewport`：移动或缩放当前视口。
-- `select_nodes`：选中节点。
-
-工具入参应使用画布业务 JSON，不使用模拟鼠标点击或屏幕坐标自动化。
-
-MCP 读取画布状态时默认返回摘要，不直接把完整图片、视频、音频或超长 base64 内容塞给 Agent。
-
-## MCP 工具设计
-
-`canvas-agent` 内置 MCP Server，让 Codex CLI 可以连接：
-
-```txt
-Codex CLI <-> canvas-agent MCP <-> 当前网页画布
-```
-
-建议首批 MCP 工具：
-
-- `canvas_get_state`：读取当前画布节点、连线、选区和视口摘要。
-- `canvas_apply_ops`：批量执行画布操作。
-- `canvas_get_selection`：读取当前选中的节点。
-- `canvas_export_snapshot`：导出当前画布快照，用于让 Agent 理解布局。
-- `canvas_create_text_node`：快捷创建文本节点。
-- `canvas_create_image_prompt_flow`：快捷创建提示词文本节点和图片生成配置节点。
-
-用户本机 Codex 配置示例：
-
-```bash
-codex mcp add infinite-canvas -- npx -y @basketikun/canvas-agent@latest mcp
-```
-
-本仓库调试时可使用，实际配置建议替换为本机绝对路径：
-
-```bash
-codex mcp add infinite-canvas -- node /path/to/infinite-canvas/canvas-agent/dist/index.js mcp
-```
-
-网页侧边栏助手另走 Canvas Agent 的对话通道。Canvas Agent 使用官方 `@openai/codex` CLI 的 `codex app-server --stdio` 启动并续用同一个 thread，启动时会注入 `infinite-canvas` MCP 配置并把 `default_tools_approval_mode` 设为 `approve`，避免 Codex 自己的 MCP 审批卡住侧边栏；真正修改画布前由网页侧边栏做二次确认。
-
-侧边栏图片附件通过 HTTP 发送到本机 Canvas Agent，Canvas Agent 临时写入本机文件后作为 app-server `localImage` 输入传给 Codex；MVP 会在输入区提示附件体积，单次请求体限制为 30MB。
-
-## 侧边栏助手设计
-
-侧边栏助手连接 `canvas-agent` 后，由 Canvas Agent 选择 Agent Adapter：
-
-```txt
-Sidebar -> canvas-agent -> Codex app-server stdio
-Sidebar -> canvas-agent -> Claude Code CLI / Claude Agent SDK
-```
-
-侧边栏优先展示 Codex app-server 原生结构化事件。前端只消费必要事件：
+配置文件升级为独立字段，协议版本和消息存储版本不联动：
 
 ```ts
-type AgentEvent =
-  | { type: "thread.started"; thread_id: string }
-  | { type: "turn.started" }
-  | { type: "item.started" | "item.updated" | "item.completed"; item: ThreadItem }
-  | { type: "turn.completed"; usage: Usage }
-  | { type: "turn.failed"; error: { message: string } };
+type CanvasAgentConfig = {
+    url: string;
+    token: string;
+    origins?: string[];
+    workspace?: SiteWorkspaceConfig;
+    runtime?: {
+        selectedId: "codex" | "claude";
+        executablePath?: string;
+        env?: Record<string, string>;
+    };
+};
 ```
 
-Claude 后续接入时再单独做 Claude Adapter；当前前端默认只展示 Codex。
+当前 `CodexAppClient.start()` 改为接收已验证的 `executablePath` 与环境，直接执行：
 
-## Codex 接入优先级
-
-优先使用官方 `@openai/codex` CLI 的 `codex app-server --stdio`。
-
-- Codex app-server 会输出 `item/agentMessage/delta`；Canvas Agent 转成 `item.updated` 后，前端用同一条消息做真实流式渲染。
-- 图片附件使用 app-server `localImage` 输入，不手写多模态协议。
-
-参考：
-
-- https://github.com/openai/codex/tree/main/codex-rs/app-server
-- https://developers.openai.com/codex/codex-manual.md
-
-## Claude Code 接入优先级
-
-Claude Code 侧当前 MVP 先调用本机 Claude Code CLI 的流式 JSON 输出，由 `canvas-agent` 统一转换事件和工具调用；后续可升级为 Claude Agent SDK。
-
-如果希望 Claude Code 也能操作当前画布，需要给 Claude Code 配置同一个 MCP：
-
-```bash
-claude mcp add --scope user --transport stdio infinite-canvas -- npx -y @basketikun/canvas-agent@latest mcp
+```txt
+<selected codex> app-server --stdio
 ```
 
-Canvas Agent 调用 Claude Code 时默认允许 `mcp__infinite-canvas__*`，避免 print 模式被工具审批卡住；真正修改画布仍由网页侧边栏确认。
+删除对 `require.resolve("@openai/codex/package.json")` 的依赖，并从 `canvas-agent/package.json` 移除 `@openai/codex`。切换 runtime 或路径时，必须先确认当前没有运行中的 turn，再关闭旧 app-server、清空进程级客户端缓存并启动新实例；不得把旧 CLI 的线程状态误挂到新 CLI。
 
-参考：
+## 8. 桌面生命周期
 
-- https://docs.anthropic.com/en/docs/claude-code/sdk
-- https://code.claude.com/docs/en/agent-sdk/typescript
+1. Electron Main 启动 Canvas Agent sidecar，使用随机空闲端口或受控固定端口。
+2. Main 等待 `/health` 成功后，通过 preload 提供一次性连接信息；Renderer 不展示 token 输入框。
+3. sidecar 意外退出时自动重启一次并显示恢复状态；连续失败进入诊断页，不无限重启。
+4. 应用退出时先中断运行中的 turn，再优雅关闭 sidecar；超时后才终止子进程。
+5. 日志写入桌面用户数据目录，保留当前和上一轮，继续使用现有凭据脱敏逻辑。
+6. 单实例运行；第二次启动只聚焦已有窗口，避免两个 Agent 争用端口、配置和 Codex 会话。
 
-## 安全边界
+开发环境可继续运行 `npm run dev`，但发布用户只下载安装桌面应用，不执行 Node、npm 或 npx 命令。
 
-- Canvas Agent 默认只监听 `127.0.0.1`。
-- Canvas Agent 启动时生成 token，网页连接必须携带 token。
-- Canvas Agent 只接受允许的 Origin，默认允许用户当前打开的画布域名。
-- 画布操作默认先在侧边栏展示工具调用，`canvas_apply_ops` 默认需要用户确认后执行，并保留最近一次工具操作撤销入口。
-- 不把 Codex / Claude 登录态、API Key、用户本地文件路径上传到线上服务。
-- 线上网页只保存 Canvas Agent 地址和必要偏好，不保存本地密钥。
+## 9. 前端交互
 
-## 实现阶段
+设置页使用与参考图一致的两级结构，但沿用本项目主题：
 
-### 第一阶段：Codex 终端操作画布
+- 顶部切换「本机 CLI / API 提供商」；本方案只落地本机 CLI，API 提供商沿用项目已有渠道配置，不重复造一套。
+- 本机 CLI 列表显示已发现的 CLI、版本、登录状态和当前模型；右上角提供「重新扫描」。
+- 点击 Codex 卡片展开模型、推理强度、测试与高级路径设置。
+- 模型旁标注「来自 CLI 实时列表」或「CLI 默认」，不得把 fallback 冒充实时数据。
+- 测试结果必须说明实际使用的可执行文件路径和版本。
+- Agent 对话面板首次打开时自动使用已选 CLI；未发现 CLI 时引导安装 Codex 或手动选择路径。
 
-1. 新增 `canvas-agent/` npm 包。
-2. Canvas Agent 提供 SSE/HTTP 连接，网页连接并注册当前画布。
-3. 前端新增 `canvasAgent` 控制层。
-4. Canvas Agent 内置 MCP Server。
-5. Codex 通过 MCP 调用 `canvas_get_state` 和 `canvas_apply_ops`。
+桌面环境自动连接，不再显示 `npx`、Local URL 和 Connect token。普通浏览器环境不伪装成可直接使用：显示「本机 CLI 需要 Infinite Canvas 桌面版」和下载入口；现有手动 Agent 连接可暂时放到开发者选项，稳定后再决定是否删除。
 
-### 第二阶段：网页侧边栏连接 Codex
+## 10. 安全边界
 
-1. 前端新增本地 Agent 侧边栏。
-2. Canvas Agent 通过官方 `@openai/codex` CLI 的 `codex app-server --stdio` 接入 Codex，复用同一个 thread，注入 `infinite-canvas` MCP，并展示结构化事件流。
-3. 运行日志只保留关键 Codex 事件，避免把流式中间更新刷满日志。
-4. 侧边栏展示消息流、工具调用、工具结果、错误和图片附件大小提示。
+- Electron 必须开启 `contextIsolation`、关闭 `nodeIntegration`，preload 只暴露固定 IPC 方法。
+- Renderer 不能提交命令、argv、工作目录或环境变量名之外的任意可执行内容。
+- 所有 CLI 进程使用 `spawn(file, args)`；Windows wrapper 使用专门的安全调用适配，不使用拼接后的 `shell: true` 命令字符串。
+- sidecar 仅监听 `127.0.0.1`；桌面与 Agent 之间仍使用随机 token，并限制 Origin。
+- 不读取、回传或记录 `~/.codex/auth.json`、API Key 和自定义 Provider 密钥。
+- 诊断日志只记录可执行文件路径、版本、退出码和脱敏 stderr。
+- 手选路径必须重新验证普通文件、执行权限和预期 CLI 身份，不能让网页借此执行任意文件。
 
-### 第三阶段：接入 Claude Code
+## 11. 分阶段实现
 
-1. Canvas Agent 新增 Claude Code CLI Adapter。
-2. 统一 Claude Code 的消息和工具调用事件。
-3. 前端侧边栏增加 Agent 类型选择。
+### Phase 1：本机 Codex 运行时
 
-### 第四阶段：体验完善
+- 增加 runtime registry、路径扫描、版本/登录/模型探测与测试接口。
+- Canvas Agent 改用用户本机 Codex，移除内置 `@openai/codex`。
+- 保持现有 HTTP/SSE/MCP/历史协议不变。
+- 为坏 shim、路径覆盖、模型失败和配置继承补单元测试。
 
-1. 增加本机连接状态、重连和 token 更新。
-2. 优化工具调用确认、撤销和批量工具队列体验。
-3. 增加常用画布动作模板。
-4. 增加 npm 发布和用户安装文档。
+完成标准：在终端启动开发版 Canvas Agent 后，无需指定路径即可发现本机 Codex，并证明实际启动路径、版本、模型和登录配置均来自本机 CLI。
 
-## MVP 验收标准
+### Phase 2：桌面壳与零命令启动
 
-- 用户运行 `npx -y @basketikun/canvas-agent@latest` 后，线上画布能显示已连接。
-- 用户在 Codex CLI 中可以创建文本节点、移动节点、连接节点。
-- 网页侧边栏能发送一条消息给本地 Codex，并展示流式回复。
-- 网页侧边栏默认只展示本地 Codex，并展示结构化回复。
-- 侧边栏能展示一次 `canvas_apply_ops` 工具调用和结果。
-- 断开 Canvas Agent 后，网页能显示清晰的本机连接失败提示。
+- 新增 Electron 包和打包配置，把 Web 与 Canvas Agent 作为同一安装包发布。
+- 自动启动/关闭 sidecar，完成安全 preload 与连接信息握手。
+- Agent 面板移除桌面环境中的 URL/token/npx 流程。
+
+完成标准：全新安装桌面版后，用户不打开终端即可选择并测试本机 Codex，然后完成一轮画布对话与工具调用。
+
+### Phase 3：运行时设置体验
+
+- 增加 CLI 卡片、重扫、实时模型、推理强度、登录诊断和高级路径选择。
+- 增加桌面版与普通浏览器的差异化空状态。
+- 提供从浏览器版导出并导入桌面版的项目/配置入口。
+
+完成标准：参考图中的核心路径均可完成，且所有展示信息都能追溯到真实探测结果。
+
+### Phase 4：Claude Code
+
+- 按相同 runtime contract 添加 Claude Code。
+- 独立实现 Claude 流事件、会话续接、权限和 MCP 注入，不复用 Codex 协议字段冒充兼容。
+
+## 12. 测试与验收
+
+自动化至少覆盖：
+
+- macOS/Linux/Windows 的路径顺序、去重、执行权限和扩展名。
+- GUI 最小 PATH 下仍能发现 Homebrew、npm、nvm、fnm、mise 和 Codex.app 安装。
+- PATH 第一个候选损坏、第二个候选可用时选择第二个。
+- 用户显式路径优先，路径失效时给出明确诊断，不悄悄换成另一个 CLI。
+- Codex 版本、登录状态、实时模型及模型探测 fallback。
+- 自定义 `CODEX_HOME`、Provider、代理环境的继承；日志中没有凭据。
+- 切换 CLI 时运行中 turn 的阻止策略和 app-server 重启。
+- sidecar 冷启动、异常退出、单实例、优雅退出和当前/上一轮日志。
+- preload IPC 白名单、导航限制、外链限制和任意命令注入拒绝。
+
+人工验收主路径：
+
+1. 本机 Codex 已登录并配置自定义 Provider。
+2. 安装并启动 Infinite Canvas 桌面版，不打开终端。
+3. 设置页自动显示真实 Codex 路径与版本。
+4. 模型列表与该 Codex 当前可用列表一致，选择模型与推理强度后测试成功。
+5. 在画布 Agent 面板发起任务，能流式回复、调用画布工具、审批、停止并恢复历史。
+6. 退出并重开桌面版，选择项和会话仍在；未要求运行任何 `npx` 命令。
+
+## 13. 非目标与风险
+
+- 首期不让线上网页直接启动本地 CLI；浏览器安全模型不允许这样做。
+- 首期不同时支持多个 Codex 实例并行，不做跨 CLI 会话迁移。
+- 桌面版使用独立的 Chromium 数据目录，不能自动读取用户 Chrome 中的 IndexedDB。必须提供项目/配置导出导入；若要无缝共享同一浏览器本地数据，需要另做浏览器扩展或 Native Messaging，不能混入本期。
+- Codex CLI 的私有或实验命令可能变化，模型探测必须允许失败并保持可用的默认模型路径。
+- 桌面签名、公证、自动更新和三平台发布是独立交付项；不能把开发态 Electron 启动成功当作可发布安装包。
+
+## 14. 实现 Agent 的起步顺序
+
+1. 先只改 Canvas Agent：做本机 Codex 发现与启动，保持前端协议不变。
+2. 用真实本机 Codex 验证路径、版本、登录、模型和一轮 app-server 对话。
+3. 再做 Electron sidecar 生命周期与安全 preload。
+4. 最后替换连接页为 CLI 选择 UI，并补桌面/浏览器双环境空状态。
+
+这样每个阶段都可单独验证，也不会在桌面打包、CLI 协议和大规模 UI 改造同时发生时失去问题边界。
+
+## 15. 首版实现记录（与计划的偏差）
+
+- `/agent/runtimes` 响应不内嵌 `models` / `reasoningOptions`：模型与推理强度继续由已启动 app-server 的 `model/list`（现有 `/agent/codex/models`）实时提供，设置页直接展示该实时列表并标注来源，避免重复探测。
+- 高级路径设置先用文本输入框提交绝对路径，Agent 保存前重新执行探测校验；桌面原生文件选择器留到打包阶段一起做。
+- 桌面首版提供可直接运行的 Electron 入口（`desktop/`，复用仓库内 `canvas-agent/dist` 与 `web/dist`）；安装包、签名公证与自动更新按第 13 节仍属独立交付项，已记入 TODO。

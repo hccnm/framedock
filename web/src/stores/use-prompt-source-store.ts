@@ -8,7 +8,7 @@ export type PromptSourceSchedule = {
     lastFetchedAt: string;
 };
 
-const PROMPT_SOURCE_STORE_KEY = "infinite-canvas:prompt_source_store_v2";
+const PROMPT_SOURCE_STORE_KEY = "framedock:prompt_source_store_v2";
 
 const defaultSchedule: PromptSourceSchedule = {
     intervalMinutes: 30,

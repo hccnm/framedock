@@ -5,7 +5,6 @@ import { i18n } from './i18n';
 import { uiTranslations } from 'fumadocs-ui/i18n';
 
 const githubUrl = `https://github.com/${gitConfig.user}/${gitConfig.repo}`;
-const qqUrl = 'https://qm.qq.com/q/DFnKzZ807u';
 
 export const translations = i18n.translations().extend(uiTranslations()).add('ui', {
   en: {
@@ -65,11 +64,11 @@ export function baseOptions(locale: string): BaseLayoutProps {
       {
         text: (
           <span className="inline-flex items-center gap-1.5">
-            <span>{chinese ? '在线体验' : 'Live Demo'}</span>
+            <span>{chinese ? '项目仓库' : 'Repository'}</span>
             <ArrowUpRight className="size-4" />
           </span>
         ),
-        url: 'https://canvas.best/',
+        url: githubUrl,
         external: true,
         on: 'nav',
       },
@@ -81,15 +80,6 @@ export function baseOptions(locale: string): BaseLayoutProps {
         external: true,
         on: 'menu',
         icon: <img src="/github.svg" alt="" className="size-4" />,
-      },
-      {
-        type: 'icon',
-        text: 'QQ',
-        label: 'QQ',
-        url: qqUrl,
-        external: true,
-        on: 'menu',
-        icon: <img src="/qq.svg" alt="" className="size-4" />,
       },
     ],
   };

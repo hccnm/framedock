@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 安全问题报告
+    url: https://github.com/hccnm/framedock/blob/main/SECURITY.md
+    about: 安全漏洞、凭据泄漏等敏感问题请遵循私密报告流程。
+  - name: 贡献指南
+    url: https://github.com/hccnm/framedock/blob/main/CONTRIBUTING.md
+    about: 了解开发环境、验证要求与 PR 审查流程。

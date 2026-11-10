@@ -1,0 +1,9 @@
+{
+  "queues": 7,
+  "domMutations": 0,
+  "removals": 0,
+  "sameRoot": true,
+  "missingOutputLinkHidden": true,
+  "exactOutputFocused": true,
+  "sourcePanelClosed": true
+}

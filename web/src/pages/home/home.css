@@ -1,0 +1,27 @@
+.fh-library .fh-page {
+    border-radius: 16px;
+}
+
+.fh-library .fh-page .fh-card-caption {
+    border-top: 1px solid color-mix(in srgb, currentColor 8%, transparent);
+    padding: 16px 48px 16px 16px;
+}
+
+.fh-library .fh-page .fh-card-caption h2 {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.fh-library .fh-page .fh-card-caption p {
+    margin-top: 8px;
+    font-size: 12px;
+}
+
+.fh-library .fh-page .fh-card-menu {
+    right: 12px;
+    bottom: 14px;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    opacity: 1;
+}

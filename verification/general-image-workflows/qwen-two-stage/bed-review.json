@@ -1,0 +1,10 @@
+{
+  "status": "visually_reviewed_pass",
+  "overhead_view": true,
+  "headboard_at_top": true,
+  "bed_length_down_image": true,
+  "pillow_count": 2,
+  "people_count": 0,
+  "sha256": "56fa1533fb332e31488ee38437c0416f330c6daedd858d72daa4f23e20c9fdce",
+  "use_as_scene_plate": true
+}

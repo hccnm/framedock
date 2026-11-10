@@ -1,6 +1,7 @@
 services:
   docs:
-    image: ghcr.io/basketikun/infinite-canvas-docs:latest
+    # Build and publish this image yourself, or replace it with your own image.
+    image: ghcr.io/hccnm/framedock-docs:latest
     ports:
       - "3001:3000"
     restart: unless-stopped

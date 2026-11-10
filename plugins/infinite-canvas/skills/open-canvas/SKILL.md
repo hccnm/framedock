@@ -1,27 +1,13 @@
 ---
 name: open-canvas
-description: 打开 Infinite Canvas 在线或本地画布，并自动连接本地 Canvas Agent。用户要求打开、启动、进入或使用 Infinite Canvas 画布时使用。
+description: 打开 Infinite Canvas 本地画布，并自动连接本地 Canvas Agent。用户要求打开、启动、进入或使用 Infinite Canvas 画布时使用。
 ---
 
 # Open Infinite Canvas
 
-默认打开在线版。只有用户明确要求使用本地项目时，才启动本地前端。
+默认打开本地前端。本分支没有默认在线站点，不将连接令牌发送到第三方站点。
 
-## 在线版
-
-1. 启动本地 Canvas Agent 并保持运行：
-
-```bash
-npx -y @basketikun/canvas-agent@latest
-```
-
-2. 从启动输出取得 `Local URL` 和 `Connect token`。
-
-3. 在 Codex 右侧浏览器打开：
-
-```text
-https://canvas.best/canvas?mode=new#agentUrl=<Local URL>&agentToken=<Connect token>
-```
+项目仓库：https://github.com/hccnm/framedock。
 
 ## 本地版
 

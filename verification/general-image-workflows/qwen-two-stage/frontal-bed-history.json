@@ -1,0 +1,226 @@
+{
+  "prompt": [
+    469,
+    "1edc304a-77ff-49b3-a1f5-92996ffad52e",
+    {
+      "1": {
+        "class_type": "UNETLoader",
+        "inputs": {
+          "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+          "weight_dtype": "default"
+        },
+        "_meta": {
+          "title": "模型"
+        }
+      },
+      "2": {
+        "class_type": "CLIPLoader",
+        "inputs": {
+          "clip_name": "qwen3vl_8b_bf16.safetensors",
+          "type": "qwen_image",
+          "device": "default"
+        },
+        "_meta": {
+          "title": "文本编码器"
+        }
+      },
+      "3": {
+        "class_type": "VAELoader",
+        "inputs": {
+          "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+        },
+        "_meta": {
+          "title": "VAE"
+        }
+      },
+      "4": {
+        "class_type": "TextEncodeQwenImage21",
+        "inputs": {
+          "clip": [
+            "11",
+            1
+          ],
+          "vae": [
+            "3",
+            0
+          ],
+          "prompt": "Photorealistic empty-bedroom establishing shot, landscape frame. Use <image1> only for the existing room and bed design. Move the camera to the FOOT of this same bed, centered on the bed's longitudinal axis, looking STRAIGHT TOWARD THE HEADBOARD. This is a new camera viewpoint, not the reference camera angle. The flat light-wood HEADBOARD is directly behind the pillows, runs HORIZONTALLY across the BACK of the image, and its front surface faces the camera. Three plain pale cotton pillows lie in a single horizontal row touching this headboard, ready for three heads. The rectangular mattress extends straight from the headboard toward the bottom foreground; its two long side edges converge toward the headboard. White tubular metal bed frame, plain ivory cotton bedding with natural gentle wrinkles. Preserve the modest small Xiamen residential bedroom, white walls, wooden floor, the narrow black-framed window and cream curtains on the RIGHT SIDE WALL, not behind the headboard. Soft morning window light. Camera at about 1.4m height at the foot of the bed, a modest downward tilt, 40mm natural perspective, level roll. Medium-wide bed framing: show the pillows, headboard, upper mattress and enough side frame to make the head-to-foot direction unambiguous. The foreground foot edge can be cropped. The bed is completely EMPTY, no people. Keep a natural sleeping-ready bed, no decorative cushions, no text, no diagram, no ornate quilt, no overhead or side-on composition.",
+          "negative_prompt": "",
+          "resolution": 1024,
+          "images.image_1": [
+            "21",
+            0
+          ]
+        },
+        "_meta": {
+          "title": "通用提示词与参考图"
+        }
+      },
+      "5": {
+        "class_type": "EmptySD3LatentImage",
+        "inputs": {
+          "width": 1344,
+          "height": 768,
+          "batch_size": 1
+        },
+        "_meta": {
+          "title": "输出尺寸"
+        }
+      },
+      "6": {
+        "class_type": "KSampler",
+        "inputs": {
+          "model": [
+            "11",
+            0
+          ],
+          "positive": [
+            "4",
+            0
+          ],
+          "negative": [
+            "4",
+            1
+          ],
+          "latent_image": [
+            "5",
+            0
+          ],
+          "seed": 20261110,
+          "steps": 25,
+          "cfg": 1.0,
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "denoise": 1.0
+        },
+        "_meta": {
+          "title": "采样参数"
+        }
+      },
+      "7": {
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "6",
+            0
+          ],
+          "vae": [
+            "3",
+            0
+          ]
+        },
+        "_meta": {
+          "title": "解码"
+        }
+      },
+      "10": {
+        "class_type": "SaveImage",
+        "inputs": {
+          "images": [
+            "7",
+            0
+          ],
+          "filename_prefix": "FrameDock/QwenEdit/two-stage-empty-bed"
+        },
+        "_meta": {
+          "title": "保存图像"
+        }
+      },
+      "11": {
+        "class_type": "CR Load LoRA",
+        "inputs": {
+          "model": [
+            "1",
+            0
+          ],
+          "clip": [
+            "2",
+            0
+          ],
+          "switch": "Off",
+          "lora_name": "None",
+          "strength_model": 1.0,
+          "strength_clip": 0.0
+        },
+        "_meta": {
+          "title": "可选 LoRA 1（默认关闭）"
+        }
+      },
+      "21": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": "canvas-jAbmZJ1W.png"
+        },
+        "_meta": {
+          "title": "参考图 1（可选）"
+        }
+      }
+    },
+    {
+      "client_id": "framedock-qwen-two-stage-direct",
+      "create_time": 1794008612192
+    },
+    [
+      "10"
+    ]
+  ],
+  "outputs": {
+    "10": {
+      "images": [
+        {
+          "filename": "two-stage-empty-bed_00001_.png",
+          "subfolder": "FrameDock\\QwenEdit",
+          "type": "output",
+          "metadata": {
+            "kind": "image",
+            "width": 1344,
+            "height": 768
+          }
+        }
+      ]
+    }
+  },
+  "status": {
+    "status_str": "success",
+    "completed": true,
+    "messages": [
+      [
+        "execution_start",
+        {
+          "prompt_id": "1edc304a-77ff-49b3-a1f5-92996ffad52e",
+          "timestamp": 1794008612193
+        }
+      ],
+      [
+        "execution_cached",
+        {
+          "nodes": [
+            "1",
+            "2",
+            "3",
+            "5",
+            "11",
+            "21"
+          ],
+          "prompt_id": "1edc304a-77ff-49b3-a1f5-92996ffad52e",
+          "timestamp": 1794008612204
+        }
+      ],
+      [
+        "execution_success",
+        {
+          "prompt_id": "1edc304a-77ff-49b3-a1f5-92996ffad52e",
+          "timestamp": 1794008650297
+        }
+      ]
+    ]
+  },
+  "meta": {
+    "10": {
+      "node_id": "10",
+      "display_node": "10",
+      "parent_node": null,
+      "real_node_id": "10"
+    }
+  }
+}

@@ -1,0 +1,229 @@
+---
+title: ComfyUI Node Integration Specification
+description: Specification for ComfyUI configuration, API workflow management, canvas execution, task recovery, and media output persistence
+---
+
+# ComfyUI Node Integration Specification
+
+## 1. Objective
+
+Add first-class ComfyUI support to the existing browser-based canvas without introducing an application backend. Users can connect one local or LAN ComfyUI instance, import API Format workflows, expose and configure workflow inputs, run those workflows from a canvas node, and persist returned image, video, audio, and text outputs as ordinary canvas nodes.
+
+The browser calls ComfyUI directly. The existing local HTTP proxy remains the supported fallback when the ComfyUI instance does not permit the canvas origin.
+
+## 2. Scope
+
+Included:
+
+- One ComfyUI instance.
+- API Format workflow import, validation, editing, duplication, deletion, and test execution.
+- Automatic field discovery with manual correction.
+- Text-to-image, enhance, edit, and custom modes.
+- Canvas text, image, video, audio, and group inputs.
+- Standard ComfyUI HTTP upload, prompt, history, and view APIs.
+- Persistent local outputs, execution status, diagnostics, and refresh recovery.
+
+Excluded:
+
+- Multi-instance balancing or failover.
+- RunningHub, ModelScope, or other hosted workflow services.
+- Installing ComfyUI, models, or custom nodes.
+- Bundled model-specific workflows.
+- Editing the native ComfyUI graph.
+- WebSocket preview frames.
+- Remote interruption or queue deletion.
+- Cloud storage for ComfyUI configuration or history.
+
+## 3. Primary flows
+
+### Configure an instance
+
+The user enters an HTTP or HTTPS base URL under **Settings → ComfyUI**. The app normalizes the trailing slash and calls `GET /system_stats`. It distinguishes invalid URLs, CORS failures, proxy failures, connection refusal, non-success HTTP responses, and invalid JSON.
+
+```ts
+type ComfyUiConfig = {
+    baseUrl: string;
+    presetWorkflowIds: {
+        text: string;
+        enhance: string;
+        edit: string;
+    };
+};
+```
+
+### Import a workflow
+
+Only ComfyUI API Format JSON is accepted. The importer rejects empty values, non-object nodes, workflows without `class_type`, malformed JSON, and UI-format files containing `nodes` and `links`. UI-format rejection explicitly instructs the user to export API format from ComfyUI.
+
+Literal inputs become configurable field candidates. Two-element link arrays such as `["12", 0]` are graph connections and must never be exposed or overwritten.
+
+### Run from the canvas
+
+The user creates a ComfyUI node, selects a mode and workflow, connects upstream resources, reviews the mapping, and runs it. Inputs are uploaded and mapped, the copied workflow is queued, history is polled, results are downloaded into local storage, and ordinary resource nodes are created to the right of the ComfyUI node.
+
+## 4. Workflow model
+
+```ts
+type ComfyApiNode = {
+    class_type: string;
+    inputs: Record<string, unknown>;
+    _meta?: { title?: string };
+};
+
+type ComfyWorkflowFieldType =
+    | "text" | "textarea" | "number" | "slider" | "dropdown"
+    | "boolean" | "image" | "video" | "audio";
+
+type ComfyPresetRole =
+    | "prompt" | "image" | "strength" | "width" | "height" | "seed";
+
+type ComfyWorkflowField = {
+    id: string;
+    nodeId: string;
+    inputKey: string;
+    nodeTitle: string;
+    label: string;
+    type: ComfyWorkflowFieldType;
+    enabled: boolean;
+    order: number;
+    defaultValue?: unknown;
+    options?: Array<string | number>;
+    min?: number;
+    max?: number;
+    step?: number;
+    randomize?: boolean;
+    presetRole?: ComfyPresetRole;
+};
+
+type ComfyWorkflow = {
+    id: string;
+    name: string;
+    description: string;
+    workflow: Record<string, ComfyApiNode>;
+    fields: ComfyWorkflowField[];
+    createdAt: string;
+    updatedAt: string;
+};
+```
+
+Workflows use a dedicated localforage store. The saved workflow is an immutable template; every execution starts from a deep copy.
+
+## 5. Field discovery
+
+The importer should first request `GET /object_info` when an instance is configured. Enum definitions become dropdowns, numeric metadata supplies ranges and steps, booleans become switches, and known media types become media fields.
+
+Fallback inference uses input names and literal values:
+
+- Prompt-like keys become text areas.
+- Seed keys become numeric fields with optional randomization.
+- Steps, CFG, denoise, and strength become sliders.
+- Width, height, and batch size become numbers.
+- Image and mask keys become image inputs.
+- Video, audio, and sound keys become their corresponding media types.
+- Remaining booleans, numbers, and strings map to their natural controls.
+
+All inferred settings remain editable.
+
+## 6. Workflow manager
+
+The ComfyUI settings tab contains an instance section and a workflow section. Workflow cards show the name, exposed-field count, media input types, preset bindings, and update time.
+
+The editor supports field search, enabling, renaming, type correction, reordering, defaults, numeric constraints, dropdown options, randomization, and preset roles. Prompt, strength, width, height, and seed roles are unique per workflow; image roles may repeat and use field order.
+
+Deleting a referenced workflow requires confirmation. Existing nodes keep the missing workflow ID and show a missing-workflow error rather than silently selecting another workflow.
+
+The test area renders controls from enabled fields, executes the production request path, and previews all supported outputs without creating canvas nodes. It also displays the prompt ID and raw error details and supports querying the same prompt again.
+
+## 7. Canvas node
+
+Add the built-in node type `CanvasNodeType.ComfyUI = "comfyui"`.
+
+The node consumes upstream resources but is not itself a resource. Its compact body shows mode, workflow, input summary, and run status; detailed controls live in the existing lower panel pattern.
+
+```ts
+type ComfyNodeMetadata = {
+    comfyMode: "text" | "enhance" | "edit" | "custom";
+    comfyWorkflowId?: string;
+    comfyValues?: Record<string, unknown>;
+    comfyRandomEnabled?: Record<string, boolean>;
+    comfyRunStatus?: "idle" | "uploading" | "queued" | "running" | "processing" | "success" | "error";
+    comfyPromptId?: string;
+    comfyError?: string;
+    comfyOutputNodeIds?: string[];
+};
+```
+
+The text mode requires a prompt role. Enhance requires an image role. Edit requires a prompt and one or more image roles. Custom mode uses all enabled fields. Preset modes provide role-based UI only; the project does not ship model-specific workflow JSON.
+
+## 8. Input mapping
+
+Target fields are sorted by their configured order. Upstream nodes follow the canvas connection array; resources inside groups follow project node order. Inputs are mapped within their own media kind and never interleaved across kinds.
+
+The panel must show the effective mapping before execution. Connected upstream text fills enabled text fields in order; when no upstream text exists, saved node values remain in use. Missing enabled media fields prevent submission and identify the missing field.
+
+## 9. Execution protocol
+
+Media is resolved from its storage key or URL and uploaded with multipart form data to `POST /upload/image`, using `image`, `type=input`, and `overwrite=false`. The returned filename replaces only the configured input in the copied workflow.
+
+Submit the workflow with:
+
+```http
+POST {baseUrl}/prompt
+Content-Type: application/json
+```
+
+```json
+{
+  "prompt": {},
+  "client_id": "infinite-canvas-<uuid>"
+}
+```
+
+Persist the returned `prompt_id`. A `node_errors` payload is terminal and should preserve node, class, input, and original ComfyUI diagnostics.
+
+Poll `GET /history/{prompt_id}` at the interval set under Settings → ComfyUI → Instance (1, 3, 5 and 10 second presets or a custom value of at least 1 second; 3 seconds by default). There is no total timeout, automatic interrupt, or queue deletion. Leaving the page stops local polling only. Reopening a project resumes any non-terminal saved prompt. If history has been cleared, preserve the prompt ID and report that recovery is unavailable.
+
+## 10. Output processing
+
+Scan history outputs for file descriptors containing `filename`, `subfolder`, and `type`. Download them through `GET /view` and classify them using response MIME type, extension, and output key.
+
+Recognize text under `text`, `texts`, `string`, `strings`, `caption`, `captions`, `prompt`, and `prompts`, including arrays and objects containing `text` or `value`.
+
+When formal outputs exist, filter preview, comparer, ShowText, ShowAnything, Note, Debug, expression, and intermediate-state nodes. Preview output is accepted only when no formal output exists. Deduplicate by output node ID, filename, subfolder, and type.
+
+Persist images through the existing image storage service, video and audio through the existing media service, and text in text-node metadata. One run creates one batch image node, one batch text node, and individual video and audio nodes. Results are placed to the right and connected to the ComfyUI node. Every run creates a new result set and preserves previous outputs.
+
+## 11. Status and errors
+
+The state sequence is:
+
+```text
+idle → uploading → queued → running → processing → success | error
+```
+
+The UI must not invent percentage progress. A running node prevents duplicate submission without blocking the rest of the canvas. Error actions include retry, copy details, query the existing prompt, and open ComfyUI settings. Retry submits a new prompt; query never resubmits.
+
+Errors must distinguish missing configuration, proxy/CORS/network failures, missing workflows or fields, insufficient inputs, local file failures, upload failures, prompt validation, missing custom nodes or models, execution failure, cleared history, empty output, download failure, and local persistence failure.
+
+## 12. Export and synchronization
+
+Application configuration export includes the ComfyUI address, preset bindings, workflow definitions, and field configuration. It excludes Blob URLs, temporary run state, media binaries, and full history payloads.
+
+WebDAV application-data synchronization may include definitions and configuration. Media continues through the existing media synchronization path. Documentation must continue to describe browser-local storage as the primary source of truth.
+
+## 13. Verification
+
+Unit tests cover format validation, literal-versus-link detection, type inference, object-info enrichment, role uniqueness, stable resource mapping, value conversion, random seeds, immutable workflow patching, output classification, filtering, and deduplication.
+
+Mocked API tests cover connection checks, uploads, successful submission, node errors, waiting/success/failure history, mixed outputs, view failures, and local-proxy URL wrapping.
+
+Persistence tests cover workflow CRUD, node values after reload, prompt recovery, output idempotency, missing workflows, and locally retained output after ComfyUI cleanup.
+
+Real acceptance requires importing and testing a text-to-image API workflow, running it from a connected canvas text node, creating a persisted image result, retaining that result after refresh, preserving previous runs, and separately validating video, audio, and text outputs.
+
+## 14. Documentation lifecycle
+
+This specification is planning documentation. Saving it does not update the changelog, pending-test list, or formal feature documentation. Those files are updated only when implementation exists; the formal feature page is updated after user acceptance.
+
+The integration is complete only when workflows can be configured without manual JSON edits, every supported canvas resource maps correctly, the source template remains immutable, long tasks recover by prompt ID, all output kinds become persistent canvas nodes, and major failures remain diagnosable.
+

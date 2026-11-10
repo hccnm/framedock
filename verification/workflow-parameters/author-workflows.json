@@ -1,0 +1,3777 @@
+[
+  {
+    "id": "verification-01_角色_作者原文_API.json",
+    "name": "角色生成-Z-Image",
+    "description": "文生角色。正向和负向提示词分开配置，宽高、步数和生成张数可调整。",
+    "workflow": {
+      "227": {
+        "inputs": {
+          "unet_name": "z_image_bf16.safetensors",
+          "weight_dtype": "default"
+        },
+        "class_type": "UNETLoader",
+        "_meta": {
+          "title": "UNet加载器"
+        }
+      },
+      "228": {
+        "inputs": {
+          "text": "泛黄，发绿，模糊，低分辨率，低质量图像，扭曲的肢体，诡异的外观，丑陋，AI感，噪点，网格感，JPEG压缩条纹，异常的肢体，水印，乱码，意义不明的字符，泛蓝",
+          "clip": [
+            "245",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "CLIP文本编码"
+        }
+      },
+      "235": {
+        "inputs": {
+          "seed": 413189552079340,
+          "steps": 8,
+          "cfg": 1,
+          "sampler_name": "res_2s_ode",
+          "scheduler": "kl_optimal",
+          "denoise": 1,
+          "model": [
+            "250",
+            0
+          ],
+          "positive": [
+            "247",
+            0
+          ],
+          "negative": [
+            "228",
+            0
+          ],
+          "latent_image": [
+            "244",
+            0
+          ]
+        },
+        "class_type": "KSampler",
+        "_meta": {
+          "title": "K采样器"
+        }
+      },
+      "236": {
+        "inputs": {
+          "samples": [
+            "235",
+            0
+          ],
+          "vae": [
+            "246",
+            0
+          ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+          "title": "VAE解码"
+        }
+      },
+      "240": {
+        "inputs": {
+          "lora_name": "Kook_Zimage_如梦似幻.safetensors",
+          "strength_model": 0.7000000000000002,
+          "model": [
+            "249",
+            0
+          ]
+        },
+        "class_type": "LoraLoaderModelOnly",
+        "_meta": {
+          "title": "LoRA加载器（仅模型）"
+        }
+      },
+      "241": {
+        "inputs": {
+          "filename_prefix": "ComfyUI",
+          "images": [
+            "236",
+            0
+          ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+          "title": "保存图像"
+        }
+      },
+      "244": {
+        "inputs": {
+          "width": [
+            "251",
+            0
+          ],
+          "height": [
+            "252",
+            0
+          ],
+          "batch_size": 1
+        },
+        "class_type": "EmptyLatentImage",
+        "_meta": {
+          "title": "空Latent图像"
+        }
+      },
+      "245": {
+        "inputs": {
+          "clip_name": "qwen_3_4b.safetensors",
+          "type": "qwen_image",
+          "device": "default"
+        },
+        "class_type": "CLIPLoader",
+        "_meta": {
+          "title": "加载CLIP"
+        }
+      },
+      "246": {
+        "inputs": {
+          "vae_name": "ae.safetensors"
+        },
+        "class_type": "VAELoader",
+        "_meta": {
+          "title": "加载VAE"
+        }
+      },
+      "247": {
+        "inputs": {
+          "text": [
+            "248",
+            0
+          ],
+          "clip": [
+            "245",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "CLIP文本编码"
+        }
+      },
+      "248": {
+        "inputs": {
+          "text": "最高画质，杰作，超精细，一位年轻韩国女生，亚洲面孔，东亚五官，19 岁，财阀千金，霸凌者，骄纵刻薄，身高 168，身形纤细，哑光妆效，冷白皮，无油光，不泛油，精致浓妆，酒红色哑光唇，栗棕色长卷发，大波浪，发丝蓬松有光泽，挑眉，上挑眼线，浅棕色瞳孔，双眼都睁开，对称双眼，眼神居高临下充满鄙夷，高挺的鼻子，指甲做了精致钻饰美甲，耳朵和脖子是成套名牌珠宝，穿一件奶白色名牌针织开衫，内搭真丝吊带，下身格纹百褶短裙，脚踩裸粉色细高跟尖头鞋，标准站立姿势，单手叉腰，全身可见，从头到脚都在画面内，正常透视，50mm 标准镜头，干净浅灰色棚拍背景，柔和均匀漫射光，正常身材比例，纤细。\n\n光影层次感，电影质感，艺术氛围，高级的氛围感，梦幻，"
+        },
+        "class_type": "CR Text",
+        "_meta": {
+          "title": "🔤 CR Text"
+        }
+      },
+      "249": {
+        "inputs": {
+          "lora_name": "Kook_Zimage_瑶光.safetensors",
+          "strength_model": 0.5000000000000001,
+          "model": [
+            "227",
+            0
+          ]
+        },
+        "class_type": "LoraLoaderModelOnly",
+        "_meta": {
+          "title": "LoRA加载器（仅模型）"
+        }
+      },
+      "250": {
+        "inputs": {
+          "lora_name": "Z-Image-Fun-Lora-Distill-8-Steps-2603-ComfyUI.safetensors",
+          "strength_model": 0.45000000000000007,
+          "model": [
+            "240",
+            0
+          ]
+        },
+        "class_type": "LoraLoaderModelOnly",
+        "_meta": {
+          "title": "LoRA加载器（仅模型）"
+        }
+      },
+      "251": {
+        "inputs": {
+          "value": 1024
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "INT Constant"
+        }
+      },
+      "252": {
+        "inputs": {
+          "value": 1680
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "INT Constant"
+        }
+      }
+    },
+    "fields": [
+      {
+        "id": "227:unet_name",
+        "nodeId": "227",
+        "inputKey": "unet_name",
+        "nodeTitle": "UNet加载器",
+        "label": "unet_name",
+        "type": "text",
+        "enabled": false,
+        "order": 11,
+        "defaultValue": "z_image_bf16.safetensors"
+      },
+      {
+        "id": "227:weight_dtype",
+        "nodeId": "227",
+        "inputKey": "weight_dtype",
+        "nodeTitle": "UNet加载器",
+        "label": "weight_dtype",
+        "type": "text",
+        "enabled": false,
+        "order": 12,
+        "defaultValue": "default"
+      },
+      {
+        "id": "228:text",
+        "nodeId": "228",
+        "inputKey": "text",
+        "nodeTitle": "CLIP文本编码",
+        "label": "负向提示词",
+        "type": "textarea",
+        "enabled": true,
+        "order": 1,
+        "defaultValue": "泛黄，发绿，模糊，低分辨率，低质量图像，扭曲的肢体，诡异的外观，丑陋，AI感，噪点，网格感，JPEG压缩条纹，异常的肢体，水印，乱码，意义不明的字符，泛蓝"
+      },
+      {
+        "id": "235:seed",
+        "nodeId": "235",
+        "inputKey": "seed",
+        "nodeTitle": "K采样器",
+        "label": "生成随机种子",
+        "type": "number",
+        "enabled": true,
+        "order": 5,
+        "defaultValue": 413189552079340,
+        "randomize": true,
+        "presetRole": "seed"
+      },
+      {
+        "id": "235:steps",
+        "nodeId": "235",
+        "inputKey": "steps",
+        "nodeTitle": "K采样器",
+        "label": "采样步数",
+        "type": "slider",
+        "enabled": true,
+        "order": 6,
+        "defaultValue": 8
+      },
+      {
+        "id": "235:cfg",
+        "nodeId": "235",
+        "inputKey": "cfg",
+        "nodeTitle": "K采样器",
+        "label": "提示词引导 CFG",
+        "type": "slider",
+        "enabled": true,
+        "order": 7,
+        "defaultValue": 1
+      },
+      {
+        "id": "235:sampler_name",
+        "nodeId": "235",
+        "inputKey": "sampler_name",
+        "nodeTitle": "K采样器",
+        "label": "采样器",
+        "type": "text",
+        "enabled": true,
+        "order": 9,
+        "defaultValue": "res_2s_ode"
+      },
+      {
+        "id": "235:scheduler",
+        "nodeId": "235",
+        "inputKey": "scheduler",
+        "nodeTitle": "K采样器",
+        "label": "调度器",
+        "type": "text",
+        "enabled": true,
+        "order": 10,
+        "defaultValue": "kl_optimal"
+      },
+      {
+        "id": "235:denoise",
+        "nodeId": "235",
+        "inputKey": "denoise",
+        "nodeTitle": "K采样器",
+        "label": "重绘强度",
+        "type": "slider",
+        "enabled": true,
+        "order": 8,
+        "defaultValue": 1,
+        "presetRole": "strength"
+      },
+      {
+        "id": "240:lora_name",
+        "nodeId": "240",
+        "inputKey": "lora_name",
+        "nodeTitle": "LoRA加载器（仅模型）",
+        "label": "lora_name",
+        "type": "text",
+        "enabled": false,
+        "order": 20,
+        "defaultValue": "Kook_Zimage_如梦似幻.safetensors"
+      },
+      {
+        "id": "240:strength_model",
+        "nodeId": "240",
+        "inputKey": "strength_model",
+        "nodeTitle": "LoRA加载器（仅模型）",
+        "label": "strength_model",
+        "type": "number",
+        "enabled": false,
+        "order": 21,
+        "defaultValue": 0.7000000000000002
+      },
+      {
+        "id": "241:filename_prefix",
+        "nodeId": "241",
+        "inputKey": "filename_prefix",
+        "nodeTitle": "保存图像",
+        "label": "filename_prefix",
+        "type": "text",
+        "enabled": false,
+        "order": 22,
+        "defaultValue": "ComfyUI"
+      },
+      {
+        "id": "244:batch_size",
+        "nodeId": "244",
+        "inputKey": "batch_size",
+        "nodeTitle": "空Latent图像",
+        "label": "生成张数",
+        "type": "number",
+        "enabled": true,
+        "order": 4,
+        "defaultValue": 1
+      },
+      {
+        "id": "245:clip_name",
+        "nodeId": "245",
+        "inputKey": "clip_name",
+        "nodeTitle": "加载CLIP",
+        "label": "clip_name",
+        "type": "text",
+        "enabled": false,
+        "order": 24,
+        "defaultValue": "qwen_3_4b.safetensors"
+      },
+      {
+        "id": "245:type",
+        "nodeId": "245",
+        "inputKey": "type",
+        "nodeTitle": "加载CLIP",
+        "label": "type",
+        "type": "text",
+        "enabled": false,
+        "order": 25,
+        "defaultValue": "qwen_image"
+      },
+      {
+        "id": "245:device",
+        "nodeId": "245",
+        "inputKey": "device",
+        "nodeTitle": "加载CLIP",
+        "label": "device",
+        "type": "text",
+        "enabled": false,
+        "order": 26,
+        "defaultValue": "default"
+      },
+      {
+        "id": "246:vae_name",
+        "nodeId": "246",
+        "inputKey": "vae_name",
+        "nodeTitle": "加载VAE",
+        "label": "vae_name",
+        "type": "text",
+        "enabled": false,
+        "order": 27,
+        "defaultValue": "ae.safetensors"
+      },
+      {
+        "id": "248:text",
+        "nodeId": "248",
+        "inputKey": "text",
+        "nodeTitle": "🔤 CR Text",
+        "label": "正向提示词",
+        "type": "textarea",
+        "enabled": true,
+        "order": 0,
+        "defaultValue": "最高画质，杰作，超精细，一位年轻韩国女生，亚洲面孔，东亚五官，19 岁，财阀千金，霸凌者，骄纵刻薄，身高 168，身形纤细，哑光妆效，冷白皮，无油光，不泛油，精致浓妆，酒红色哑光唇，栗棕色长卷发，大波浪，发丝蓬松有光泽，挑眉，上挑眼线，浅棕色瞳孔，双眼都睁开，对称双眼，眼神居高临下充满鄙夷，高挺的鼻子，指甲做了精致钻饰美甲，耳朵和脖子是成套名牌珠宝，穿一件奶白色名牌针织开衫，内搭真丝吊带，下身格纹百褶短裙，脚踩裸粉色细高跟尖头鞋，标准站立姿势，单手叉腰，全身可见，从头到脚都在画面内，正常透视，50mm 标准镜头，干净浅灰色棚拍背景，柔和均匀漫射光，正常身材比例，纤细。\n\n光影层次感，电影质感，艺术氛围，高级的氛围感，梦幻，",
+        "presetRole": "prompt"
+      },
+      {
+        "id": "249:lora_name",
+        "nodeId": "249",
+        "inputKey": "lora_name",
+        "nodeTitle": "LoRA加载器（仅模型）",
+        "label": "lora_name",
+        "type": "text",
+        "enabled": false,
+        "order": 29,
+        "defaultValue": "Kook_Zimage_瑶光.safetensors"
+      },
+      {
+        "id": "249:strength_model",
+        "nodeId": "249",
+        "inputKey": "strength_model",
+        "nodeTitle": "LoRA加载器（仅模型）",
+        "label": "strength_model",
+        "type": "number",
+        "enabled": false,
+        "order": 30,
+        "defaultValue": 0.5000000000000001
+      },
+      {
+        "id": "250:lora_name",
+        "nodeId": "250",
+        "inputKey": "lora_name",
+        "nodeTitle": "LoRA加载器（仅模型）",
+        "label": "lora_name",
+        "type": "text",
+        "enabled": false,
+        "order": 31,
+        "defaultValue": "Z-Image-Fun-Lora-Distill-8-Steps-2603-ComfyUI.safetensors"
+      },
+      {
+        "id": "250:strength_model",
+        "nodeId": "250",
+        "inputKey": "strength_model",
+        "nodeTitle": "LoRA加载器（仅模型）",
+        "label": "strength_model",
+        "type": "number",
+        "enabled": false,
+        "order": 32,
+        "defaultValue": 0.45000000000000007
+      },
+      {
+        "id": "251:value",
+        "nodeId": "251",
+        "inputKey": "value",
+        "nodeTitle": "INT Constant",
+        "label": "图片宽度",
+        "type": "number",
+        "enabled": true,
+        "order": 2,
+        "defaultValue": 1024,
+        "presetRole": "width"
+      },
+      {
+        "id": "252:value",
+        "nodeId": "252",
+        "inputKey": "value",
+        "nodeTitle": "INT Constant",
+        "label": "图片高度",
+        "type": "number",
+        "enabled": true,
+        "order": 3,
+        "defaultValue": 1680,
+        "presetRole": "height"
+      }
+    ],
+    "createdAt": "2026-10-23T08:50:16.526Z",
+    "updatedAt": "2026-10-23T08:50:16.527Z",
+    "outputKinds": [
+      "image"
+    ]
+  },
+  {
+    "id": "verification-02_三视图_作者原文_API.json",
+    "name": "人物三视图-Qwen Image 2.1",
+    "description": "上传一张人物参考图，提示词默认使用作者原文，可直接编辑；比例、像素及采样参数可调整。",
+    "workflow": {
+      "202": {
+        "inputs": {
+          "samples": [
+            "211",
+            0
+          ],
+          "vae": [
+            "219",
+            0
+          ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+          "title": "VAE解码"
+        }
+      },
+      "206": {
+        "inputs": {
+          "prompt": [
+            "214",
+            0
+          ],
+          "negative_prompt": "",
+          "resolution": 1024,
+          "clip": [
+            "225",
+            0
+          ],
+          "images.image_1": [
+            "215",
+            0
+          ],
+          "vae": [
+            "219",
+            0
+          ]
+        },
+        "class_type": "TextEncodeQwenImage21",
+        "_meta": {
+          "title": "文本编码 Qwen Image 2.1"
+        }
+      },
+      "207": {
+        "inputs": {
+          "switch": true,
+          "on_false": [
+            "206",
+            2
+          ],
+          "on_true": [
+            "209",
+            0
+          ]
+        },
+        "class_type": "ComfySwitchNode",
+        "_meta": {
+          "title": "切换"
+        }
+      },
+      "209": {
+        "inputs": {
+          "width": [
+            "213",
+            0
+          ],
+          "height": [
+            "213",
+            1
+          ],
+          "batch_size": 1
+        },
+        "class_type": "EmptyLatentImage",
+        "_meta": {
+          "title": "空Latent图像"
+        }
+      },
+      "211": {
+        "inputs": {
+          "seed": 198047328250634,
+          "steps": 25,
+          "cfg": 1,
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "denoise": 1,
+          "model": [
+            "217",
+            0
+          ],
+          "positive": [
+            "206",
+            0
+          ],
+          "negative": [
+            "206",
+            1
+          ],
+          "latent_image": [
+            "207",
+            0
+          ]
+        },
+        "class_type": "KSampler",
+        "_meta": {
+          "title": "K采样器"
+        }
+      },
+      "212": {
+        "inputs": {
+          "filename_prefix": "2026-10-19/20261019_214058_QwenEdit",
+          "images": [
+            "285",
+            0
+          ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+          "title": "保存图像"
+        }
+      },
+      "213": {
+        "inputs": {
+          "aspect_ratio": "16:9 (Widescreen)",
+          "megapixels": 2,
+          "multiple": 32
+        },
+        "class_type": "ResolutionSelector",
+        "_meta": {
+          "title": "分辨率选择器"
+        }
+      },
+      "214": {
+        "inputs": {
+          "prompt": "超写实摄影风格的人物三视图设定照，纯白背景。严格参照参考图中的人物，保持面部五官、发型、体型、服装款式、颜色、材质、配饰及手持道具一致，保留原有站姿与手势，仅改变观察角度。\n\n画面左侧 2/3 区域从左到右依次排列人物的正面、侧面、背面全身照，三个人物大小一致，头顶与脚底对齐，完整呈现头部至鞋底，彼此不重叠。画面右侧 1/3 区域为同一人物的正面大头特写，完整呈现发型与面部细节。参考图未展示的服装背面与侧面结构，依据已有设计合理补全，保持统一。\n\n柔和均匀的专业影棚布光，真实自然的皮肤纹理与服装质感，细节清晰，高分辨率。画面干净，无文字、标签、色卡、标尺或水印。"
+        },
+        "class_type": "CR Prompt Text",
+        "_meta": {
+          "title": "⚙️ CR Prompt Text"
+        }
+      },
+      "215": {
+        "inputs": {
+          "image": "Work-Fisher_00004_spszx_1791903529.png"
+        },
+        "class_type": "LoadImage",
+        "_meta": {
+          "title": "加载图像"
+        }
+      },
+      "217": {
+        "inputs": {
+          "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+          "weight_dtype": "default"
+        },
+        "class_type": "UNETLoader",
+        "_meta": {
+          "title": "UNet加载器"
+        }
+      },
+      "219": {
+        "inputs": {
+          "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+        },
+        "class_type": "VAELoader",
+        "_meta": {
+          "title": "加载VAE"
+        }
+      },
+      "225": {
+        "inputs": {
+          "clip_name": "qwen3vl_8b_bf16.safetensors",
+          "type": "qwen_image",
+          "device": "default"
+        },
+        "class_type": "CLIPLoader",
+        "_meta": {
+          "title": "加载CLIP"
+        }
+      },
+      "284": {
+        "inputs": {
+          "clean_file_cache": true,
+          "clean_processes": true,
+          "clean_dlls": true,
+          "retry_times": 3,
+          "anything": [
+            "202",
+            0
+          ]
+        },
+        "class_type": "RAMCleanup",
+        "_meta": {
+          "title": "释放内存"
+        }
+      },
+      "285": {
+        "inputs": {
+          "offload_model": true,
+          "offload_cache": true,
+          "anything": [
+            "284",
+            0
+          ]
+        },
+        "class_type": "VRAMCleanup",
+        "_meta": {
+          "title": "释放显存"
+        }
+      }
+    },
+    "fields": [
+      {
+        "id": "206:negative_prompt",
+        "nodeId": "206",
+        "inputKey": "negative_prompt",
+        "nodeTitle": "文本编码 Qwen Image 2.1",
+        "label": "负向提示词",
+        "type": "textarea",
+        "enabled": true,
+        "order": 1,
+        "defaultValue": ""
+      },
+      {
+        "id": "206:resolution",
+        "nodeId": "206",
+        "inputKey": "resolution",
+        "nodeTitle": "文本编码 Qwen Image 2.1",
+        "label": "resolution",
+        "type": "number",
+        "enabled": false,
+        "order": 13,
+        "defaultValue": 1024
+      },
+      {
+        "id": "207:switch",
+        "nodeId": "207",
+        "inputKey": "switch",
+        "nodeTitle": "切换",
+        "label": "switch",
+        "type": "boolean",
+        "enabled": false,
+        "order": 14,
+        "defaultValue": true
+      },
+      {
+        "id": "209:batch_size",
+        "nodeId": "209",
+        "inputKey": "batch_size",
+        "nodeTitle": "空Latent图像",
+        "label": "生成张数",
+        "type": "number",
+        "enabled": true,
+        "order": 5,
+        "defaultValue": 1
+      },
+      {
+        "id": "211:seed",
+        "nodeId": "211",
+        "inputKey": "seed",
+        "nodeTitle": "K采样器",
+        "label": "生成随机种子",
+        "type": "number",
+        "enabled": true,
+        "order": 6,
+        "defaultValue": 198047328250634,
+        "randomize": true,
+        "presetRole": "seed"
+      },
+      {
+        "id": "211:steps",
+        "nodeId": "211",
+        "inputKey": "steps",
+        "nodeTitle": "K采样器",
+        "label": "采样步数",
+        "type": "slider",
+        "enabled": true,
+        "order": 7,
+        "defaultValue": 25
+      },
+      {
+        "id": "211:cfg",
+        "nodeId": "211",
+        "inputKey": "cfg",
+        "nodeTitle": "K采样器",
+        "label": "提示词引导 CFG",
+        "type": "slider",
+        "enabled": true,
+        "order": 8,
+        "defaultValue": 1
+      },
+      {
+        "id": "211:sampler_name",
+        "nodeId": "211",
+        "inputKey": "sampler_name",
+        "nodeTitle": "K采样器",
+        "label": "采样器",
+        "type": "text",
+        "enabled": true,
+        "order": 10,
+        "defaultValue": "euler"
+      },
+      {
+        "id": "211:scheduler",
+        "nodeId": "211",
+        "inputKey": "scheduler",
+        "nodeTitle": "K采样器",
+        "label": "调度器",
+        "type": "text",
+        "enabled": true,
+        "order": 11,
+        "defaultValue": "simple"
+      },
+      {
+        "id": "211:denoise",
+        "nodeId": "211",
+        "inputKey": "denoise",
+        "nodeTitle": "K采样器",
+        "label": "重绘强度",
+        "type": "slider",
+        "enabled": true,
+        "order": 9,
+        "defaultValue": 1,
+        "presetRole": "strength"
+      },
+      {
+        "id": "212:filename_prefix",
+        "nodeId": "212",
+        "inputKey": "filename_prefix",
+        "nodeTitle": "保存图像",
+        "label": "filename_prefix",
+        "type": "text",
+        "enabled": false,
+        "order": 22,
+        "defaultValue": "2026-10-19/20261019_214058_QwenEdit"
+      },
+      {
+        "id": "213:aspect_ratio",
+        "nodeId": "213",
+        "inputKey": "aspect_ratio",
+        "nodeTitle": "分辨率选择器",
+        "label": "画面比例",
+        "type": "text",
+        "enabled": true,
+        "order": 3,
+        "defaultValue": "16:9 (Widescreen)"
+      },
+      {
+        "id": "213:megapixels",
+        "nodeId": "213",
+        "inputKey": "megapixels",
+        "nodeTitle": "分辨率选择器",
+        "label": "输出百万像素",
+        "type": "number",
+        "enabled": true,
+        "order": 4,
+        "defaultValue": 2
+      },
+      {
+        "id": "213:multiple",
+        "nodeId": "213",
+        "inputKey": "multiple",
+        "nodeTitle": "分辨率选择器",
+        "label": "multiple",
+        "type": "number",
+        "enabled": false,
+        "order": 25,
+        "defaultValue": 32
+      },
+      {
+        "id": "214:prompt",
+        "nodeId": "214",
+        "inputKey": "prompt",
+        "nodeTitle": "⚙️ CR Prompt Text",
+        "label": "正向提示词",
+        "type": "textarea",
+        "enabled": true,
+        "order": 0,
+        "defaultValue": "超写实摄影风格的人物三视图设定照，纯白背景。严格参照参考图中的人物，保持面部五官、发型、体型、服装款式、颜色、材质、配饰及手持道具一致，保留原有站姿与手势，仅改变观察角度。\n\n画面左侧 2/3 区域从左到右依次排列人物的正面、侧面、背面全身照，三个人物大小一致，头顶与脚底对齐，完整呈现头部至鞋底，彼此不重叠。画面右侧 1/3 区域为同一人物的正面大头特写，完整呈现发型与面部细节。参考图未展示的服装背面与侧面结构，依据已有设计合理补全，保持统一。\n\n柔和均匀的专业影棚布光，真实自然的皮肤纹理与服装质感，细节清晰，高分辨率。画面干净，无文字、标签、色卡、标尺或水印。",
+        "presetRole": "prompt"
+      },
+      {
+        "id": "215:image",
+        "nodeId": "215",
+        "inputKey": "image",
+        "nodeTitle": "加载图像",
+        "label": "参考图 1",
+        "type": "image",
+        "enabled": true,
+        "order": 2,
+        "defaultValue": "Work-Fisher_00004_spszx_1791903529.png",
+        "presetRole": "image"
+      },
+      {
+        "id": "217:unet_name",
+        "nodeId": "217",
+        "inputKey": "unet_name",
+        "nodeTitle": "UNet加载器",
+        "label": "unet_name",
+        "type": "text",
+        "enabled": false,
+        "order": 28,
+        "defaultValue": "qwen_image_2.1_int8_convrot.safetensors"
+      },
+      {
+        "id": "217:weight_dtype",
+        "nodeId": "217",
+        "inputKey": "weight_dtype",
+        "nodeTitle": "UNet加载器",
+        "label": "weight_dtype",
+        "type": "text",
+        "enabled": false,
+        "order": 29,
+        "defaultValue": "default"
+      },
+      {
+        "id": "219:vae_name",
+        "nodeId": "219",
+        "inputKey": "vae_name",
+        "nodeTitle": "加载VAE",
+        "label": "vae_name",
+        "type": "text",
+        "enabled": false,
+        "order": 30,
+        "defaultValue": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      {
+        "id": "225:clip_name",
+        "nodeId": "225",
+        "inputKey": "clip_name",
+        "nodeTitle": "加载CLIP",
+        "label": "clip_name",
+        "type": "text",
+        "enabled": false,
+        "order": 31,
+        "defaultValue": "qwen3vl_8b_bf16.safetensors"
+      },
+      {
+        "id": "225:type",
+        "nodeId": "225",
+        "inputKey": "type",
+        "nodeTitle": "加载CLIP",
+        "label": "type",
+        "type": "text",
+        "enabled": false,
+        "order": 32,
+        "defaultValue": "qwen_image"
+      },
+      {
+        "id": "225:device",
+        "nodeId": "225",
+        "inputKey": "device",
+        "nodeTitle": "加载CLIP",
+        "label": "device",
+        "type": "text",
+        "enabled": false,
+        "order": 33,
+        "defaultValue": "default"
+      },
+      {
+        "id": "284:clean_file_cache",
+        "nodeId": "284",
+        "inputKey": "clean_file_cache",
+        "nodeTitle": "释放内存",
+        "label": "clean_file_cache",
+        "type": "boolean",
+        "enabled": false,
+        "order": 34,
+        "defaultValue": true
+      },
+      {
+        "id": "284:clean_processes",
+        "nodeId": "284",
+        "inputKey": "clean_processes",
+        "nodeTitle": "释放内存",
+        "label": "clean_processes",
+        "type": "boolean",
+        "enabled": false,
+        "order": 35,
+        "defaultValue": true
+      },
+      {
+        "id": "284:clean_dlls",
+        "nodeId": "284",
+        "inputKey": "clean_dlls",
+        "nodeTitle": "释放内存",
+        "label": "clean_dlls",
+        "type": "boolean",
+        "enabled": false,
+        "order": 36,
+        "defaultValue": true
+      },
+      {
+        "id": "284:retry_times",
+        "nodeId": "284",
+        "inputKey": "retry_times",
+        "nodeTitle": "释放内存",
+        "label": "retry_times",
+        "type": "number",
+        "enabled": false,
+        "order": 37,
+        "defaultValue": 3
+      },
+      {
+        "id": "285:offload_model",
+        "nodeId": "285",
+        "inputKey": "offload_model",
+        "nodeTitle": "释放显存",
+        "label": "offload_model",
+        "type": "boolean",
+        "enabled": false,
+        "order": 38,
+        "defaultValue": true
+      },
+      {
+        "id": "285:offload_cache",
+        "nodeId": "285",
+        "inputKey": "offload_cache",
+        "nodeTitle": "释放显存",
+        "label": "offload_cache",
+        "type": "boolean",
+        "enabled": false,
+        "order": 39,
+        "defaultValue": true
+      }
+    ],
+    "createdAt": "2026-10-23T08:50:16.529Z",
+    "updatedAt": "2026-10-23T08:50:16.529Z",
+    "outputKinds": [
+      "image"
+    ]
+  },
+  {
+    "id": "verification-03_场景_作者原文_API.json",
+    "name": "场景生成-Z-Image",
+    "description": "文生场景。保留作者示例与模型默认值，可独立调整正负提示词、尺寸及采样参数。",
+    "workflow": {
+      "253": {
+        "inputs": {
+          "unet_name": "z_image_bf16.safetensors",
+          "weight_dtype": "default"
+        },
+        "class_type": "UNETLoader",
+        "_meta": {
+          "title": "UNet加载器"
+        }
+      },
+      "254": {
+        "inputs": {
+          "text": "泛黄，发绿，模糊，低分辨率，低质量图像，扭曲的肢体，诡异的外观，丑陋，AI感，噪点，网格感，JPEG压缩条纹，异常的肢体，水印，乱码，意义不明的字符，泛蓝",
+          "clip": [
+            "270",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "CLIP文本编码"
+        }
+      },
+      "261": {
+        "inputs": {
+          "seed": 664488010448515,
+          "steps": 8,
+          "cfg": 1,
+          "sampler_name": "res_2s_ode",
+          "scheduler": "kl_optimal",
+          "denoise": 1,
+          "model": [
+            "274",
+            0
+          ],
+          "positive": [
+            "272",
+            0
+          ],
+          "negative": [
+            "254",
+            0
+          ],
+          "latent_image": [
+            "269",
+            0
+          ]
+        },
+        "class_type": "KSampler",
+        "_meta": {
+          "title": "K采样器"
+        }
+      },
+      "262": {
+        "inputs": {
+          "samples": [
+            "261",
+            0
+          ],
+          "vae": [
+            "271",
+            0
+          ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+          "title": "VAE解码"
+        }
+      },
+      "266": {
+        "inputs": {
+          "lora_name": "Kook_Zimage_如梦似幻.safetensors",
+          "strength_model": 0.7000000000000002,
+          "model": [
+            "273",
+            0
+          ]
+        },
+        "class_type": "LoraLoaderModelOnly",
+        "_meta": {
+          "title": "LoRA加载器（仅模型）"
+        }
+      },
+      "267": {
+        "inputs": {
+          "filename_prefix": "ComfyUI",
+          "images": [
+            "283",
+            0
+          ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+          "title": "保存图像"
+        }
+      },
+      "269": {
+        "inputs": {
+          "width": [
+            "275",
+            0
+          ],
+          "height": [
+            "276",
+            0
+          ],
+          "batch_size": 1
+        },
+        "class_type": "EmptyLatentImage",
+        "_meta": {
+          "title": "空Latent图像"
+        }
+      },
+      "270": {
+        "inputs": {
+          "clip_name": "qwen_3_4b.safetensors",
+          "type": "qwen_image",
+          "device": "default"
+        },
+        "class_type": "CLIPLoader",
+        "_meta": {
+          "title": "加载CLIP"
+        }
+      },
+      "271": {
+        "inputs": {
+          "vae_name": "ae.safetensors"
+        },
+        "class_type": "VAELoader",
+        "_meta": {
+          "title": "加载VAE"
+        }
+      },
+      "272": {
+        "inputs": {
+          "text": [
+            "277",
+            0
+          ],
+          "clip": [
+            "270",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "CLIP文本编码"
+        }
+      },
+      "273": {
+        "inputs": {
+          "lora_name": "Kook_Zimage_瑶光.safetensors",
+          "strength_model": 0.5000000000000001,
+          "model": [
+            "253",
+            0
+          ]
+        },
+        "class_type": "LoraLoaderModelOnly",
+        "_meta": {
+          "title": "LoRA加载器（仅模型）"
+        }
+      },
+      "274": {
+        "inputs": {
+          "lora_name": "Z-Image-Fun-Lora-Distill-8-Steps-2603-ComfyUI.safetensors",
+          "strength_model": 0.45000000000000007,
+          "model": [
+            "266",
+            0
+          ]
+        },
+        "class_type": "LoraLoaderModelOnly",
+        "_meta": {
+          "title": "LoRA加载器（仅模型）"
+        }
+      },
+      "275": {
+        "inputs": {
+          "value": 1920
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "INT Constant"
+        }
+      },
+      "276": {
+        "inputs": {
+          "value": 1080
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "INT Constant"
+        }
+      },
+      "277": {
+        "inputs": {
+          "text": "财阀豪宅顶层的一间私人密室，深夜，房间拉着厚重深色丝绒窗帘，遮光严密，一张宽大的深色真皮沙发，皮面有使用褶皱，沙发前是玻璃茶几，几上摆着两只喝了一半的红酒杯，杯壁挂着残酒，旁边散落着几张底片、一瓶打开的烈酒和一包白色药粉，地上铺着深色地毯，门口是一扇厚重实木门，墙上挂着暧昧的油画，只有沙发旁一盏落地灯亮着，灯罩是暗红色，光线昏黄浑浊，光圈照亮茶几一小块，房间其余部分浸在浓重阴影里，红酒在暗光里发黑，空气沉闷，混着烈酒、皮革和闷住的香水味，\n\n《老男孩》式密闭窒息，柯达Portra 800胶片，暖黄奶油调里透着病态，暗部浓郁偏棕，颗粒厚重，柔焦感，50mm镜头，f/1.8，极浅景深，\n\n光影层次感，电影质感，艺术氛围，高级的氛围感，梦幻，"
+        },
+        "class_type": "CR Text",
+        "_meta": {
+          "title": "🔤 CR Text"
+        }
+      },
+      "282": {
+        "inputs": {
+          "clean_file_cache": true,
+          "clean_processes": true,
+          "clean_dlls": true,
+          "retry_times": 3,
+          "anything": [
+            "262",
+            0
+          ]
+        },
+        "class_type": "RAMCleanup",
+        "_meta": {
+          "title": "释放内存"
+        }
+      },
+      "283": {
+        "inputs": {
+          "offload_model": true,
+          "offload_cache": true,
+          "anything": [
+            "282",
+            0
+          ]
+        },
+        "class_type": "VRAMCleanup",
+        "_meta": {
+          "title": "释放显存"
+        }
+      }
+    },
+    "fields": [
+      {
+        "id": "253:unet_name",
+        "nodeId": "253",
+        "inputKey": "unet_name",
+        "nodeTitle": "UNet加载器",
+        "label": "unet_name",
+        "type": "text",
+        "enabled": false,
+        "order": 11,
+        "defaultValue": "z_image_bf16.safetensors"
+      },
+      {
+        "id": "253:weight_dtype",
+        "nodeId": "253",
+        "inputKey": "weight_dtype",
+        "nodeTitle": "UNet加载器",
+        "label": "weight_dtype",
+        "type": "text",
+        "enabled": false,
+        "order": 12,
+        "defaultValue": "default"
+      },
+      {
+        "id": "254:text",
+        "nodeId": "254",
+        "inputKey": "text",
+        "nodeTitle": "CLIP文本编码",
+        "label": "负向提示词",
+        "type": "textarea",
+        "enabled": true,
+        "order": 1,
+        "defaultValue": "泛黄，发绿，模糊，低分辨率，低质量图像，扭曲的肢体，诡异的外观，丑陋，AI感，噪点，网格感，JPEG压缩条纹，异常的肢体，水印，乱码，意义不明的字符，泛蓝"
+      },
+      {
+        "id": "261:seed",
+        "nodeId": "261",
+        "inputKey": "seed",
+        "nodeTitle": "K采样器",
+        "label": "生成随机种子",
+        "type": "number",
+        "enabled": true,
+        "order": 5,
+        "defaultValue": 664488010448515,
+        "randomize": true,
+        "presetRole": "seed"
+      },
+      {
+        "id": "261:steps",
+        "nodeId": "261",
+        "inputKey": "steps",
+        "nodeTitle": "K采样器",
+        "label": "采样步数",
+        "type": "slider",
+        "enabled": true,
+        "order": 6,
+        "defaultValue": 8
+      },
+      {
+        "id": "261:cfg",
+        "nodeId": "261",
+        "inputKey": "cfg",
+        "nodeTitle": "K采样器",
+        "label": "提示词引导 CFG",
+        "type": "slider",
+        "enabled": true,
+        "order": 7,
+        "defaultValue": 1
+      },
+      {
+        "id": "261:sampler_name",
+        "nodeId": "261",
+        "inputKey": "sampler_name",
+        "nodeTitle": "K采样器",
+        "label": "采样器",
+        "type": "text",
+        "enabled": true,
+        "order": 9,
+        "defaultValue": "res_2s_ode"
+      },
+      {
+        "id": "261:scheduler",
+        "nodeId": "261",
+        "inputKey": "scheduler",
+        "nodeTitle": "K采样器",
+        "label": "调度器",
+        "type": "text",
+        "enabled": true,
+        "order": 10,
+        "defaultValue": "kl_optimal"
+      },
+      {
+        "id": "261:denoise",
+        "nodeId": "261",
+        "inputKey": "denoise",
+        "nodeTitle": "K采样器",
+        "label": "重绘强度",
+        "type": "slider",
+        "enabled": true,
+        "order": 8,
+        "defaultValue": 1,
+        "presetRole": "strength"
+      },
+      {
+        "id": "266:lora_name",
+        "nodeId": "266",
+        "inputKey": "lora_name",
+        "nodeTitle": "LoRA加载器（仅模型）",
+        "label": "lora_name",
+        "type": "text",
+        "enabled": false,
+        "order": 20,
+        "defaultValue": "Kook_Zimage_如梦似幻.safetensors"
+      },
+      {
+        "id": "266:strength_model",
+        "nodeId": "266",
+        "inputKey": "strength_model",
+        "nodeTitle": "LoRA加载器（仅模型）",
+        "label": "strength_model",
+        "type": "number",
+        "enabled": false,
+        "order": 21,
+        "defaultValue": 0.7000000000000002
+      },
+      {
+        "id": "267:filename_prefix",
+        "nodeId": "267",
+        "inputKey": "filename_prefix",
+        "nodeTitle": "保存图像",
+        "label": "filename_prefix",
+        "type": "text",
+        "enabled": false,
+        "order": 22,
+        "defaultValue": "ComfyUI"
+      },
+      {
+        "id": "269:batch_size",
+        "nodeId": "269",
+        "inputKey": "batch_size",
+        "nodeTitle": "空Latent图像",
+        "label": "生成张数",
+        "type": "number",
+        "enabled": true,
+        "order": 4,
+        "defaultValue": 1
+      },
+      {
+        "id": "270:clip_name",
+        "nodeId": "270",
+        "inputKey": "clip_name",
+        "nodeTitle": "加载CLIP",
+        "label": "clip_name",
+        "type": "text",
+        "enabled": false,
+        "order": 24,
+        "defaultValue": "qwen_3_4b.safetensors"
+      },
+      {
+        "id": "270:type",
+        "nodeId": "270",
+        "inputKey": "type",
+        "nodeTitle": "加载CLIP",
+        "label": "type",
+        "type": "text",
+        "enabled": false,
+        "order": 25,
+        "defaultValue": "qwen_image"
+      },
+      {
+        "id": "270:device",
+        "nodeId": "270",
+        "inputKey": "device",
+        "nodeTitle": "加载CLIP",
+        "label": "device",
+        "type": "text",
+        "enabled": false,
+        "order": 26,
+        "defaultValue": "default"
+      },
+      {
+        "id": "271:vae_name",
+        "nodeId": "271",
+        "inputKey": "vae_name",
+        "nodeTitle": "加载VAE",
+        "label": "vae_name",
+        "type": "text",
+        "enabled": false,
+        "order": 27,
+        "defaultValue": "ae.safetensors"
+      },
+      {
+        "id": "273:lora_name",
+        "nodeId": "273",
+        "inputKey": "lora_name",
+        "nodeTitle": "LoRA加载器（仅模型）",
+        "label": "lora_name",
+        "type": "text",
+        "enabled": false,
+        "order": 28,
+        "defaultValue": "Kook_Zimage_瑶光.safetensors"
+      },
+      {
+        "id": "273:strength_model",
+        "nodeId": "273",
+        "inputKey": "strength_model",
+        "nodeTitle": "LoRA加载器（仅模型）",
+        "label": "strength_model",
+        "type": "number",
+        "enabled": false,
+        "order": 29,
+        "defaultValue": 0.5000000000000001
+      },
+      {
+        "id": "274:lora_name",
+        "nodeId": "274",
+        "inputKey": "lora_name",
+        "nodeTitle": "LoRA加载器（仅模型）",
+        "label": "lora_name",
+        "type": "text",
+        "enabled": false,
+        "order": 30,
+        "defaultValue": "Z-Image-Fun-Lora-Distill-8-Steps-2603-ComfyUI.safetensors"
+      },
+      {
+        "id": "274:strength_model",
+        "nodeId": "274",
+        "inputKey": "strength_model",
+        "nodeTitle": "LoRA加载器（仅模型）",
+        "label": "strength_model",
+        "type": "number",
+        "enabled": false,
+        "order": 31,
+        "defaultValue": 0.45000000000000007
+      },
+      {
+        "id": "275:value",
+        "nodeId": "275",
+        "inputKey": "value",
+        "nodeTitle": "INT Constant",
+        "label": "图片宽度",
+        "type": "number",
+        "enabled": true,
+        "order": 2,
+        "defaultValue": 1920,
+        "presetRole": "width"
+      },
+      {
+        "id": "276:value",
+        "nodeId": "276",
+        "inputKey": "value",
+        "nodeTitle": "INT Constant",
+        "label": "图片高度",
+        "type": "number",
+        "enabled": true,
+        "order": 3,
+        "defaultValue": 1080,
+        "presetRole": "height"
+      },
+      {
+        "id": "277:text",
+        "nodeId": "277",
+        "inputKey": "text",
+        "nodeTitle": "🔤 CR Text",
+        "label": "正向提示词",
+        "type": "textarea",
+        "enabled": true,
+        "order": 0,
+        "defaultValue": "财阀豪宅顶层的一间私人密室，深夜，房间拉着厚重深色丝绒窗帘，遮光严密，一张宽大的深色真皮沙发，皮面有使用褶皱，沙发前是玻璃茶几，几上摆着两只喝了一半的红酒杯，杯壁挂着残酒，旁边散落着几张底片、一瓶打开的烈酒和一包白色药粉，地上铺着深色地毯，门口是一扇厚重实木门，墙上挂着暧昧的油画，只有沙发旁一盏落地灯亮着，灯罩是暗红色，光线昏黄浑浊，光圈照亮茶几一小块，房间其余部分浸在浓重阴影里，红酒在暗光里发黑，空气沉闷，混着烈酒、皮革和闷住的香水味，\n\n《老男孩》式密闭窒息，柯达Portra 800胶片，暖黄奶油调里透着病态，暗部浓郁偏棕，颗粒厚重，柔焦感，50mm镜头，f/1.8，极浅景深，\n\n光影层次感，电影质感，艺术氛围，高级的氛围感，梦幻，",
+        "presetRole": "prompt"
+      },
+      {
+        "id": "282:clean_file_cache",
+        "nodeId": "282",
+        "inputKey": "clean_file_cache",
+        "nodeTitle": "释放内存",
+        "label": "clean_file_cache",
+        "type": "boolean",
+        "enabled": false,
+        "order": 35,
+        "defaultValue": true
+      },
+      {
+        "id": "282:clean_processes",
+        "nodeId": "282",
+        "inputKey": "clean_processes",
+        "nodeTitle": "释放内存",
+        "label": "clean_processes",
+        "type": "boolean",
+        "enabled": false,
+        "order": 36,
+        "defaultValue": true
+      },
+      {
+        "id": "282:clean_dlls",
+        "nodeId": "282",
+        "inputKey": "clean_dlls",
+        "nodeTitle": "释放内存",
+        "label": "clean_dlls",
+        "type": "boolean",
+        "enabled": false,
+        "order": 37,
+        "defaultValue": true
+      },
+      {
+        "id": "282:retry_times",
+        "nodeId": "282",
+        "inputKey": "retry_times",
+        "nodeTitle": "释放内存",
+        "label": "retry_times",
+        "type": "number",
+        "enabled": false,
+        "order": 38,
+        "defaultValue": 3
+      },
+      {
+        "id": "283:offload_model",
+        "nodeId": "283",
+        "inputKey": "offload_model",
+        "nodeTitle": "释放显存",
+        "label": "offload_model",
+        "type": "boolean",
+        "enabled": false,
+        "order": 39,
+        "defaultValue": true
+      },
+      {
+        "id": "283:offload_cache",
+        "nodeId": "283",
+        "inputKey": "offload_cache",
+        "nodeTitle": "释放显存",
+        "label": "offload_cache",
+        "type": "boolean",
+        "enabled": false,
+        "order": 40,
+        "defaultValue": true
+      }
+    ],
+    "createdAt": "2026-10-23T08:50:16.529Z",
+    "updatedAt": "2026-10-23T08:50:16.529Z",
+    "outputKinds": [
+      "image"
+    ]
+  },
+  {
+    "id": "verification-04_H3_作者原文_六参考_API.json",
+    "name": "视频生成-MiniMax H3",
+    "description": "可使用 1–6 张参考图，按已选槽位顺序对应提示词中的图像编号；未选槽位不会提交。目标时长按原始帧数公式对齐。作者示例描述图像 1、2，请按实际图片数量调整描述。",
+    "workflow": {
+      "115": {
+        "inputs": {
+          "aspect_ratio": "16:9 (Widescreen)",
+          "megapixels": 0.6,
+          "multiple": 32
+        },
+        "class_type": "ResolutionSelector",
+        "_meta": {
+          "title": "Resolution Selector (Size)"
+        }
+      },
+      "121": {
+        "inputs": {
+          "samples": [
+            "125",
+            0
+          ],
+          "vae": [
+            "150",
+            0
+          ]
+        },
+        "class_type": "VAEDecodeAudio",
+        "_meta": {
+          "title": "VAE解码（音频）"
+        }
+      },
+      "122": {
+        "inputs": {
+          "samples": [
+            "125",
+            0
+          ],
+          "vae": [
+            "149",
+            0
+          ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+          "title": "VAE解码"
+        }
+      },
+      "123": {
+        "inputs": {
+          "sampler_name": "euler"
+        },
+        "class_type": "KSamplerSelect",
+        "_meta": {
+          "title": "K采样器选择"
+        }
+      },
+      "124": {
+        "inputs": {
+          "scheduler": "simple",
+          "steps": [
+            "163",
+            0
+          ],
+          "denoise": 1,
+          "model": [
+            "151",
+            0
+          ]
+        },
+        "class_type": "BasicScheduler",
+        "_meta": {
+          "title": "基本调度器"
+        }
+      },
+      "125": {
+        "inputs": {
+          "noise": [
+            "129",
+            0
+          ],
+          "guider": [
+            "126",
+            0
+          ],
+          "sampler": [
+            "123",
+            0
+          ],
+          "sigmas": [
+            "124",
+            0
+          ],
+          "latent_image": [
+            "136",
+            1
+          ]
+        },
+        "class_type": "SamplerCustomAdvanced",
+        "_meta": {
+          "title": "自定义采样器（高级）"
+        }
+      },
+      "126": {
+        "inputs": {
+          "model": [
+            "151",
+            0
+          ],
+          "conditioning": [
+            "136",
+            0
+          ]
+        },
+        "class_type": "BasicGuider",
+        "_meta": {
+          "title": "基本引导器"
+        }
+      },
+      "129": {
+        "inputs": {
+          "noise_seed": 63789827476739
+        },
+        "class_type": "RandomNoise",
+        "_meta": {
+          "title": "随机噪波"
+        }
+      },
+      "131": {
+        "inputs": {
+          "expression": "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) % 17",
+          "values.a": [
+            "132",
+            0
+          ]
+        },
+        "class_type": "ComfyMathExpression",
+        "_meta": {
+          "title": "数学表达式"
+        }
+      },
+      "132": {
+        "inputs": {
+          "value": 8
+        },
+        "class_type": "PrimitiveFloat",
+        "_meta": {
+          "title": "Float (Duration)"
+        }
+      },
+      "136": {
+        "inputs": {
+          "prompt": [
+            "138",
+            0
+          ],
+          "width": [
+            "115",
+            0
+          ],
+          "height": [
+            "115",
+            1
+          ],
+          "length": [
+            "131",
+            1
+          ],
+          "ref_image_size": "match",
+          "clip": [
+            "148",
+            0
+          ],
+          "vae": [
+            "149",
+            0
+          ],
+          "audio_vae": [
+            "150",
+            0
+          ],
+          "ref_images.ref_image_0": [
+            "137",
+            0
+          ],
+          "ref_images.ref_image_1": [
+            "139",
+            0
+          ],
+          "ref_images.ref_image_2": [
+            "146",
+            0
+          ],
+          "ref_images.ref_image_3": [
+            "159",
+            0
+          ],
+          "ref_images.ref_image_4": [
+            "160",
+            0
+          ],
+          "ref_images.ref_image_5": [
+            "161",
+            0
+          ]
+        },
+        "class_type": "MiniMaxH3ReferenceToVideo",
+        "_meta": {
+          "title": "MiniMax H3 参考转视频"
+        }
+      },
+      "137": {
+        "inputs": {
+          "image": "20261012_174230_QwenEdit_00001_qazhn_1791798243.png"
+        },
+        "class_type": "LoadImage",
+        "_meta": {
+          "title": "加载图像"
+        }
+      },
+      "138": {
+        "inputs": {
+          "value": "【参考图像锚定】\n\n图像1是金敏恩的多视角角色参考，同一个成年女性的正面、侧面、背面与面部特写。保留参考图中的面部特征、黑色长直发、白色短袖衬衫、深蓝色领带、黑色百褶裙、赤脚、清瘦身材，以及脸颊和前臂已有的轻微伤痕。视频中金敏恩只有一人。\n\n图像2是暴雨中的旧楼天台场景，保留左后方低矮水泥围墙、右侧斑驳墙面与敞开的旧门、门旁花盆、地面散落的透明塑料瓶、大片积水，以及远处青蓝色城市灯光。沿用参考图的粗颗粒、潮湿材质与青绿色暗部。\n\n【分镜】\n\n人物初始站位与空间关系：金敏恩站在天台水泥矮墙内侧，身体朝向左后方城市，右侧旧门位于金敏恩身后。白色短袖衬衫被雨淋湿后贴在肩背，衣料保持不透明，深蓝领带垂在胸前，黑色长发分束贴在脸侧。全段维持同一天台空间和人物朝向。环境中持续有雨点拍打水泥、积水溅响和风吹门轴的轻微声响。\n\n镜头1：雨里的停顿（镜头组·2机位·0–3秒·共3秒）。\n- [机位A·0–1.5秒·天台水泥矮墙内侧地面特写·稳定低机位]：雨点密集落进积水，青蓝色灯光倒影被一圈圈水纹打散。金敏恩的赤脚停在积水里，裙摆下缘掠过画面上方。\n- [机位B·1.5–3秒·天台水泥矮墙内侧背面中景·缓慢平移]：镜头从金敏恩右后侧轻移，带出左后方城市和右侧旧门。金敏恩双臂垂在身侧，肩膀随一次压住的吸气轻轻抬起，随后停住。\n\n镜头2：被雨声吞掉的话（镜头组·2机位·3–13秒·共10秒）。\n- [机位A·3–12秒·天台水泥矮墙内侧侧面近景·手持微呼吸]：镜头停在金敏恩左前侧，背景仍是同一面水泥矮墙与虚化城市灯光。金敏恩看向远处，嘴唇轻微分开，雨水顺着发梢滴落。眉心缓缓收紧，下唇颤动一次，金敏恩咽下一口气。画外音贴近耳边响起，画面中的嘴唇不随旁白逐字开合。\n画外音\n<金敏恩> (S1) says:\n<d>[Korean]서울에서는…… 재벌의 개는 명품을 두르지만, 우리 같은 사람은 벌레만도 못해.</d>\n- [机位B·12–13秒·天台水泥矮墙内侧面部特写·手持微呼吸]：旁白结束，金敏恩缓慢眨眼，眼角积起的泪与雨水一同滑过脸颊，视线仍停在远处。雨声重新清晰起来。\n\n镜头3：回忆逼近（镜头组·2机位·13–15秒·共2秒）。\n- [机位A·13–14秒·天台水泥矮墙内侧手部特写·稳定机位]：金敏恩垂在身侧的手指缓缓蜷起，指尖捏住一小块黑色裙料，雨水从指节滑落。\n- [机位B·14–15秒·天台水泥矮墙内侧眼部特写·轻微前推]：金敏恩眼睛里的城市光点微微晃动，眉头突然绷紧。雨声中混入一声短促尖锐耳鸣，画面在金敏恩视线凝住时结束，接入下一段更衣室回忆。\n\n【Speaker 声线设定】\n\nS1（金敏恩）：21岁韩国女性，年轻自然的中高音，音色偏薄，带轻微沙哑和鼻音，韩语发音自然。此段低声叙述，气息不稳但字句清晰，“서울에서는”之后短暂停顿，后半句连贯说完，句尾音量逐渐减弱。克制哽咽，不用甜美撒娇腔、播音腔或夸张哭喊。\n\n【禁止项】\n\n文字/UI/水印/Logo/角标/可读文字/真实UI/角色设定图排版/多视图并排/分屏/同一人物重复出现\n\n【强制声明】\n\n无背景音乐,仅保留环境音与人声和音效;画面禁字幕/文字/水印/Logo;禁止可读文字(指画面字幕文字,不含人声台词)"
+        },
+        "class_type": "PrimitiveStringMultiline",
+        "_meta": {
+          "title": "Input Text (Prompt)"
+        }
+      },
+      "139": {
+        "inputs": {
+          "image": "0_1 (1) (1).png"
+        },
+        "class_type": "LoadImage",
+        "_meta": {
+          "title": "加载图像"
+        }
+      },
+      "146": {
+        "inputs": {
+          "image": "6d6c34d6c11a7bd5dbda10bf25ef31b82e567deb398272ddf4e92d827bd930aa.png"
+        },
+        "class_type": "LoadImage",
+        "_meta": {
+          "title": "加载图像"
+        }
+      },
+      "148": {
+        "inputs": {
+          "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+          "type": "minimax",
+          "device": "default"
+        },
+        "class_type": "CLIPLoader",
+        "_meta": {
+          "title": "加载CLIP"
+        }
+      },
+      "149": {
+        "inputs": {
+          "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+        },
+        "class_type": "VAELoader",
+        "_meta": {
+          "title": "加载VAE"
+        }
+      },
+      "150": {
+        "inputs": {
+          "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+        },
+        "class_type": "VAELoader",
+        "_meta": {
+          "title": "加载VAE"
+        }
+      },
+      "151": {
+        "inputs": {
+          "lora_name": "minimax_h3_turbo_4STEPS_comfyui.safetensors",
+          "strength_model": 1.0000000000000002,
+          "model": [
+            "288",
+            0
+          ]
+        },
+        "class_type": "LoraLoaderBypassModelOnly",
+        "_meta": {
+          "title": "lora only"
+        }
+      },
+      "153": {
+        "inputs": {
+          "attention": "pytorch attention",
+          "model": [
+            "154",
+            0
+          ]
+        },
+        "class_type": "ModelAttentionBackend",
+        "_meta": {
+          "title": "模型注意力后端"
+        }
+      },
+      "154": {
+        "inputs": {
+          "model": [
+            "157",
+            0
+          ]
+        },
+        "class_type": "MiniMaxH3MemoryEfficientSageAttentionPatch",
+        "_meta": {
+          "title": "MiniMax H3 Mem Eff Sage Attention Patch"
+        }
+      },
+      "155": {
+        "inputs": {
+          "tau": 1.3,
+          "start_percent": 0.2,
+          "end_percent": 0.9,
+          "min_tokens": 12288,
+          "sink_conditioning": "exact_kv_and_rows",
+          "morton": false,
+          "morton_curve": "2d_frame",
+          "centroid_tail": true,
+          "routed_cap_percent": 0,
+          "reuse_qkv_memory": false,
+          "verbose": false,
+          "dense_blocks": "",
+          "model": [
+            "153",
+            0
+          ]
+        },
+        "class_type": "SolAttnMiniMax",
+        "_meta": {
+          "title": "Patch Sol-Attn (MiniMax)"
+        }
+      },
+      "156": {
+        "inputs": {
+          "frame_rate": 24,
+          "loop_count": 0,
+          "filename_prefix": "MiniMaxH3/learned_latent_twopass_i2va_upstream_parity_v2_exp",
+          "format": "video/h265-mp4",
+          "pix_fmt": "yuv420p10le",
+          "crf": 22,
+          "save_metadata": true,
+          "pingpong": false,
+          "save_output": true,
+          "images": [
+            "287",
+            0
+          ],
+          "audio": [
+            "121",
+            0
+          ]
+        },
+        "class_type": "VHS_VideoCombine",
+        "_meta": {
+          "title": "Video Combine 🎥🅥🅗🅢"
+        }
+      },
+      "157": {
+        "inputs": {
+          "unet_name": "minimax_h3_fl2va_int8_convrot.safetensors",
+          "weight_dtype": "default"
+        },
+        "class_type": "UNETLoader",
+        "_meta": {
+          "title": "UNet加载器"
+        }
+      },
+      "159": {
+        "inputs": {
+          "image": "11f87974d3f56ab3e597154a7357ae81e1c1eff020bdf2300529e8507aaa6d67.png"
+        },
+        "class_type": "LoadImage",
+        "_meta": {
+          "title": "加载图像"
+        }
+      },
+      "160": {
+        "inputs": {
+          "image": "15b2040b06a9df01eb537ef34e83c22238eb65e319d26af8763e8ba0df87e1a4.png"
+        },
+        "class_type": "LoadImage",
+        "_meta": {
+          "title": "加载图像"
+        }
+      },
+      "161": {
+        "inputs": {
+          "image": "5b85e8ed594a73e93391a267d0f2dc9dc9f78303f0f450d44b8101a82f85b21f.png"
+        },
+        "class_type": "LoadImage",
+        "_meta": {
+          "title": "加载图像"
+        }
+      },
+      "163": {
+        "inputs": {
+          "value": 12
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "INT Constant"
+        }
+      },
+      "286": {
+        "inputs": {
+          "clean_file_cache": true,
+          "clean_processes": true,
+          "clean_dlls": true,
+          "retry_times": 3,
+          "anything": [
+            "122",
+            0
+          ]
+        },
+        "class_type": "RAMCleanup",
+        "_meta": {
+          "title": "释放内存"
+        }
+      },
+      "287": {
+        "inputs": {
+          "offload_model": true,
+          "offload_cache": true,
+          "anything": [
+            "286",
+            0
+          ]
+        },
+        "class_type": "VRAMCleanup",
+        "_meta": {
+          "title": "释放显存"
+        }
+      },
+      "288": {
+        "inputs": {
+          "lora_name": "MysticXXX_MMH3-V1.safetensors",
+          "strength_model": 0.6,
+          "model": [
+            "155",
+            0
+          ]
+        },
+        "class_type": "LoraLoaderBypassModelOnly",
+        "_meta": {
+          "title": "lora only"
+        }
+      }
+    },
+    "fields": [
+      {
+        "id": "115:aspect_ratio",
+        "nodeId": "115",
+        "inputKey": "aspect_ratio",
+        "nodeTitle": "Resolution Selector (Size)",
+        "label": "画面比例",
+        "type": "text",
+        "enabled": true,
+        "order": 9,
+        "defaultValue": "16:9 (Widescreen)"
+      },
+      {
+        "id": "115:megapixels",
+        "nodeId": "115",
+        "inputKey": "megapixels",
+        "nodeTitle": "Resolution Selector (Size)",
+        "label": "输出百万像素",
+        "type": "number",
+        "enabled": true,
+        "order": 10,
+        "defaultValue": 0.6
+      },
+      {
+        "id": "115:multiple",
+        "nodeId": "115",
+        "inputKey": "multiple",
+        "nodeTitle": "Resolution Selector (Size)",
+        "label": "multiple",
+        "type": "number",
+        "enabled": false,
+        "order": 17,
+        "defaultValue": 32
+      },
+      {
+        "id": "123:sampler_name",
+        "nodeId": "123",
+        "inputKey": "sampler_name",
+        "nodeTitle": "K采样器选择",
+        "label": "采样器",
+        "type": "text",
+        "enabled": true,
+        "order": 13,
+        "defaultValue": "euler"
+      },
+      {
+        "id": "124:scheduler",
+        "nodeId": "124",
+        "inputKey": "scheduler",
+        "nodeTitle": "基本调度器",
+        "label": "调度器",
+        "type": "text",
+        "enabled": true,
+        "order": 14,
+        "defaultValue": "simple"
+      },
+      {
+        "id": "124:denoise",
+        "nodeId": "124",
+        "inputKey": "denoise",
+        "nodeTitle": "基本调度器",
+        "label": "重绘强度",
+        "type": "slider",
+        "enabled": true,
+        "order": 12,
+        "defaultValue": 1,
+        "presetRole": "strength"
+      },
+      {
+        "id": "129:noise_seed",
+        "nodeId": "129",
+        "inputKey": "noise_seed",
+        "nodeTitle": "随机噪波",
+        "label": "生成随机种子",
+        "type": "number",
+        "enabled": true,
+        "order": 11,
+        "defaultValue": 63789827476739,
+        "randomize": true,
+        "presetRole": "seed"
+      },
+      {
+        "id": "131:expression",
+        "nodeId": "131",
+        "inputKey": "expression",
+        "nodeTitle": "数学表达式",
+        "label": "expression",
+        "type": "text",
+        "enabled": false,
+        "order": 22,
+        "defaultValue": "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) % 17"
+      },
+      {
+        "id": "132:value",
+        "nodeId": "132",
+        "inputKey": "value",
+        "nodeTitle": "Float (Duration)",
+        "label": "目标时长（秒，按帧数对齐）",
+        "type": "number",
+        "enabled": true,
+        "order": 7,
+        "defaultValue": 8
+      },
+      {
+        "id": "136:ref_image_size",
+        "nodeId": "136",
+        "inputKey": "ref_image_size",
+        "nodeTitle": "MiniMax H3 参考转视频",
+        "label": "ref_image_size",
+        "type": "text",
+        "enabled": false,
+        "order": 24,
+        "defaultValue": "match"
+      },
+      {
+        "id": "137:image",
+        "nodeId": "137",
+        "inputKey": "image",
+        "nodeTitle": "加载图像",
+        "label": "参考图 1",
+        "type": "image",
+        "enabled": true,
+        "order": 1,
+        "defaultValue": "20261012_174230_QwenEdit_00001_qazhn_1791798243.png",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "136",
+          "inputKey": "ref_images.ref_image_0"
+        }
+      },
+      {
+        "id": "138:value",
+        "nodeId": "138",
+        "inputKey": "value",
+        "nodeTitle": "Input Text (Prompt)",
+        "label": "视频提示词",
+        "type": "textarea",
+        "enabled": true,
+        "order": 0,
+        "defaultValue": "【参考图像锚定】\n\n图像1是金敏恩的多视角角色参考，同一个成年女性的正面、侧面、背面与面部特写。保留参考图中的面部特征、黑色长直发、白色短袖衬衫、深蓝色领带、黑色百褶裙、赤脚、清瘦身材，以及脸颊和前臂已有的轻微伤痕。视频中金敏恩只有一人。\n\n图像2是暴雨中的旧楼天台场景，保留左后方低矮水泥围墙、右侧斑驳墙面与敞开的旧门、门旁花盆、地面散落的透明塑料瓶、大片积水，以及远处青蓝色城市灯光。沿用参考图的粗颗粒、潮湿材质与青绿色暗部。\n\n【分镜】\n\n人物初始站位与空间关系：金敏恩站在天台水泥矮墙内侧，身体朝向左后方城市，右侧旧门位于金敏恩身后。白色短袖衬衫被雨淋湿后贴在肩背，衣料保持不透明，深蓝领带垂在胸前，黑色长发分束贴在脸侧。全段维持同一天台空间和人物朝向。环境中持续有雨点拍打水泥、积水溅响和风吹门轴的轻微声响。\n\n镜头1：雨里的停顿（镜头组·2机位·0–3秒·共3秒）。\n- [机位A·0–1.5秒·天台水泥矮墙内侧地面特写·稳定低机位]：雨点密集落进积水，青蓝色灯光倒影被一圈圈水纹打散。金敏恩的赤脚停在积水里，裙摆下缘掠过画面上方。\n- [机位B·1.5–3秒·天台水泥矮墙内侧背面中景·缓慢平移]：镜头从金敏恩右后侧轻移，带出左后方城市和右侧旧门。金敏恩双臂垂在身侧，肩膀随一次压住的吸气轻轻抬起，随后停住。\n\n镜头2：被雨声吞掉的话（镜头组·2机位·3–13秒·共10秒）。\n- [机位A·3–12秒·天台水泥矮墙内侧侧面近景·手持微呼吸]：镜头停在金敏恩左前侧，背景仍是同一面水泥矮墙与虚化城市灯光。金敏恩看向远处，嘴唇轻微分开，雨水顺着发梢滴落。眉心缓缓收紧，下唇颤动一次，金敏恩咽下一口气。画外音贴近耳边响起，画面中的嘴唇不随旁白逐字开合。\n画外音\n<金敏恩> (S1) says:\n<d>[Korean]서울에서는…… 재벌의 개는 명품을 두르지만, 우리 같은 사람은 벌레만도 못해.</d>\n- [机位B·12–13秒·天台水泥矮墙内侧面部特写·手持微呼吸]：旁白结束，金敏恩缓慢眨眼，眼角积起的泪与雨水一同滑过脸颊，视线仍停在远处。雨声重新清晰起来。\n\n镜头3：回忆逼近（镜头组·2机位·13–15秒·共2秒）。\n- [机位A·13–14秒·天台水泥矮墙内侧手部特写·稳定机位]：金敏恩垂在身侧的手指缓缓蜷起，指尖捏住一小块黑色裙料，雨水从指节滑落。\n- [机位B·14–15秒·天台水泥矮墙内侧眼部特写·轻微前推]：金敏恩眼睛里的城市光点微微晃动，眉头突然绷紧。雨声中混入一声短促尖锐耳鸣，画面在金敏恩视线凝住时结束，接入下一段更衣室回忆。\n\n【Speaker 声线设定】\n\nS1（金敏恩）：21岁韩国女性，年轻自然的中高音，音色偏薄，带轻微沙哑和鼻音，韩语发音自然。此段低声叙述，气息不稳但字句清晰，“서울에서는”之后短暂停顿，后半句连贯说完，句尾音量逐渐减弱。克制哽咽，不用甜美撒娇腔、播音腔或夸张哭喊。\n\n【禁止项】\n\n文字/UI/水印/Logo/角标/可读文字/真实UI/角色设定图排版/多视图并排/分屏/同一人物重复出现\n\n【强制声明】\n\n无背景音乐,仅保留环境音与人声和音效;画面禁字幕/文字/水印/Logo;禁止可读文字(指画面字幕文字,不含人声台词)",
+        "presetRole": "prompt"
+      },
+      {
+        "id": "139:image",
+        "nodeId": "139",
+        "inputKey": "image",
+        "nodeTitle": "加载图像",
+        "label": "参考图 2",
+        "type": "image",
+        "enabled": true,
+        "order": 2,
+        "defaultValue": "0_1 (1) (1).png",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "136",
+          "inputKey": "ref_images.ref_image_1"
+        }
+      },
+      {
+        "id": "146:image",
+        "nodeId": "146",
+        "inputKey": "image",
+        "nodeTitle": "加载图像",
+        "label": "参考图 3",
+        "type": "image",
+        "enabled": true,
+        "order": 3,
+        "defaultValue": "6d6c34d6c11a7bd5dbda10bf25ef31b82e567deb398272ddf4e92d827bd930aa.png",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "136",
+          "inputKey": "ref_images.ref_image_2"
+        }
+      },
+      {
+        "id": "148:clip_name",
+        "nodeId": "148",
+        "inputKey": "clip_name",
+        "nodeTitle": "加载CLIP",
+        "label": "clip_name",
+        "type": "text",
+        "enabled": false,
+        "order": 29,
+        "defaultValue": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors"
+      },
+      {
+        "id": "148:type",
+        "nodeId": "148",
+        "inputKey": "type",
+        "nodeTitle": "加载CLIP",
+        "label": "type",
+        "type": "text",
+        "enabled": false,
+        "order": 30,
+        "defaultValue": "minimax"
+      },
+      {
+        "id": "148:device",
+        "nodeId": "148",
+        "inputKey": "device",
+        "nodeTitle": "加载CLIP",
+        "label": "device",
+        "type": "text",
+        "enabled": false,
+        "order": 31,
+        "defaultValue": "default"
+      },
+      {
+        "id": "149:vae_name",
+        "nodeId": "149",
+        "inputKey": "vae_name",
+        "nodeTitle": "加载VAE",
+        "label": "vae_name",
+        "type": "text",
+        "enabled": false,
+        "order": 32,
+        "defaultValue": "minimax_h3_video_vae_fp16.safetensors"
+      },
+      {
+        "id": "150:vae_name",
+        "nodeId": "150",
+        "inputKey": "vae_name",
+        "nodeTitle": "加载VAE",
+        "label": "vae_name",
+        "type": "text",
+        "enabled": false,
+        "order": 33,
+        "defaultValue": "minimax_h3_audio_vae_fp32.safetensors"
+      },
+      {
+        "id": "151:lora_name",
+        "nodeId": "151",
+        "inputKey": "lora_name",
+        "nodeTitle": "lora only",
+        "label": "lora_name",
+        "type": "text",
+        "enabled": false,
+        "order": 34,
+        "defaultValue": "minimax_h3_turbo_4STEPS_comfyui.safetensors"
+      },
+      {
+        "id": "151:strength_model",
+        "nodeId": "151",
+        "inputKey": "strength_model",
+        "nodeTitle": "lora only",
+        "label": "strength_model",
+        "type": "number",
+        "enabled": false,
+        "order": 35,
+        "defaultValue": 1.0000000000000002
+      },
+      {
+        "id": "153:attention",
+        "nodeId": "153",
+        "inputKey": "attention",
+        "nodeTitle": "模型注意力后端",
+        "label": "attention",
+        "type": "text",
+        "enabled": false,
+        "order": 36,
+        "defaultValue": "pytorch attention"
+      },
+      {
+        "id": "155:tau",
+        "nodeId": "155",
+        "inputKey": "tau",
+        "nodeTitle": "Patch Sol-Attn (MiniMax)",
+        "label": "tau",
+        "type": "number",
+        "enabled": false,
+        "order": 37,
+        "defaultValue": 1.3
+      },
+      {
+        "id": "155:start_percent",
+        "nodeId": "155",
+        "inputKey": "start_percent",
+        "nodeTitle": "Patch Sol-Attn (MiniMax)",
+        "label": "start_percent",
+        "type": "number",
+        "enabled": false,
+        "order": 38,
+        "defaultValue": 0.2
+      },
+      {
+        "id": "155:end_percent",
+        "nodeId": "155",
+        "inputKey": "end_percent",
+        "nodeTitle": "Patch Sol-Attn (MiniMax)",
+        "label": "end_percent",
+        "type": "number",
+        "enabled": false,
+        "order": 39,
+        "defaultValue": 0.9
+      },
+      {
+        "id": "155:min_tokens",
+        "nodeId": "155",
+        "inputKey": "min_tokens",
+        "nodeTitle": "Patch Sol-Attn (MiniMax)",
+        "label": "min_tokens",
+        "type": "number",
+        "enabled": false,
+        "order": 40,
+        "defaultValue": 12288
+      },
+      {
+        "id": "155:sink_conditioning",
+        "nodeId": "155",
+        "inputKey": "sink_conditioning",
+        "nodeTitle": "Patch Sol-Attn (MiniMax)",
+        "label": "sink_conditioning",
+        "type": "text",
+        "enabled": false,
+        "order": 41,
+        "defaultValue": "exact_kv_and_rows"
+      },
+      {
+        "id": "155:morton",
+        "nodeId": "155",
+        "inputKey": "morton",
+        "nodeTitle": "Patch Sol-Attn (MiniMax)",
+        "label": "morton",
+        "type": "boolean",
+        "enabled": false,
+        "order": 42,
+        "defaultValue": false
+      },
+      {
+        "id": "155:morton_curve",
+        "nodeId": "155",
+        "inputKey": "morton_curve",
+        "nodeTitle": "Patch Sol-Attn (MiniMax)",
+        "label": "morton_curve",
+        "type": "text",
+        "enabled": false,
+        "order": 43,
+        "defaultValue": "2d_frame"
+      },
+      {
+        "id": "155:centroid_tail",
+        "nodeId": "155",
+        "inputKey": "centroid_tail",
+        "nodeTitle": "Patch Sol-Attn (MiniMax)",
+        "label": "centroid_tail",
+        "type": "boolean",
+        "enabled": false,
+        "order": 44,
+        "defaultValue": true
+      },
+      {
+        "id": "155:routed_cap_percent",
+        "nodeId": "155",
+        "inputKey": "routed_cap_percent",
+        "nodeTitle": "Patch Sol-Attn (MiniMax)",
+        "label": "routed_cap_percent",
+        "type": "number",
+        "enabled": false,
+        "order": 45,
+        "defaultValue": 0
+      },
+      {
+        "id": "155:reuse_qkv_memory",
+        "nodeId": "155",
+        "inputKey": "reuse_qkv_memory",
+        "nodeTitle": "Patch Sol-Attn (MiniMax)",
+        "label": "reuse_qkv_memory",
+        "type": "boolean",
+        "enabled": false,
+        "order": 46,
+        "defaultValue": false
+      },
+      {
+        "id": "155:verbose",
+        "nodeId": "155",
+        "inputKey": "verbose",
+        "nodeTitle": "Patch Sol-Attn (MiniMax)",
+        "label": "verbose",
+        "type": "boolean",
+        "enabled": false,
+        "order": 47,
+        "defaultValue": false
+      },
+      {
+        "id": "155:dense_blocks",
+        "nodeId": "155",
+        "inputKey": "dense_blocks",
+        "nodeTitle": "Patch Sol-Attn (MiniMax)",
+        "label": "dense_blocks",
+        "type": "text",
+        "enabled": false,
+        "order": 48,
+        "defaultValue": ""
+      },
+      {
+        "id": "156:frame_rate",
+        "nodeId": "156",
+        "inputKey": "frame_rate",
+        "nodeTitle": "Video Combine 🎥🅥🅗🅢",
+        "label": "frame_rate",
+        "type": "number",
+        "enabled": false,
+        "order": 49,
+        "defaultValue": 24
+      },
+      {
+        "id": "156:loop_count",
+        "nodeId": "156",
+        "inputKey": "loop_count",
+        "nodeTitle": "Video Combine 🎥🅥🅗🅢",
+        "label": "loop_count",
+        "type": "number",
+        "enabled": false,
+        "order": 50,
+        "defaultValue": 0
+      },
+      {
+        "id": "156:filename_prefix",
+        "nodeId": "156",
+        "inputKey": "filename_prefix",
+        "nodeTitle": "Video Combine 🎥🅥🅗🅢",
+        "label": "filename_prefix",
+        "type": "text",
+        "enabled": false,
+        "order": 51,
+        "defaultValue": "MiniMaxH3/learned_latent_twopass_i2va_upstream_parity_v2_exp"
+      },
+      {
+        "id": "156:format",
+        "nodeId": "156",
+        "inputKey": "format",
+        "nodeTitle": "Video Combine 🎥🅥🅗🅢",
+        "label": "format",
+        "type": "text",
+        "enabled": false,
+        "order": 52,
+        "defaultValue": "video/h265-mp4"
+      },
+      {
+        "id": "156:pix_fmt",
+        "nodeId": "156",
+        "inputKey": "pix_fmt",
+        "nodeTitle": "Video Combine 🎥🅥🅗🅢",
+        "label": "pix_fmt",
+        "type": "text",
+        "enabled": false,
+        "order": 53,
+        "defaultValue": "yuv420p10le"
+      },
+      {
+        "id": "156:crf",
+        "nodeId": "156",
+        "inputKey": "crf",
+        "nodeTitle": "Video Combine 🎥🅥🅗🅢",
+        "label": "crf",
+        "type": "number",
+        "enabled": false,
+        "order": 54,
+        "defaultValue": 22
+      },
+      {
+        "id": "156:save_metadata",
+        "nodeId": "156",
+        "inputKey": "save_metadata",
+        "nodeTitle": "Video Combine 🎥🅥🅗🅢",
+        "label": "save_metadata",
+        "type": "boolean",
+        "enabled": false,
+        "order": 55,
+        "defaultValue": true
+      },
+      {
+        "id": "156:pingpong",
+        "nodeId": "156",
+        "inputKey": "pingpong",
+        "nodeTitle": "Video Combine 🎥🅥🅗🅢",
+        "label": "pingpong",
+        "type": "boolean",
+        "enabled": false,
+        "order": 56,
+        "defaultValue": false
+      },
+      {
+        "id": "156:save_output",
+        "nodeId": "156",
+        "inputKey": "save_output",
+        "nodeTitle": "Video Combine 🎥🅥🅗🅢",
+        "label": "save_output",
+        "type": "boolean",
+        "enabled": false,
+        "order": 57,
+        "defaultValue": true
+      },
+      {
+        "id": "157:unet_name",
+        "nodeId": "157",
+        "inputKey": "unet_name",
+        "nodeTitle": "UNet加载器",
+        "label": "unet_name",
+        "type": "text",
+        "enabled": false,
+        "order": 58,
+        "defaultValue": "minimax_h3_fl2va_int8_convrot.safetensors"
+      },
+      {
+        "id": "157:weight_dtype",
+        "nodeId": "157",
+        "inputKey": "weight_dtype",
+        "nodeTitle": "UNet加载器",
+        "label": "weight_dtype",
+        "type": "text",
+        "enabled": false,
+        "order": 59,
+        "defaultValue": "default"
+      },
+      {
+        "id": "159:image",
+        "nodeId": "159",
+        "inputKey": "image",
+        "nodeTitle": "加载图像",
+        "label": "参考图 4",
+        "type": "image",
+        "enabled": true,
+        "order": 4,
+        "defaultValue": "11f87974d3f56ab3e597154a7357ae81e1c1eff020bdf2300529e8507aaa6d67.png",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "136",
+          "inputKey": "ref_images.ref_image_3"
+        }
+      },
+      {
+        "id": "160:image",
+        "nodeId": "160",
+        "inputKey": "image",
+        "nodeTitle": "加载图像",
+        "label": "参考图 5",
+        "type": "image",
+        "enabled": true,
+        "order": 5,
+        "defaultValue": "15b2040b06a9df01eb537ef34e83c22238eb65e319d26af8763e8ba0df87e1a4.png",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "136",
+          "inputKey": "ref_images.ref_image_4"
+        }
+      },
+      {
+        "id": "161:image",
+        "nodeId": "161",
+        "inputKey": "image",
+        "nodeTitle": "加载图像",
+        "label": "参考图 6",
+        "type": "image",
+        "enabled": true,
+        "order": 6,
+        "defaultValue": "5b85e8ed594a73e93391a267d0f2dc9dc9f78303f0f450d44b8101a82f85b21f.png",
+        "presetRole": "image",
+        "referenceInput": {
+          "nodeId": "136",
+          "inputKey": "ref_images.ref_image_5"
+        }
+      },
+      {
+        "id": "163:value",
+        "nodeId": "163",
+        "inputKey": "value",
+        "nodeTitle": "INT Constant",
+        "label": "采样步数",
+        "type": "number",
+        "enabled": true,
+        "order": 8,
+        "defaultValue": 12
+      },
+      {
+        "id": "286:clean_file_cache",
+        "nodeId": "286",
+        "inputKey": "clean_file_cache",
+        "nodeTitle": "释放内存",
+        "label": "clean_file_cache",
+        "type": "boolean",
+        "enabled": false,
+        "order": 64,
+        "defaultValue": true
+      },
+      {
+        "id": "286:clean_processes",
+        "nodeId": "286",
+        "inputKey": "clean_processes",
+        "nodeTitle": "释放内存",
+        "label": "clean_processes",
+        "type": "boolean",
+        "enabled": false,
+        "order": 65,
+        "defaultValue": true
+      },
+      {
+        "id": "286:clean_dlls",
+        "nodeId": "286",
+        "inputKey": "clean_dlls",
+        "nodeTitle": "释放内存",
+        "label": "clean_dlls",
+        "type": "boolean",
+        "enabled": false,
+        "order": 66,
+        "defaultValue": true
+      },
+      {
+        "id": "286:retry_times",
+        "nodeId": "286",
+        "inputKey": "retry_times",
+        "nodeTitle": "释放内存",
+        "label": "retry_times",
+        "type": "number",
+        "enabled": false,
+        "order": 67,
+        "defaultValue": 3
+      },
+      {
+        "id": "287:offload_model",
+        "nodeId": "287",
+        "inputKey": "offload_model",
+        "nodeTitle": "释放显存",
+        "label": "offload_model",
+        "type": "boolean",
+        "enabled": false,
+        "order": 68,
+        "defaultValue": true
+      },
+      {
+        "id": "287:offload_cache",
+        "nodeId": "287",
+        "inputKey": "offload_cache",
+        "nodeTitle": "释放显存",
+        "label": "offload_cache",
+        "type": "boolean",
+        "enabled": false,
+        "order": 69,
+        "defaultValue": true
+      },
+      {
+        "id": "288:lora_name",
+        "nodeId": "288",
+        "inputKey": "lora_name",
+        "nodeTitle": "lora only",
+        "label": "lora_name",
+        "type": "text",
+        "enabled": false,
+        "order": 70,
+        "defaultValue": "MysticXXX_MMH3-V1.safetensors"
+      },
+      {
+        "id": "288:strength_model",
+        "nodeId": "288",
+        "inputKey": "strength_model",
+        "nodeTitle": "lora only",
+        "label": "strength_model",
+        "type": "number",
+        "enabled": false,
+        "order": 71,
+        "defaultValue": 0.6
+      }
+    ],
+    "createdAt": "2026-10-23T08:50:16.530Z",
+    "updatedAt": "2026-10-23T08:50:16.530Z",
+    "outputKinds": [
+      "video"
+    ],
+    "aliasIds": [
+      "verification-04_H3_作者原文_双参考_API.json"
+    ]
+  },
+  {
+    "id": "verification-05_角色含SeedVR2_作者原文_API.json",
+    "name": "角色生成与高清放大-Z-Image + SeedVR2",
+    "description": "文生角色并使用 SeedVR2 放大。生成种子与放大种子分别设置，保留作者模型及放大器默认配置。",
+    "workflow": {
+      "227": {
+        "inputs": {
+          "unet_name": "z_image_bf16.safetensors",
+          "weight_dtype": "default"
+        },
+        "class_type": "UNETLoader",
+        "_meta": {
+          "title": "UNet加载器"
+        }
+      },
+      "228": {
+        "inputs": {
+          "text": "泛黄，发绿，模糊，低分辨率，低质量图像，扭曲的肢体，诡异的外观，丑陋，AI感，噪点，网格感，JPEG压缩条纹，异常的肢体，水印，乱码，意义不明的字符，泛蓝",
+          "clip": [
+            "245",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "CLIP文本编码"
+        }
+      },
+      "230": {
+        "inputs": {
+          "model": "ema_vae_fp16.safetensors",
+          "device": "cuda:0",
+          "encode_tiled": true,
+          "encode_tile_size": 1024,
+          "encode_tile_overlap": 128,
+          "decode_tiled": true,
+          "decode_tile_size": 1024,
+          "decode_tile_overlap": 128,
+          "tile_debug": "false",
+          "offload_device": "cpu",
+          "cache_model": false
+        },
+        "class_type": "SeedVR2LoadVAEModel",
+        "_meta": {
+          "title": "SeedVR2 (Down)Load VAE Model"
+        }
+      },
+      "231": {
+        "inputs": {
+          "seed": 1581091921,
+          "resolution": [
+            "237",
+            0
+          ],
+          "max_resolution": 6000,
+          "batch_size": 5,
+          "uniform_batch_size": false,
+          "color_correction": "lab",
+          "temporal_overlap": 0,
+          "prepend_frames": 0,
+          "input_noise_scale": 0,
+          "latent_noise_scale": 0,
+          "offload_device": "cpu",
+          "enable_debug": false,
+          "image": [
+            "234",
+            0
+          ],
+          "dit": [
+            "233",
+            0
+          ],
+          "vae": [
+            "230",
+            0
+          ]
+        },
+        "class_type": "SeedVR2VideoUpscaler",
+        "_meta": {
+          "title": "SeedVR2 Video Upscaler (v2.5.24)"
+        }
+      },
+      "233": {
+        "inputs": {
+          "model": "seedvr2_ema_7b-Q8_0.gguf",
+          "device": "cuda:0",
+          "blocks_to_swap": 32,
+          "swap_io_components": true,
+          "offload_device": "cpu",
+          "cache_model": "sdpa",
+          "attention_mode": "sdpa"
+        },
+        "class_type": "SeedVR2LoadDiTModel",
+        "_meta": {
+          "title": "SeedVR2 (Down)Load DiT Model"
+        }
+      },
+      "234": {
+        "inputs": {
+          "upscale_method": "lanczos",
+          "megapixels": 0.30000000000000004,
+          "resolution_steps": 1,
+          "image": [
+            "236",
+            0
+          ]
+        },
+        "class_type": "ImageScaleToTotalPixels",
+        "_meta": {
+          "title": "缩放图像（像素）"
+        }
+      },
+      "235": {
+        "inputs": {
+          "seed": 413189552079340,
+          "steps": 8,
+          "cfg": 1,
+          "sampler_name": "res_2s_ode",
+          "scheduler": "kl_optimal",
+          "denoise": 1,
+          "model": [
+            "250",
+            0
+          ],
+          "positive": [
+            "247",
+            0
+          ],
+          "negative": [
+            "228",
+            0
+          ],
+          "latent_image": [
+            "244",
+            0
+          ]
+        },
+        "class_type": "KSampler",
+        "_meta": {
+          "title": "K采样器"
+        }
+      },
+      "236": {
+        "inputs": {
+          "samples": [
+            "235",
+            0
+          ],
+          "vae": [
+            "246",
+            0
+          ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+          "title": "VAE解码"
+        }
+      },
+      "237": {
+        "inputs": {
+          "value": 2560
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "INT Constant"
+        }
+      },
+      "239": {
+        "inputs": {
+          "filename_prefix": "Work-Fisher",
+          "images": [
+            "281",
+            0
+          ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+          "title": "保存图像"
+        }
+      },
+      "240": {
+        "inputs": {
+          "lora_name": "Kook_Zimage_如梦似幻.safetensors",
+          "strength_model": 0.7000000000000002,
+          "model": [
+            "249",
+            0
+          ]
+        },
+        "class_type": "LoraLoaderModelOnly",
+        "_meta": {
+          "title": "LoRA加载器（仅模型）"
+        }
+      },
+      "244": {
+        "inputs": {
+          "width": [
+            "251",
+            0
+          ],
+          "height": [
+            "252",
+            0
+          ],
+          "batch_size": 1
+        },
+        "class_type": "EmptyLatentImage",
+        "_meta": {
+          "title": "空Latent图像"
+        }
+      },
+      "245": {
+        "inputs": {
+          "clip_name": "qwen_3_4b.safetensors",
+          "type": "qwen_image",
+          "device": "default"
+        },
+        "class_type": "CLIPLoader",
+        "_meta": {
+          "title": "加载CLIP"
+        }
+      },
+      "246": {
+        "inputs": {
+          "vae_name": "ae.safetensors"
+        },
+        "class_type": "VAELoader",
+        "_meta": {
+          "title": "加载VAE"
+        }
+      },
+      "247": {
+        "inputs": {
+          "text": [
+            "248",
+            0
+          ],
+          "clip": [
+            "245",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "CLIP文本编码"
+        }
+      },
+      "248": {
+        "inputs": {
+          "text": "最高画质，杰作，超精细，一位年轻韩国女生，亚洲面孔，东亚五官，19 岁，财阀千金，霸凌者，骄纵刻薄，身高 168，身形纤细，哑光妆效，冷白皮，无油光，不泛油，精致浓妆，酒红色哑光唇，栗棕色长卷发，大波浪，发丝蓬松有光泽，挑眉，上挑眼线，浅棕色瞳孔，双眼都睁开，对称双眼，眼神居高临下充满鄙夷，高挺的鼻子，指甲做了精致钻饰美甲，耳朵和脖子是成套名牌珠宝，穿一件奶白色名牌针织开衫，内搭真丝吊带，下身格纹百褶短裙，脚踩裸粉色细高跟尖头鞋，标准站立姿势，单手叉腰，全身可见，从头到脚都在画面内，正常透视，50mm 标准镜头，干净浅灰色棚拍背景，柔和均匀漫射光，正常身材比例，纤细。\n\n光影层次感，电影质感，艺术氛围，高级的氛围感，梦幻，"
+        },
+        "class_type": "CR Text",
+        "_meta": {
+          "title": "🔤 CR Text"
+        }
+      },
+      "249": {
+        "inputs": {
+          "lora_name": "Kook_Zimage_瑶光.safetensors",
+          "strength_model": 0.5000000000000001,
+          "model": [
+            "227",
+            0
+          ]
+        },
+        "class_type": "LoraLoaderModelOnly",
+        "_meta": {
+          "title": "LoRA加载器（仅模型）"
+        }
+      },
+      "250": {
+        "inputs": {
+          "lora_name": "Z-Image-Fun-Lora-Distill-8-Steps-2603-ComfyUI.safetensors",
+          "strength_model": 0.45000000000000007,
+          "model": [
+            "240",
+            0
+          ]
+        },
+        "class_type": "LoraLoaderModelOnly",
+        "_meta": {
+          "title": "LoRA加载器（仅模型）"
+        }
+      },
+      "251": {
+        "inputs": {
+          "value": 1024
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "INT Constant"
+        }
+      },
+      "252": {
+        "inputs": {
+          "value": 1680
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "INT Constant"
+        }
+      },
+      "280": {
+        "inputs": {
+          "clean_file_cache": true,
+          "clean_processes": true,
+          "clean_dlls": true,
+          "retry_times": 3,
+          "anything": [
+            "231",
+            0
+          ]
+        },
+        "class_type": "RAMCleanup",
+        "_meta": {
+          "title": "释放内存"
+        }
+      },
+      "281": {
+        "inputs": {
+          "offload_model": true,
+          "offload_cache": true,
+          "anything": [
+            "280",
+            0
+          ]
+        },
+        "class_type": "VRAMCleanup",
+        "_meta": {
+          "title": "释放显存"
+        }
+      }
+    },
+    "fields": [
+      {
+        "id": "227:unet_name",
+        "nodeId": "227",
+        "inputKey": "unet_name",
+        "nodeTitle": "UNet加载器",
+        "label": "unet_name",
+        "type": "text",
+        "enabled": false,
+        "order": 13,
+        "defaultValue": "z_image_bf16.safetensors"
+      },
+      {
+        "id": "227:weight_dtype",
+        "nodeId": "227",
+        "inputKey": "weight_dtype",
+        "nodeTitle": "UNet加载器",
+        "label": "weight_dtype",
+        "type": "text",
+        "enabled": false,
+        "order": 14,
+        "defaultValue": "default"
+      },
+      {
+        "id": "228:text",
+        "nodeId": "228",
+        "inputKey": "text",
+        "nodeTitle": "CLIP文本编码",
+        "label": "负向提示词",
+        "type": "textarea",
+        "enabled": true,
+        "order": 1,
+        "defaultValue": "泛黄，发绿，模糊，低分辨率，低质量图像，扭曲的肢体，诡异的外观，丑陋，AI感，噪点，网格感，JPEG压缩条纹，异常的肢体，水印，乱码，意义不明的字符，泛蓝"
+      },
+      {
+        "id": "230:model",
+        "nodeId": "230",
+        "inputKey": "model",
+        "nodeTitle": "SeedVR2 (Down)Load VAE Model",
+        "label": "model",
+        "type": "text",
+        "enabled": false,
+        "order": 16,
+        "defaultValue": "ema_vae_fp16.safetensors"
+      },
+      {
+        "id": "230:device",
+        "nodeId": "230",
+        "inputKey": "device",
+        "nodeTitle": "SeedVR2 (Down)Load VAE Model",
+        "label": "device",
+        "type": "text",
+        "enabled": false,
+        "order": 17,
+        "defaultValue": "cuda:0"
+      },
+      {
+        "id": "230:encode_tiled",
+        "nodeId": "230",
+        "inputKey": "encode_tiled",
+        "nodeTitle": "SeedVR2 (Down)Load VAE Model",
+        "label": "encode_tiled",
+        "type": "boolean",
+        "enabled": false,
+        "order": 18,
+        "defaultValue": true
+      },
+      {
+        "id": "230:encode_tile_size",
+        "nodeId": "230",
+        "inputKey": "encode_tile_size",
+        "nodeTitle": "SeedVR2 (Down)Load VAE Model",
+        "label": "encode_tile_size",
+        "type": "number",
+        "enabled": false,
+        "order": 19,
+        "defaultValue": 1024
+      },
+      {
+        "id": "230:encode_tile_overlap",
+        "nodeId": "230",
+        "inputKey": "encode_tile_overlap",
+        "nodeTitle": "SeedVR2 (Down)Load VAE Model",
+        "label": "encode_tile_overlap",
+        "type": "number",
+        "enabled": false,
+        "order": 20,
+        "defaultValue": 128
+      },
+      {
+        "id": "230:decode_tiled",
+        "nodeId": "230",
+        "inputKey": "decode_tiled",
+        "nodeTitle": "SeedVR2 (Down)Load VAE Model",
+        "label": "decode_tiled",
+        "type": "boolean",
+        "enabled": false,
+        "order": 21,
+        "defaultValue": true
+      },
+      {
+        "id": "230:decode_tile_size",
+        "nodeId": "230",
+        "inputKey": "decode_tile_size",
+        "nodeTitle": "SeedVR2 (Down)Load VAE Model",
+        "label": "decode_tile_size",
+        "type": "number",
+        "enabled": false,
+        "order": 22,
+        "defaultValue": 1024
+      },
+      {
+        "id": "230:decode_tile_overlap",
+        "nodeId": "230",
+        "inputKey": "decode_tile_overlap",
+        "nodeTitle": "SeedVR2 (Down)Load VAE Model",
+        "label": "decode_tile_overlap",
+        "type": "number",
+        "enabled": false,
+        "order": 23,
+        "defaultValue": 128
+      },
+      {
+        "id": "230:tile_debug",
+        "nodeId": "230",
+        "inputKey": "tile_debug",
+        "nodeTitle": "SeedVR2 (Down)Load VAE Model",
+        "label": "tile_debug",
+        "type": "text",
+        "enabled": false,
+        "order": 24,
+        "defaultValue": "false"
+      },
+      {
+        "id": "230:offload_device",
+        "nodeId": "230",
+        "inputKey": "offload_device",
+        "nodeTitle": "SeedVR2 (Down)Load VAE Model",
+        "label": "offload_device",
+        "type": "text",
+        "enabled": false,
+        "order": 25,
+        "defaultValue": "cpu"
+      },
+      {
+        "id": "230:cache_model",
+        "nodeId": "230",
+        "inputKey": "cache_model",
+        "nodeTitle": "SeedVR2 (Down)Load VAE Model",
+        "label": "cache_model",
+        "type": "boolean",
+        "enabled": false,
+        "order": 26,
+        "defaultValue": false
+      },
+      {
+        "id": "231:seed",
+        "nodeId": "231",
+        "inputKey": "seed",
+        "nodeTitle": "SeedVR2 Video Upscaler (v2.5.24)",
+        "label": "放大随机种子",
+        "type": "number",
+        "enabled": true,
+        "order": 12,
+        "defaultValue": 1581091921,
+        "randomize": true
+      },
+      {
+        "id": "231:max_resolution",
+        "nodeId": "231",
+        "inputKey": "max_resolution",
+        "nodeTitle": "SeedVR2 Video Upscaler (v2.5.24)",
+        "label": "max_resolution",
+        "type": "number",
+        "enabled": false,
+        "order": 28,
+        "defaultValue": 6000
+      },
+      {
+        "id": "231:batch_size",
+        "nodeId": "231",
+        "inputKey": "batch_size",
+        "nodeTitle": "SeedVR2 Video Upscaler (v2.5.24)",
+        "label": "batch_size",
+        "type": "number",
+        "enabled": false,
+        "order": 29,
+        "defaultValue": 5
+      },
+      {
+        "id": "231:uniform_batch_size",
+        "nodeId": "231",
+        "inputKey": "uniform_batch_size",
+        "nodeTitle": "SeedVR2 Video Upscaler (v2.5.24)",
+        "label": "uniform_batch_size",
+        "type": "boolean",
+        "enabled": false,
+        "order": 30,
+        "defaultValue": false
+      },
+      {
+        "id": "231:color_correction",
+        "nodeId": "231",
+        "inputKey": "color_correction",
+        "nodeTitle": "SeedVR2 Video Upscaler (v2.5.24)",
+        "label": "color_correction",
+        "type": "text",
+        "enabled": false,
+        "order": 31,
+        "defaultValue": "lab"
+      },
+      {
+        "id": "231:temporal_overlap",
+        "nodeId": "231",
+        "inputKey": "temporal_overlap",
+        "nodeTitle": "SeedVR2 Video Upscaler (v2.5.24)",
+        "label": "temporal_overlap",
+        "type": "number",
+        "enabled": false,
+        "order": 32,
+        "defaultValue": 0
+      },
+      {
+        "id": "231:prepend_frames",
+        "nodeId": "231",
+        "inputKey": "prepend_frames",
+        "nodeTitle": "SeedVR2 Video Upscaler (v2.5.24)",
+        "label": "prepend_frames",
+        "type": "number",
+        "enabled": false,
+        "order": 33,
+        "defaultValue": 0
+      },
+      {
+        "id": "231:input_noise_scale",
+        "nodeId": "231",
+        "inputKey": "input_noise_scale",
+        "nodeTitle": "SeedVR2 Video Upscaler (v2.5.24)",
+        "label": "input_noise_scale",
+        "type": "number",
+        "enabled": false,
+        "order": 34,
+        "defaultValue": 0
+      },
+      {
+        "id": "231:latent_noise_scale",
+        "nodeId": "231",
+        "inputKey": "latent_noise_scale",
+        "nodeTitle": "SeedVR2 Video Upscaler (v2.5.24)",
+        "label": "latent_noise_scale",
+        "type": "number",
+        "enabled": false,
+        "order": 35,
+        "defaultValue": 0
+      },
+      {
+        "id": "231:offload_device",
+        "nodeId": "231",
+        "inputKey": "offload_device",
+        "nodeTitle": "SeedVR2 Video Upscaler (v2.5.24)",
+        "label": "offload_device",
+        "type": "text",
+        "enabled": false,
+        "order": 36,
+        "defaultValue": "cpu"
+      },
+      {
+        "id": "231:enable_debug",
+        "nodeId": "231",
+        "inputKey": "enable_debug",
+        "nodeTitle": "SeedVR2 Video Upscaler (v2.5.24)",
+        "label": "enable_debug",
+        "type": "boolean",
+        "enabled": false,
+        "order": 37,
+        "defaultValue": false
+      },
+      {
+        "id": "233:model",
+        "nodeId": "233",
+        "inputKey": "model",
+        "nodeTitle": "SeedVR2 (Down)Load DiT Model",
+        "label": "model",
+        "type": "text",
+        "enabled": false,
+        "order": 38,
+        "defaultValue": "seedvr2_ema_7b-Q8_0.gguf"
+      },
+      {
+        "id": "233:device",
+        "nodeId": "233",
+        "inputKey": "device",
+        "nodeTitle": "SeedVR2 (Down)Load DiT Model",
+        "label": "device",
+        "type": "text",
+        "enabled": false,
+        "order": 39,
+        "defaultValue": "cuda:0"
+      },
+      {
+        "id": "233:blocks_to_swap",
+        "nodeId": "233",
+        "inputKey": "blocks_to_swap",
+        "nodeTitle": "SeedVR2 (Down)Load DiT Model",
+        "label": "blocks_to_swap",
+        "type": "number",
+        "enabled": false,
+        "order": 40,
+        "defaultValue": 32
+      },
+      {
+        "id": "233:swap_io_components",
+        "nodeId": "233",
+        "inputKey": "swap_io_components",
+        "nodeTitle": "SeedVR2 (Down)Load DiT Model",
+        "label": "swap_io_components",
+        "type": "boolean",
+        "enabled": false,
+        "order": 41,
+        "defaultValue": true
+      },
+      {
+        "id": "233:offload_device",
+        "nodeId": "233",
+        "inputKey": "offload_device",
+        "nodeTitle": "SeedVR2 (Down)Load DiT Model",
+        "label": "offload_device",
+        "type": "text",
+        "enabled": false,
+        "order": 42,
+        "defaultValue": "cpu"
+      },
+      {
+        "id": "233:cache_model",
+        "nodeId": "233",
+        "inputKey": "cache_model",
+        "nodeTitle": "SeedVR2 (Down)Load DiT Model",
+        "label": "cache_model",
+        "type": "text",
+        "enabled": false,
+        "order": 43,
+        "defaultValue": "sdpa"
+      },
+      {
+        "id": "233:attention_mode",
+        "nodeId": "233",
+        "inputKey": "attention_mode",
+        "nodeTitle": "SeedVR2 (Down)Load DiT Model",
+        "label": "attention_mode",
+        "type": "text",
+        "enabled": false,
+        "order": 44,
+        "defaultValue": "sdpa"
+      },
+      {
+        "id": "234:upscale_method",
+        "nodeId": "234",
+        "inputKey": "upscale_method",
+        "nodeTitle": "缩放图像（像素）",
+        "label": "upscale_method",
+        "type": "text",
+        "enabled": false,
+        "order": 45,
+        "defaultValue": "lanczos"
+      },
+      {
+        "id": "234:megapixels",
+        "nodeId": "234",
+        "inputKey": "megapixels",
+        "nodeTitle": "缩放图像（像素）",
+        "label": "megapixels",
+        "type": "number",
+        "enabled": false,
+        "order": 46,
+        "defaultValue": 0.30000000000000004
+      },
+      {
+        "id": "234:resolution_steps",
+        "nodeId": "234",
+        "inputKey": "resolution_steps",
+        "nodeTitle": "缩放图像（像素）",
+        "label": "resolution_steps",
+        "type": "number",
+        "enabled": false,
+        "order": 47,
+        "defaultValue": 1
+      },
+      {
+        "id": "235:seed",
+        "nodeId": "235",
+        "inputKey": "seed",
+        "nodeTitle": "K采样器",
+        "label": "生成随机种子",
+        "type": "number",
+        "enabled": true,
+        "order": 5,
+        "defaultValue": 413189552079340,
+        "randomize": true,
+        "presetRole": "seed"
+      },
+      {
+        "id": "235:steps",
+        "nodeId": "235",
+        "inputKey": "steps",
+        "nodeTitle": "K采样器",
+        "label": "采样步数",
+        "type": "slider",
+        "enabled": true,
+        "order": 6,
+        "defaultValue": 8
+      },
+      {
+        "id": "235:cfg",
+        "nodeId": "235",
+        "inputKey": "cfg",
+        "nodeTitle": "K采样器",
+        "label": "提示词引导 CFG",
+        "type": "slider",
+        "enabled": true,
+        "order": 7,
+        "defaultValue": 1
+      },
+      {
+        "id": "235:sampler_name",
+        "nodeId": "235",
+        "inputKey": "sampler_name",
+        "nodeTitle": "K采样器",
+        "label": "采样器",
+        "type": "text",
+        "enabled": true,
+        "order": 9,
+        "defaultValue": "res_2s_ode"
+      },
+      {
+        "id": "235:scheduler",
+        "nodeId": "235",
+        "inputKey": "scheduler",
+        "nodeTitle": "K采样器",
+        "label": "调度器",
+        "type": "text",
+        "enabled": true,
+        "order": 10,
+        "defaultValue": "kl_optimal"
+      },
+      {
+        "id": "235:denoise",
+        "nodeId": "235",
+        "inputKey": "denoise",
+        "nodeTitle": "K采样器",
+        "label": "重绘强度",
+        "type": "slider",
+        "enabled": true,
+        "order": 8,
+        "defaultValue": 1,
+        "presetRole": "strength"
+      },
+      {
+        "id": "237:value",
+        "nodeId": "237",
+        "inputKey": "value",
+        "nodeTitle": "INT Constant",
+        "label": "放大目标分辨率",
+        "type": "number",
+        "enabled": true,
+        "order": 11,
+        "defaultValue": 2560
+      },
+      {
+        "id": "239:filename_prefix",
+        "nodeId": "239",
+        "inputKey": "filename_prefix",
+        "nodeTitle": "保存图像",
+        "label": "filename_prefix",
+        "type": "text",
+        "enabled": false,
+        "order": 55,
+        "defaultValue": "Work-Fisher"
+      },
+      {
+        "id": "240:lora_name",
+        "nodeId": "240",
+        "inputKey": "lora_name",
+        "nodeTitle": "LoRA加载器（仅模型）",
+        "label": "lora_name",
+        "type": "text",
+        "enabled": false,
+        "order": 56,
+        "defaultValue": "Kook_Zimage_如梦似幻.safetensors"
+      },
+      {
+        "id": "240:strength_model",
+        "nodeId": "240",
+        "inputKey": "strength_model",
+        "nodeTitle": "LoRA加载器（仅模型）",
+        "label": "strength_model",
+        "type": "number",
+        "enabled": false,
+        "order": 57,
+        "defaultValue": 0.7000000000000002
+      },
+      {
+        "id": "244:batch_size",
+        "nodeId": "244",
+        "inputKey": "batch_size",
+        "nodeTitle": "空Latent图像",
+        "label": "生成张数",
+        "type": "number",
+        "enabled": true,
+        "order": 4,
+        "defaultValue": 1
+      },
+      {
+        "id": "245:clip_name",
+        "nodeId": "245",
+        "inputKey": "clip_name",
+        "nodeTitle": "加载CLIP",
+        "label": "clip_name",
+        "type": "text",
+        "enabled": false,
+        "order": 59,
+        "defaultValue": "qwen_3_4b.safetensors"
+      },
+      {
+        "id": "245:type",
+        "nodeId": "245",
+        "inputKey": "type",
+        "nodeTitle": "加载CLIP",
+        "label": "type",
+        "type": "text",
+        "enabled": false,
+        "order": 60,
+        "defaultValue": "qwen_image"
+      },
+      {
+        "id": "245:device",
+        "nodeId": "245",
+        "inputKey": "device",
+        "nodeTitle": "加载CLIP",
+        "label": "device",
+        "type": "text",
+        "enabled": false,
+        "order": 61,
+        "defaultValue": "default"
+      },
+      {
+        "id": "246:vae_name",
+        "nodeId": "246",
+        "inputKey": "vae_name",
+        "nodeTitle": "加载VAE",
+        "label": "vae_name",
+        "type": "text",
+        "enabled": false,
+        "order": 62,
+        "defaultValue": "ae.safetensors"
+      },
+      {
+        "id": "248:text",
+        "nodeId": "248",
+        "inputKey": "text",
+        "nodeTitle": "🔤 CR Text",
+        "label": "正向提示词",
+        "type": "textarea",
+        "enabled": true,
+        "order": 0,
+        "defaultValue": "最高画质，杰作，超精细，一位年轻韩国女生，亚洲面孔，东亚五官，19 岁，财阀千金，霸凌者，骄纵刻薄，身高 168，身形纤细，哑光妆效，冷白皮，无油光，不泛油，精致浓妆，酒红色哑光唇，栗棕色长卷发，大波浪，发丝蓬松有光泽，挑眉，上挑眼线，浅棕色瞳孔，双眼都睁开，对称双眼，眼神居高临下充满鄙夷，高挺的鼻子，指甲做了精致钻饰美甲，耳朵和脖子是成套名牌珠宝，穿一件奶白色名牌针织开衫，内搭真丝吊带，下身格纹百褶短裙，脚踩裸粉色细高跟尖头鞋，标准站立姿势，单手叉腰，全身可见，从头到脚都在画面内，正常透视，50mm 标准镜头，干净浅灰色棚拍背景，柔和均匀漫射光，正常身材比例，纤细。\n\n光影层次感，电影质感，艺术氛围，高级的氛围感，梦幻，",
+        "presetRole": "prompt"
+      },
+      {
+        "id": "249:lora_name",
+        "nodeId": "249",
+        "inputKey": "lora_name",
+        "nodeTitle": "LoRA加载器（仅模型）",
+        "label": "lora_name",
+        "type": "text",
+        "enabled": false,
+        "order": 64,
+        "defaultValue": "Kook_Zimage_瑶光.safetensors"
+      },
+      {
+        "id": "249:strength_model",
+        "nodeId": "249",
+        "inputKey": "strength_model",
+        "nodeTitle": "LoRA加载器（仅模型）",
+        "label": "strength_model",
+        "type": "number",
+        "enabled": false,
+        "order": 65,
+        "defaultValue": 0.5000000000000001
+      },
+      {
+        "id": "250:lora_name",
+        "nodeId": "250",
+        "inputKey": "lora_name",
+        "nodeTitle": "LoRA加载器（仅模型）",
+        "label": "lora_name",
+        "type": "text",
+        "enabled": false,
+        "order": 66,
+        "defaultValue": "Z-Image-Fun-Lora-Distill-8-Steps-2603-ComfyUI.safetensors"
+      },
+      {
+        "id": "250:strength_model",
+        "nodeId": "250",
+        "inputKey": "strength_model",
+        "nodeTitle": "LoRA加载器（仅模型）",
+        "label": "strength_model",
+        "type": "number",
+        "enabled": false,
+        "order": 67,
+        "defaultValue": 0.45000000000000007
+      },
+      {
+        "id": "251:value",
+        "nodeId": "251",
+        "inputKey": "value",
+        "nodeTitle": "INT Constant",
+        "label": "图片宽度",
+        "type": "number",
+        "enabled": true,
+        "order": 2,
+        "defaultValue": 1024,
+        "presetRole": "width"
+      },
+      {
+        "id": "252:value",
+        "nodeId": "252",
+        "inputKey": "value",
+        "nodeTitle": "INT Constant",
+        "label": "图片高度",
+        "type": "number",
+        "enabled": true,
+        "order": 3,
+        "defaultValue": 1680,
+        "presetRole": "height"
+      },
+      {
+        "id": "280:clean_file_cache",
+        "nodeId": "280",
+        "inputKey": "clean_file_cache",
+        "nodeTitle": "释放内存",
+        "label": "clean_file_cache",
+        "type": "boolean",
+        "enabled": false,
+        "order": 70,
+        "defaultValue": true
+      },
+      {
+        "id": "280:clean_processes",
+        "nodeId": "280",
+        "inputKey": "clean_processes",
+        "nodeTitle": "释放内存",
+        "label": "clean_processes",
+        "type": "boolean",
+        "enabled": false,
+        "order": 71,
+        "defaultValue": true
+      },
+      {
+        "id": "280:clean_dlls",
+        "nodeId": "280",
+        "inputKey": "clean_dlls",
+        "nodeTitle": "释放内存",
+        "label": "clean_dlls",
+        "type": "boolean",
+        "enabled": false,
+        "order": 72,
+        "defaultValue": true
+      },
+      {
+        "id": "280:retry_times",
+        "nodeId": "280",
+        "inputKey": "retry_times",
+        "nodeTitle": "释放内存",
+        "label": "retry_times",
+        "type": "number",
+        "enabled": false,
+        "order": 73,
+        "defaultValue": 3
+      },
+      {
+        "id": "281:offload_model",
+        "nodeId": "281",
+        "inputKey": "offload_model",
+        "nodeTitle": "释放显存",
+        "label": "offload_model",
+        "type": "boolean",
+        "enabled": false,
+        "order": 74,
+        "defaultValue": true
+      },
+      {
+        "id": "281:offload_cache",
+        "nodeId": "281",
+        "inputKey": "offload_cache",
+        "nodeTitle": "释放显存",
+        "label": "offload_cache",
+        "type": "boolean",
+        "enabled": false,
+        "order": 75,
+        "defaultValue": true
+      }
+    ],
+    "createdAt": "2026-10-23T08:50:16.531Z",
+    "updatedAt": "2026-10-23T08:50:16.531Z",
+    "outputKinds": [
+      "image"
+    ]
+  }
+]

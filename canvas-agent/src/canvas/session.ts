@@ -26,6 +26,10 @@ type McpInventoryItem = { name: string; authStatus?: string };
 export const AGENT_PROTOCOL_VERSION = 6;
 
 const SITE_TOOLS = new Set<ToolName>([
+    "comfyui_list_workflows",
+    "comfyui_get_workflow",
+    "comfyui_import_workflow",
+    "comfyui_run_workflow",
     "site_navigate",
     "canvas_list_projects",
     "workbench_image_get_config",
@@ -51,6 +55,8 @@ export class CanvasSession {
     private codexMutationBusy = false;
     private activeClientId = "";
     private boundClientId = "";
+    private boundProjectId = "";
+    private boundProjectFileScope = "";
     private focusSequence = 0;
     private codexState: CodexState = { busy: false, threadId: "", turnId: "" };
     private conversationState: ConversationState;
@@ -323,15 +329,33 @@ export class CanvasSession {
     }
 
     /** 将当前 Agent turn 固定绑定到指定网页。 */
-    bindClient(clientId: string) {
+    bindClient(clientId: string, expectedProjectId?: string, projectFileScope?: string) {
         if (!this.clients.has(clientId)) throw new Error("当前网页未连接");
-        this.boundClientId = clientId;
+        if (expectedProjectId !== undefined && expectedProjectId !== (this.canvasStates.get(clientId)?.projectId || "")) throw new Error("当前创作页已切换，请在目标创作页重新发起任务");
+        if (this.boundClientId !== clientId) {
+            this.boundClientId = clientId;
+            this.boundProjectId = this.canvasStates.get(clientId)?.projectId || "";
+            this.boundProjectFileScope = projectFileScope ?? this.canvasStates.get(clientId)?.projectFileScope ?? "";
+        }
         logger.debug("Canvas client bound to turn", { clientId });
+    }
+
+    /** 取消本轮尚未返回的网页工具，避免停止后仍保留待确认操作。 */
+    cancelClientTools(clientId: string) {
+        for (const [id, pending] of this.pending) {
+            if (pending.clientId !== clientId) continue;
+            this.pending.delete(id);
+            pending.reject(new Error("任务已停止"));
+        }
     }
 
     /** 解除当前 Agent turn 的网页绑定。 */
     releaseClient(clientId: string) {
-        if (this.boundClientId === clientId) this.boundClientId = "";
+        if (this.boundClientId === clientId) {
+            this.boundClientId = "";
+            this.boundProjectId = "";
+            this.boundProjectFileScope = "";
+        }
         logger.debug("Canvas client released from turn", { clientId });
     }
 
@@ -441,6 +465,14 @@ export class CanvasSession {
         if (!isToolName(name)) throw new Error(`未知工具：${String(name)}`);
         logger.info("MCP tool called", { name, input: rawInput, targetClientId: this.targetClientId });
         const input = parseToolInput(name, rawInput) as Record<string, unknown>;
+        if (name === "project_list_files" || name === "project_read_file") {
+            const projectId = this.boundClientId ? this.boundProjectId : this.canvasState?.projectId;
+            if (!projectId) throw new Error("当前没有关联项目的创作页，请先打开项目中的创作页");
+            const projectFileScope = this.boundClientId ? this.boundProjectFileScope : this.canvasState?.projectFileScope;
+            return await this.requestCanvasTool(name, { ...input, projectId, projectFileScope: projectFileScope || "" });
+        }
+        if (this.boundClientId && !this.clients.has(this.boundClientId)) throw new Error("当前没有已连接画布");
+        if (this.boundClientId && this.boundProjectId && this.canvasState?.projectId !== this.boundProjectId && (name.startsWith("canvas_") || name === "comfyui_run_workflow")) throw new Error("当前创作页已切换，请返回本轮创作页或重新发起任务");
         if (SITE_TOOLS.has(name)) {
             if (!this.clients.size) throw new Error("当前没有已连接网页");
             return await this.requestCanvasTool(name, input);
@@ -453,6 +485,14 @@ export class CanvasSession {
             return { nodes: (this.canvasState?.nodes || []).filter((node) => ids.has(node.id)).map(compactNode) };
         }
         if (name === "canvas_create_attachment_nodes") return await this.createAttachmentNodes(input as { attachmentIds: string[]; x?: number; y?: number; gap?: number; direction?: "row" | "column" });
+        if (name === "canvas_import_media" || name === "canvas_capture_video_frame") {
+            if (!this.canvasState || this.canvasState.projectId !== input.projectId) throw new Error("当前创作页与指定 projectId 不一致");
+            if (name === "canvas_capture_video_frame") {
+                if (input.position === "time" && input.time === undefined) throw new Error("按时间截帧必须提供 time，单位为秒");
+                if (!this.canvasState.nodes?.some((node) => node.id === input.nodeId && node.type === "video")) throw new Error("指定节点不是视频节点或已不存在");
+            }
+            return await this.requestCanvasTool(name, input);
+        }
         if (!this.clients.size) throw new Error("当前没有已连接画布");
         const request = buildCanvasToolRequest(name, input, this.canvasState);
         return await this.requestCanvasTool(request.name, request.input);
@@ -491,7 +531,7 @@ export class CanvasSession {
         const clientId = this.targetClientId;
         const client = this.clients.get(clientId);
         if (!client) throw new Error("当前没有已连接画布");
-        sendEvent(client, "tool_call", { requestId, name, input });
+        sendEvent(client, "tool_call", { requestId, name, input, ...(this.boundProjectId ? { projectId: this.boundProjectId } : {}) });
         logger.debug("Canvas tool request sent", { requestId, name, input, clientId });
         return await new Promise((resolve, reject) => {
             const timer = setTimeout(() => {

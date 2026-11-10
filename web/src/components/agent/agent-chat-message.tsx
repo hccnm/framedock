@@ -1,3 +1,4 @@
+import { resolveToolCardStatus } from "./agent-tool-status";
 import { useEffect, useId, useState, type ReactNode } from "react";
 import { App, Button, Image, Modal, Popover } from "antd";
 import { Brain, CheckCircle2, ChevronDown, ChevronRight, Circle, CircleAlert, Copy, ExternalLink, FilePenLine, FileText, FolderOpen, ListChecks, LoaderCircle, Search, ShieldAlert, TerminalSquare, Wrench, XCircle } from "lucide-react";
@@ -103,6 +104,7 @@ export type AgentChatMessageItem = {
 };
 
 export function AgentChatMessage({ item, theme, onRejectTool, onApproveTool }: { item: AgentChatMessageItem; theme: (typeof canvasThemes)[keyof typeof canvasThemes]; onRejectTool?: (id: string) => void; onApproveTool?: (id: string) => void }) {
+    const copyText = useCopyText();
     const isUser = item.role === "user";
     const isSystem = item.role === "system";
     const color = item.role === "error" ? "#dc2626" : item.role === "tool" ? "#2563eb" : theme.node.text;
@@ -121,7 +123,7 @@ export function AgentChatMessage({ item, theme, onRejectTool, onApproveTool }: {
         return <AgentToolCard title={item.title || tr("toolCall")} text={item.text} detail={item.detail} theme={theme} />;
     }
     return (
-        <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
+        <div className={`agent-message flex ${isUser ? "agent-message-user justify-end" : "justify-start"}`}>
             <div
                 className={isUser ? "min-w-0 max-w-[82%] py-1 text-right text-sm leading-6" : "min-w-0 w-full text-left text-sm leading-6"}
                 style={{ color }}
@@ -132,6 +134,7 @@ export function AgentChatMessage({ item, theme, onRejectTool, onApproveTool }: {
                     <Streamdown {...streamdownProps()} animated={streamdownAnimation} isAnimating={!!item.streamId}>{item.text}</Streamdown>
                 )}
                 {item.attachments?.length ? <AgentMessageAttachments attachments={item.attachments} alignRight={isUser} /> : null}
+                <div className="agent-message-actions"><button aria-label="复制消息" title="复制消息" onClick={() => copyText(item.text, "消息已复制")}><Copy size={14} /></button></div>
                 {item.meta ? <div className={`mt-1 text-[11px] tabular-nums opacity-55 ${isUser ? "text-right" : ""}`}>{item.meta}</div> : null}
             </div>
         </div>
@@ -248,17 +251,17 @@ export function AgentToolCard({ title, text, detail, theme }: { title: string; t
     const state = toolCardState(title, text, detail);
     const view = userDetail(detail);
     const showText = title !== "读取画布" || text !== "已读取当前画布内容";
-    const className = "group min-w-0 rounded-xl border px-3 py-2.5 text-left";
+    const className = "agent-tool-row group min-w-0 text-left";
     const style = { borderColor: theme.node.stroke, background: "transparent", color: theme.node.text };
     const content = (
         <>
-            <div className="flex min-w-0 items-center gap-2 text-sm leading-5">
+            <div className="flex min-w-0 items-center gap-2 text-xs leading-5">
                 <span className="shrink-0" style={{ color: state.color }}>{toolIcon(kind, state.icon)}</span>
-                <span className="min-w-0 truncate font-medium">{title}</span>
+                <span className="min-w-0 truncate">{title}</span>
                 <span className="shrink-0 text-[11px]" style={{ color: state.color }}>{state.label}</span>
                 {view ? <ChevronDown className="ml-auto size-3.5 shrink-0 transition-transform group-open:rotate-180" style={{ color: theme.node.muted }} /> : null}
             </div>
-            {showText ? (
+            {showText && !view ? (
                 <div className={`mt-1 whitespace-pre-wrap break-words pl-6 text-sm leading-5 ${kind === "command" ? "font-mono text-[12px]" : ""}`} style={{ color: state.isError ? state.color : theme.node.muted }}>
                     {text}
                 </div>
@@ -269,7 +272,7 @@ export function AgentToolCard({ title, text, detail, theme }: { title: string; t
     return (
         <details className={className} style={style}>
             <summary className="list-none cursor-pointer">{content}</summary>
-            <div className="ml-6"><AgentDetailBlock detail={view} theme={theme} /></div>
+            <div className="ml-6">{showText && <p className="my-2 text-xs leading-5" style={{ color: theme.node.muted }}>{text}</p>}<AgentDetailBlock detail={view} theme={theme} /></div>
         </details>
     );
 }
@@ -520,14 +523,12 @@ function AgentMessageAttachments({ attachments, alignRight }: { attachments: Age
 }
 
 function toolCardState(title: string, text: string, detail?: unknown) {
-    const raw = `${title} ${text} ${normalizeText(objectField(detail, "error"))}`;
-    const lower = raw.toLowerCase();
-    const status = String(objectField(detail, "status") || "").toLowerCase();
-    if (status === "noop" || /未生效|无需|没有找到|没有.*可|已存在/.test(raw)) return { label: tr("noEffect"), color: "#d97706", icon: <CircleAlert className="size-4" />, isError: false };
-    if (["declined", "rejected", "cancelled", "canceled"].includes(status) || /拒绝|取消/.test(raw)) return { label: tr("canceled"), color: "#dc2626", icon: <XCircle className="size-4" />, isError: true };
-    if (["failed", "error"].includes(status) || /失败|错误/.test(raw) || lower.includes("failed") || lower.includes("error")) return { label: tr("failed"), color: "#dc2626", icon: <XCircle className="size-4" />, isError: true };
-    if (["inprogress", "in_progress", "running", "started", "pending"].includes(status)) return { label: tr("running"), color: "#d97706", icon: <LoaderCircle className="size-4 animate-spin" />, isError: false };
-    if (["completed", "succeeded", "success"].includes(status) || /完成|成功/.test(raw)) return { label: tr("completed"), color: "#16a34a", icon: <CheckCircle2 className="size-4" />, isError: false };
+    const state = resolveToolCardStatus(String(objectField(detail, "status") || ""), `${title} ${text}`, normalizeText(objectField(detail, "error")));
+    if (state === "noop") return { label: tr("noEffect"), color: "#d97706", icon: <CircleAlert className="size-4" />, isError: false };
+    if (state === "canceled") return { label: tr("canceled"), color: "#dc2626", icon: <XCircle className="size-4" />, isError: true };
+    if (state === "failed") return { label: tr("failed"), color: "#dc2626", icon: <XCircle className="size-4" />, isError: true };
+    if (state === "running") return { label: tr("running"), color: "#d97706", icon: <LoaderCircle className="size-4 animate-spin" />, isError: false };
+    if (state === "completed") return { label: tr("completed"), color: "#16a34a", icon: <CheckCircle2 className="size-4" />, isError: false };
     return { label: tr("recorded"), color: "#2563eb", icon: <Wrench className="size-4" />, isError: false };
 }
 

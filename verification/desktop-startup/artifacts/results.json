@@ -1,0 +1,53 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "独立数据目录冷启动，真实窗口可见，preload 正常",
+      "detail": true
+    },
+    {
+      "name": "真实 Agent 健康检查与鉴权技能接口均返回 200",
+      "detail": true
+    },
+    {
+      "name": "通过界面新建项目、创作页并编辑文本",
+      "detail": true
+    },
+    {
+      "name": "通过文件输入导入真实 PNG，画布图片解码成功",
+      "detail": true
+    },
+    {
+      "name": "自动保存通过真实桌面存储桥落盘",
+      "detail": true
+    },
+    {
+      "name": "刷新后文本、图片及创作页状态恢复",
+      "detail": true
+    },
+    {
+      "name": "正常关闭桌面实例，sidecar 随之退出",
+      "detail": true
+    },
+    {
+      "name": "退出前最新编辑与图片在重启后恢复，Agent 令牌轮换",
+      "detail": true
+    },
+    {
+      "name": "真实技能页面加载随包技能",
+      "detail": true
+    }
+  ],
+  "runtimeErrors": [],
+  "consoleErrors": [],
+  "failedRequests": [],
+  "systemMessages": [
+    "sysctlbyname for kern.hv_vmm_present failed with status -1",
+    "sysctlbyname for kern.hv_vmm_present failed with status -1"
+  ],
+  "profile": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/flowharbor-desktop-e2e-kLLDGl",
+  "cleanup": {
+    "forced": false
+  },
+  "profileRemoved": true
+}

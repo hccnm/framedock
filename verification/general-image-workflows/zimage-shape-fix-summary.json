@@ -1,0 +1,51 @@
+{
+  "cause": "Omni resize aligned to 8px produces odd latent spatial dimensions incompatible with 2x2 patches",
+  "referenceOriginalSizes": [
+    [
+      608,
+      352
+    ],
+    [
+      1024,
+      1536
+    ],
+    [
+      941,
+      1672
+    ]
+  ],
+  "referenceOldResize": [
+    [
+      1344,
+      776
+    ],
+    [
+      840,
+      1256
+    ],
+    [
+      768,
+      1368
+    ]
+  ],
+  "referenceNewResize": [
+    [
+      1344,
+      784
+    ],
+    [
+      832,
+      1248
+    ],
+    [
+      768,
+      1360
+    ]
+  ],
+  "oldPromptId": "fcd8060c-4fe4-4127-acce-153435ceda4a",
+  "fixedPromptId": "ddc8dd85-724d-45a4-a598-3ddb8358c6ad",
+  "outputNodeId": "image-1794006376523-rbvjd",
+  "canvasStatus": "success",
+  "testsPassed": 51,
+  "build": "passed; pre-existing chunk-size warnings"
+}

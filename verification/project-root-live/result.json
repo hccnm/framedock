@@ -1,0 +1,34 @@
+{
+  "location": {
+    "id": "t_JZ1kKjfMesNpkCRL4fR",
+    "directory": "/Volumes/办公/fnos/media/01_项目/内容作品/魔幻AI"
+  },
+  "alreadyOpen": true,
+  "backup": "/Users/ethanhuang/Library/Application Support/FrameDock Desktop/project-directories.json.before-root-fix-1793974961874.bak",
+  "skillCount": 14,
+  "skillNames": [
+    "fanren-original-media-ssh",
+    "fisher-storylens",
+    "h3-prompt-writing",
+    "short-drama",
+    "short-drama-assets",
+    "short-drama-develop",
+    "short-drama-edit",
+    "short-drama-image-prompts",
+    "short-drama-novel-analyze",
+    "short-drama-produce",
+    "short-drama-review",
+    "short-drama-storyboard",
+    "short-drama-video-prompts",
+    "short-drama-write"
+  ],
+  "readPath": ".agents/skills/short-drama/SKILL.md",
+  "readCharacters": 6870,
+  "manifestUnchanged": true,
+  "pages": [
+    {
+      "id": "YPGguXUHDBMZ3wgCfpzu8",
+      "nodes": 253
+    }
+  ]
+}

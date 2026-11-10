@@ -17,7 +17,7 @@ type SkillFormValues = { name: string; description: string; instructions: string
 
 const skillNamePattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
-export function AgentSkillsView({ clientId }: { clientId: string }) {
+export function AgentSkillsView({ clientId, initialCreate = false }: { clientId: string; initialCreate?: boolean }) {
     const { t } = useTranslation();
     const theme = canvasThemes[useThemeStore((state) => state.theme)];
     const { message, modal } = App.useApp();
@@ -44,7 +44,7 @@ export function AgentSkillsView({ clientId }: { clientId: string }) {
     const setGeneratingSource = useAgentSkillStore((state) => state.setGeneratingSource);
     const [query, setQuery] = useState("");
     const [scope, setScope] = useState<ScopeFilter>("all");
-    const [editor, setEditor] = useState<SkillEditor | null>(null);
+    const [editor, setEditor] = useState<SkillEditor | null>(initialCreate ? { mode: "create" } : null);
     const [saving, setSaving] = useState(false);
     const [advancedOpen, setAdvancedOpen] = useState(false);
     const [createMenuOpen, setCreateMenuOpen] = useState(false);

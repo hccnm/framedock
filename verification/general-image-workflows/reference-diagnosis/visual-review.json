@@ -1,0 +1,34 @@
+{
+  "acceptance": {
+    "mustUseOriginalReferences": 3,
+    "artifacts": "no checkerboard, fragmentation or duplicated details on faces, clothing or bedding",
+    "composition": "Feiyu on viewer left, Dongqing in center, Caibao on right; preserve original lying poses",
+    "identity": "compare faces and visible costumes to each supplied reference",
+    "renderedIsNotAccepted": true
+  },
+  "sourceEvidence": [
+    {
+      "url": "https://github.com/Tongyi-MAI/Z-Image#-model-zoo",
+      "finding": "Z-Image is listed for generation; Omni-Base and Edit are listed as to be released"
+    },
+    {
+      "url": "https://huggingface.co/Tongyi-MAI/Z-Image",
+      "finding": "pipeline_tag is text-to-image; base-model suggested settings are 28-50 steps with CFG"
+    }
+  ],
+  "variants": {
+    "baseline": {
+      "accepted": false,
+      "finding": "actual three-reference result contains strong tiled corruption and repeated face/bedding details"
+    },
+    "style-off": {
+      "accepted": false,
+      "finding": "disabling both style LoRAs retains tiled corruption, repeated details and facial deformation; composition remains close to first reference"
+    },
+    "base-50": {
+      "accepted": null,
+      "finding": "Interrupted at user request; user chose deletion instead of continuing diagnosis."
+    }
+  },
+  "resolution": "User requested deletion; removed only general-z-image from current application, other 6 workflows retained; no Qwen generation performed."
+}

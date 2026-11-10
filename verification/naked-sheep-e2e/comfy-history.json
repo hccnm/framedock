@@ -1,0 +1,273 @@
+{
+  "184321ad-bb5f-4eff-812f-ba07cacbf385": {
+    "prompt": [
+      1168,
+      "184321ad-bb5f-4eff-812f-ba07cacbf385",
+      {
+        "227": {
+          "inputs": {
+            "unet_name": "z_image_bf16.safetensors",
+            "weight_dtype": "default"
+          },
+          "class_type": "UNETLoader",
+          "_meta": {
+            "title": "UNet加载器"
+          }
+        },
+        "228": {
+          "inputs": {
+            "text": "泛黄，发绿，模糊，低分辨率，低质量图像，扭曲的肢体，诡异的外观，丑陋，AI感，噪点，网格感，JPEG压缩条纹，异常的肢体，水印，乱码，意义不明的字符，泛蓝",
+            "clip": [
+              "245",
+              0
+            ]
+          },
+          "class_type": "CLIPTextEncode",
+          "_meta": {
+            "title": "CLIP文本编码"
+          }
+        },
+        "235": {
+          "inputs": {
+            "seed": 413189552079340,
+            "steps": 8,
+            "cfg": 1,
+            "sampler_name": "res_2s_ode",
+            "scheduler": "kl_optimal",
+            "denoise": 1,
+            "model": [
+              "250",
+              0
+            ],
+            "positive": [
+              "247",
+              0
+            ],
+            "negative": [
+              "228",
+              0
+            ],
+            "latent_image": [
+              "244",
+              0
+            ]
+          },
+          "class_type": "KSampler",
+          "_meta": {
+            "title": "K采样器"
+          }
+        },
+        "236": {
+          "inputs": {
+            "samples": [
+              "235",
+              0
+            ],
+            "vae": [
+              "246",
+              0
+            ]
+          },
+          "class_type": "VAEDecode",
+          "_meta": {
+            "title": "VAE解码"
+          }
+        },
+        "240": {
+          "inputs": {
+            "lora_name": "Kook_Zimage_如梦似幻.safetensors",
+            "strength_model": 0.7000000000000002,
+            "model": [
+              "249",
+              0
+            ]
+          },
+          "class_type": "LoraLoaderModelOnly",
+          "_meta": {
+            "title": "LoRA加载器（仅模型）"
+          }
+        },
+        "241": {
+          "inputs": {
+            "filename_prefix": "FlowHarbor_E2E/naked_sheep_character",
+            "images": [
+              "236",
+              0
+            ]
+          },
+          "class_type": "SaveImage",
+          "_meta": {
+            "title": "保存图像"
+          }
+        },
+        "244": {
+          "inputs": {
+            "width": [
+              "251",
+              0
+            ],
+            "height": [
+              "252",
+              0
+            ],
+            "batch_size": 1
+          },
+          "class_type": "EmptyLatentImage",
+          "_meta": {
+            "title": "空Latent图像"
+          }
+        },
+        "245": {
+          "inputs": {
+            "clip_name": "qwen_3_4b.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          },
+          "class_type": "CLIPLoader",
+          "_meta": {
+            "title": "加载CLIP"
+          }
+        },
+        "246": {
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          },
+          "class_type": "VAELoader",
+          "_meta": {
+            "title": "加载VAE"
+          }
+        },
+        "247": {
+          "inputs": {
+            "text": [
+              "248",
+              0
+            ],
+            "clip": [
+              "245",
+              0
+            ]
+          },
+          "class_type": "CLIPTextEncode",
+          "_meta": {
+            "title": "CLIP文本编码"
+          }
+        },
+        "248": {
+          "inputs": {
+            "text": "最高画质，杰作，超精细，干净棚拍光线，一位中国农村中年男性，亚洲面孔，东亚五官，45岁，朴实克制的农民，身形清瘦，哑光皮肤质感，日晒肤色，无油光，不泛油，黑色短发夹少量白发，双眼都睁开，对称双眼，神情平静，穿八十年代中国农村素色深蓝粗布上衣，灰黑长裤，旧黑布鞋，标准站立姿势，双手自然垂放，全身可见，从头到脚都在画面内，正常透视，50mm标准镜头，干净浅灰色棚拍背景，柔和均匀漫射光，正常身材比例，光影层次感，电影质感，艺术氛围，高级的氛围感，梦幻，"
+          },
+          "class_type": "CR Text",
+          "_meta": {
+            "title": "🔤 CR Text"
+          }
+        },
+        "249": {
+          "inputs": {
+            "lora_name": "Kook_Zimage_瑶光.safetensors",
+            "strength_model": 0.5000000000000001,
+            "model": [
+              "227",
+              0
+            ]
+          },
+          "class_type": "LoraLoaderModelOnly",
+          "_meta": {
+            "title": "LoRA加载器（仅模型）"
+          }
+        },
+        "250": {
+          "inputs": {
+            "lora_name": "Z-Image-Fun-Lora-Distill-8-Steps-2603-ComfyUI.safetensors",
+            "strength_model": 0.45000000000000007,
+            "model": [
+              "240",
+              0
+            ]
+          },
+          "class_type": "LoraLoaderModelOnly",
+          "_meta": {
+            "title": "LoRA加载器（仅模型）"
+          }
+        },
+        "251": {
+          "inputs": {
+            "value": 1024
+          },
+          "class_type": "INTConstant",
+          "_meta": {
+            "title": "INT Constant"
+          }
+        },
+        "252": {
+          "inputs": {
+            "value": 1680
+          },
+          "class_type": "INTConstant",
+          "_meta": {
+            "title": "INT Constant"
+          }
+        }
+      },
+      {
+        "client_id": "flowharbor-naked-sheep-e2e",
+        "create_time": 1792577778652
+      },
+      [
+        "241"
+      ]
+    ],
+    "outputs": {
+      "241": {
+        "images": [
+          {
+            "filename": "naked_sheep_character_00001_.png",
+            "subfolder": "FlowHarbor_E2E",
+            "type": "output",
+            "metadata": {
+              "kind": "image",
+              "width": 1024,
+              "height": 1680
+            }
+          }
+        ]
+      }
+    },
+    "status": {
+      "status_str": "success",
+      "completed": true,
+      "messages": [
+        [
+          "execution_start",
+          {
+            "prompt_id": "184321ad-bb5f-4eff-812f-ba07cacbf385",
+            "timestamp": 1792577778653
+          }
+        ],
+        [
+          "execution_cached",
+          {
+            "nodes": [],
+            "prompt_id": "184321ad-bb5f-4eff-812f-ba07cacbf385",
+            "timestamp": 1792577778655
+          }
+        ],
+        [
+          "execution_success",
+          {
+            "prompt_id": "184321ad-bb5f-4eff-812f-ba07cacbf385",
+            "timestamp": 1792577803242
+          }
+        ]
+      ]
+    },
+    "meta": {
+      "241": {
+        "node_id": "241",
+        "display_node": "241",
+        "parent_node": null,
+        "real_node_id": "241"
+      }
+    }
+  }
+}

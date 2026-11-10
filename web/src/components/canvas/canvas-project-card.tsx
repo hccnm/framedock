@@ -7,9 +7,13 @@ import { useCanvasStore, type CanvasProject } from "@/stores/canvas/use-canvas-s
 import { useCanvasUiStore } from "@/stores/canvas/use-canvas-ui-store";
 import { exportCanvasProjects } from "@/lib/canvas/canvas-export";
 import { hasAgentUrlBootstrap } from "@/lib/agent/agent-url-bootstrap";
+import { CanvasProjectPreview } from "@/components/canvas/canvas-project-preview";
+import { canvasThemes } from "@/lib/canvas-theme";
+import { useThemeStore } from "@/stores/use-theme-store";
 
 export function CanvasProjectCard({ project }: { project: CanvasProject }) {
     const { i18n, t } = useTranslation();
+    const theme = canvasThemes[useThemeStore((state) => state.theme)];
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const renameProject = useCanvasStore((state) => state.renameProject);
@@ -33,8 +37,9 @@ export function CanvasProjectCard({ project }: { project: CanvasProject }) {
     };
 
     return (
-        <article className="group flex min-h-44 cursor-pointer flex-col justify-between rounded-2xl bg-[#f1eee8] p-5 transition hover:bg-[#ebe6dc] dark:bg-white/5 dark:hover:bg-white/10" onClick={() => !editing && open()}>
-            <div className="flex items-start gap-3">
+        <article className="group flex min-w-0 cursor-pointer flex-col overflow-hidden rounded-2xl border" style={{ background: theme.node.panel, color: theme.node.text, borderColor: selected ? theme.node.activeStroke : theme.node.stroke }} onClick={() => !editing && open()}>
+            <CanvasProjectPreview nodes={project.nodes} />
+            <div className="flex items-start gap-3 border-t px-5 pt-4" style={{ borderColor: theme.node.stroke }}>
                 <input
                     type="checkbox"
                     checked={selected}
@@ -48,7 +53,7 @@ export function CanvasProjectCard({ project }: { project: CanvasProject }) {
                 ) : (
                     <button
                         type="button"
-                        className="min-w-0 cursor-pointer text-left"
+                        className="min-w-0 flex-1 cursor-pointer text-left"
                         onClick={(event) => {
                             event.stopPropagation();
                             open();
@@ -61,7 +66,7 @@ export function CanvasProjectCard({ project }: { project: CanvasProject }) {
                     </button>
                 )}
             </div>
-            <div className="mt-8 flex items-end justify-between gap-3">
+            <div className="mt-5 flex flex-wrap items-end justify-between gap-3 px-5 pb-4">
                 <p className="text-xs text-stone-500">{t("canvas.project.updated", { date: new Date(project.updatedAt).toLocaleString(i18n.resolvedLanguage, { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }) })}</p>
                 <div className="flex items-center gap-1" onClick={(event) => event.stopPropagation()}>
                     {editing ? (

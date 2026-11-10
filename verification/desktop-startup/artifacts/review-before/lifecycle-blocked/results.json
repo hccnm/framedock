@@ -1,0 +1,20 @@
+{
+  "passed": false,
+  "scenario": "blocked",
+  "events": [
+    "[e2e-lifecycle] did-start-loading",
+    "[e2e-lifecycle] flowharbor:close-ready",
+    "[e2e-lifecycle] did-navigate-in-page",
+    "[e2e-lifecycle] did-start-loading",
+    "[e2e-lifecycle] did-navigate-in-page",
+    "[e2e-lifecycle] did-start-loading"
+  ],
+  "profile": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/flowharbor-close-e2e-fNpbEg",
+  "blockedNavigation": true,
+  "failure": "electronApplication.waitForEvent: Timeout 30000ms exceeded while waiting for event \"close\"",
+  "cleanup": {
+    "forced": true,
+    "reason": "electronApplication.waitForEvent: Timeout 5000ms exceeded while waiting for event \"close\""
+  },
+  "profileRemoved": true
+}

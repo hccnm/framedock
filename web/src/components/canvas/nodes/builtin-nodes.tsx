@@ -1,4 +1,4 @@
-import { FileText, Group, Image as ImageIcon, Music2, Settings2, Video } from "lucide-react";
+import { FileText, Group, Image as ImageIcon, Music2, Settings2, Sparkles, Video } from "lucide-react";
 
 import i18n from "@/i18n";
 
@@ -26,6 +26,8 @@ const BUILTIN_DEFINITIONS: CanvasNodeDefinition[] = [
     { type: CanvasNodeType.Audio, title: i18n.t("assets.kinds.audio"), icon: <Music2 className={iconClass} />, minimapColor: "#a855f7", resource: builtinResource },
     { type: CanvasNodeType.Config, title: i18n.t("canvas.configNode.title"), icon: <Settings2 className={iconClass} />, minimapColor: "#60a5fa", hasSourceHandle: false },
     { type: CanvasNodeType.Group, title: i18n.t("canvas.node.group"), icon: <Group className={iconClass} />, minimapColor: "#94a3b8" },
+    // ComfyUI consumes upstream resources but is not one itself: its results become ordinary resource nodes.
+    { type: CanvasNodeType.ComfyUI, title: i18n.t("canvas.comfyNode.title"), icon: <Sparkles className={iconClass} />, minimapColor: "#f43f5e" },
 ].map((def) => {
     const spec = NODE_SPECS[def.type];
     return { ...def, title: spec.title, defaultSize: { width: spec.width, height: spec.height }, defaultMetadata: spec.metadata };

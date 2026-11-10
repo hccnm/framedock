@@ -1,0 +1,7 @@
+工具：内置 image_gen
+用途：FrameDock Logo 视觉提案，尚未接入应用。
+
+Use case: logo-brand.
+Create a polished finished logo presentation for FrameDock, a desktop AI creative workspace with an infinite canvas, visual generation and creative workflows. Its existing UI uses warm ivory #f4f2ed and charcoal #1c1917.
+Design ONE distinctive logo, not multiple alternatives: a bold minimal abstract F monogram formed by two or three flowing geometric bands, conveying creative flow entering a sheltered harbor. Clever negative space, rounded precision, confident silhouette, optically balanced, simple enough for a 24px app icon. Avoid literal anchors, ships, generic infinity loops, sparkles, circuitry or AI clichés.
+Produce a beautifully art-directed restrained brand sheet on flat warm ivory. Large primary charcoal symbol centered in the upper-middle with exact wordmark "FrameDock" underneath in refined contemporary sans serif, excellent kerning. Bottom row, much smaller: the identical mark in charcoal on ivory, ivory on charcoal square, and ivory on muted petrol teal square, showing practical app icon applications. Generous whitespace, editorial Swiss precision, premium creative-tool brand. All instances MUST use exactly the same symbol. Flat vector-style crisp edges, no gradients, shadows, textures, 3D or mockup objects. No text except FrameDock. Landscape composition.

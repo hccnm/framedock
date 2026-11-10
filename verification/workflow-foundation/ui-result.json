@@ -1,0 +1,16 @@
+{
+  "workflowCount": 1,
+  "selectedPrompt": "prompt",
+  "path": "models\\example.safetensors",
+  "defaultPath": "models\\example.safetensors",
+  "submittedPath": "models\\example.safetensors",
+  "visibleResult": true,
+  "requests": [
+    "GET /object_info/ForeignText",
+    "GET /object_info/ForeignWeights",
+    "GET /object_info/ForeignResult",
+    "POST /prompt",
+    "GET /history/fixture-only-no-generation"
+  ],
+  "realGenerationSubmitted": false
+}

@@ -1,0 +1,8 @@
+{
+  "entered": true,
+  "exited": true,
+  "events": [
+    "enter",
+    "leave"
+  ]
+}

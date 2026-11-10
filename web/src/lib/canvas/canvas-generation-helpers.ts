@@ -127,6 +127,13 @@ export function hasResumableVideoTask(node: CanvasNodeData) {
     return node.type === CanvasNodeType.Video && Boolean(node.metadata?.videoTaskId) && !node.metadata?.content;
 }
 
+/** A ComfyUI node whose prompt is still tracked but never reached a terminal status. */
+export function hasResumableComfyRun(node: CanvasNodeData) {
+    if (node.type !== CanvasNodeType.ComfyUI || !node.metadata?.comfyPromptId) return false;
+    const status = node.metadata.comfyRunStatus;
+    return status !== "success" && status !== "error";
+}
+
 export function resetInterruptedGeneration(nodes: CanvasNodeData[]) {
     return nodes.map((node) =>
         node.metadata?.status === "loading"

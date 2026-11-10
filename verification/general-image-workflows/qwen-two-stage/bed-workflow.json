@@ -1,0 +1,154 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+      "weight_dtype": "default"
+    },
+    "_meta": {
+      "title": "模型"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen3vl_8b_bf16.safetensors",
+      "type": "qwen_image",
+      "device": "default"
+    },
+    "_meta": {
+      "title": "文本编码器"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+    },
+    "_meta": {
+      "title": "VAE"
+    }
+  },
+  "4": {
+    "class_type": "TextEncodeQwenImage21",
+    "inputs": {
+      "clip": [
+        "11",
+        1
+      ],
+      "vae": [
+        "3",
+        0
+      ],
+      "prompt": "Change only the camera viewpoint of the empty bed and modest Xiamen bedroom in <image1>. Create a landscape photographic OVERHEAD TOP-DOWN view: the camera is directly ABOVE THE BED, optical axis perpendicular to the horizontal mattress, looking straight DOWN. The headboard and the head end of the bed are at the TOP edge of the frame; the bed's length extends vertically DOWN toward the bottom edge. The left and right mattress edges are parallel in the image. Keep the same plain light-wood headboard, white metal bed frame, plain pale ivory cotton bedding and natural wrinkles from <image1>. There are EXACTLY TWO sleeping pillows, the original two pillows, side by side in one horizontal row right against the headboard at the top. Preserve these TWO pillows only, their size and plain fabric; no third pillow, no extra cushion, no bolster, no decorative object. Bed is empty, no people. Frame the headboard, both pillows and upper two-thirds of the mattress filling most of the landscape image; the foot of the bed can extend outside the lower edge. Keep the original room's white walls and soft morning window light from the right. The narrow window and cream curtain are only incidental along the right room edge if visible from overhead. This must be an actual bird's-eye view of a real horizontal bed, not a frontal view and not a sideways view. Accurate simple bed geometry and undistorted perspective. Photorealistic, single continuous photograph, no text.",
+      "negative_prompt": "",
+      "resolution": 1024,
+      "images.image_1": [
+        "21",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "通用提示词与参考图"
+    }
+  },
+  "5": {
+    "class_type": "EmptySD3LatentImage",
+    "inputs": {
+      "width": 1344,
+      "height": 768,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "输出尺寸"
+    }
+  },
+  "6": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "11",
+        0
+      ],
+      "positive": [
+        "4",
+        0
+      ],
+      "negative": [
+        "4",
+        1
+      ],
+      "latent_image": [
+        "5",
+        0
+      ],
+      "seed": 20261112,
+      "steps": 25,
+      "cfg": 1.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "采样参数"
+    }
+  },
+  "7": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "6",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "解码"
+    }
+  },
+  "10": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "7",
+        0
+      ],
+      "filename_prefix": "FrameDock/QwenEdit/two-stage-overhead-two-pillows"
+    },
+    "_meta": {
+      "title": "保存图像"
+    }
+  },
+  "11": {
+    "class_type": "CR Load LoRA",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "clip": [
+        "2",
+        0
+      ],
+      "switch": "Off",
+      "lora_name": "None",
+      "strength_model": 1.0,
+      "strength_clip": 0.0
+    },
+    "_meta": {
+      "title": "可选 LoRA 1（默认关闭）"
+    }
+  },
+  "21": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "canvas-jAbmZJ1W.png"
+    },
+    "_meta": {
+      "title": "参考图 1（可选）"
+    }
+  }
+}

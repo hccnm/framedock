@@ -1,0 +1,10 @@
+{
+  "largePackage": "multilingual-hand-drawn-story-video",
+  "requestBytes": 60720011,
+  "resourceFiles": 37,
+  "imported": 201,
+  "oversized": 413,
+  "unchangedAfterRejection": true,
+  "ordinary31MBRejected": true,
+  "unauthorized": 401
+}

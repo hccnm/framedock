@@ -1,0 +1,45 @@
+{
+  "primary": {
+    "class_type": "ForeignText",
+    "inputs": {
+      "prompt": "主要文本默认值"
+    },
+    "_meta": {
+      "title": "主要文本"
+    }
+  },
+  "alternate": {
+    "class_type": "ForeignText",
+    "inputs": {
+      "prompt": "备用文本默认值"
+    },
+    "_meta": {
+      "title": "备用文本"
+    }
+  },
+  "weights": {
+    "class_type": "ForeignWeights",
+    "inputs": {
+      "weights": "example.safetensors"
+    },
+    "_meta": {
+      "title": "模型文件"
+    }
+  },
+  "result": {
+    "class_type": "ForeignResult",
+    "inputs": {
+      "content": [
+        "primary",
+        0
+      ],
+      "model": [
+        "weights",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "自定义文本输出"
+    }
+  }
+}

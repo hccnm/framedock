@@ -10,6 +10,9 @@ import { getNodeDefinition } from "@/lib/canvas/node-registry";
 import { buildNodeContext } from "@/lib/canvas/plugin-node-context";
 import { useThemeStore } from "@/stores/use-theme-store";
 import { CanvasResourceMentionTextarea } from "./canvas-resource-mention-textarea";
+import { ComfyNodeContent } from "./canvas-comfy-node-content";
+import { getComfyInputPorts } from "@/lib/comfyui/ports";
+import { useComfyUiStore } from "@/stores/use-comfyui-store";
 import { CanvasNodeType, type CanvasNodeData, type CanvasNodeImage, type CanvasNodeText, type Position } from "@/types/canvas";
 import type { CanvasNodeContext, CanvasPluginHost } from "@/types/canvas-plugin";
 import type { CanvasResourceReference } from "@/lib/canvas/canvas-resource-references";
@@ -41,7 +44,7 @@ type CanvasNodeProps = {
     onSelectCapture?: (event: React.MouseEvent, nodeId: string) => void;
     onHoverStart: (nodeId: string) => void;
     onHoverEnd: (nodeId: string) => void;
-    onConnectStart: (event: React.MouseEvent, nodeId: string, handleType: "source" | "target") => void;
+    onConnectStart: (event: React.MouseEvent, nodeId: string, handleType: "source" | "target", fieldId?: string) => void;
     onResizeStart: (nodeId: string) => void;
     onResize: (nodeId: string, width: number, height: number, position?: Position) => void;
     onResizeEnd: (nodeId: string) => void;
@@ -126,6 +129,12 @@ export const CanvasNode = React.memo(function CanvasNode({
     const theme = canvasThemes[useThemeStore((state) => state.theme)];
     const { t } = useTranslation();
     const [hovered, setHovered] = useState(false);
+    const comfyWorkflow = useComfyUiStore((state) => data.type === CanvasNodeType.ComfyUI ? state.workflows.find((item) => item.id === data.metadata?.comfyWorkflowId || item.aliasIds?.includes(data.metadata?.comfyWorkflowId || "")) : undefined);
+    const comfyPorts = useMemo(() => getComfyInputPorts(data), [data, comfyWorkflow]);
+    const minimumHeight = data.type === CanvasNodeType.ComfyUI ? Math.max(160, 104 + comfyPorts.length * 28) : 160;
+    useEffect(() => {
+        if (data.type === CanvasNodeType.ComfyUI && data.height < minimumHeight) onResize(data.id, data.width, minimumHeight);
+    }, [data.id, data.type, data.width, data.height, minimumHeight, onResize]);
     const definition = getNodeDefinition(data.type);
     const pluginContext = useMemo<CanvasNodeContext | null>(() => (pluginHost ? buildNodeContext(pluginHost, data, theme, scale, isSelected) : null), [pluginHost, data, theme, scale, isSelected]);
     const [isEditingContent, setIsEditingContent] = useState(false);
@@ -227,7 +236,7 @@ export const CanvasNode = React.memo(function CanvasNode({
             const dx = (event.clientX - resizeRef.current.startX) / scale;
             const dy = (event.clientY - resizeRef.current.startY) / scale;
             const minWidth = 220;
-            const minHeight = 160;
+            const minHeight = minimumHeight;
             const startRight = resizeRef.current.startLeft + resizeRef.current.startWidth;
             const startBottom = resizeRef.current.startTop + resizeRef.current.startHeight;
             const fromLeft = resizeRef.current.corner.includes("left");
@@ -258,7 +267,7 @@ export const CanvasNode = React.memo(function CanvasNode({
                 y: fromTop ? startBottom - height : resizeRef.current.startTop,
             });
         },
-        [data.id, onResize, scale],
+        [data.id, minimumHeight, onResize, scale],
     );
 
     const handleResizeUp = useCallback(() => {
@@ -443,7 +452,14 @@ export const CanvasNode = React.memo(function CanvasNode({
                 {!referenceSelectionState ? <ResizeHandle corner="bottom-right" onMouseDown={handleResizeMouseDown} /> : null}
             </div>
 
-            {!referenceSelectionState && !isGroup ? <ConnectionHandleDot side="left" visible={hovered || isSelected || isConnecting} onMouseDown={(event) => onConnectStart(event, data.id, "target")} /> : null}
+            {!referenceSelectionState && data.type === CanvasNodeType.ComfyUI ? comfyPorts.map(({ field, top }) => (
+                <div key={field.id} className="pointer-events-none absolute left-0 z-30 flex h-6 max-w-full -translate-y-1/2 items-center" style={{ top }}>
+                    <button type="button" data-comfy-field-id={field.id} aria-label={`连接${field.label || field.inputKey}`} title={`${field.label || field.inputKey} · ${field.nodeId}.${field.inputKey}`} className="pointer-events-auto absolute -left-3 flex size-6 cursor-crosshair items-center justify-center" onPointerDown={(event) => event.stopPropagation()} onMouseDown={(event) => { event.preventDefault(); onConnectStart(event, data.id, "target", field.id); }}>
+                        <span className="size-3 rounded-full border-2 transition-transform hover:scale-125" style={{ background: theme.node.panel, borderColor: theme.node.muted }} />
+                    </button>
+                    <span className="truncate pl-4 pr-3 text-xs" style={{ color: theme.node.muted }}>{field.label || field.inputKey}</span>
+                </div>
+            )) : !referenceSelectionState && !isGroup ? <ConnectionHandleDot side="left" visible={hovered || isSelected || isConnecting} onMouseDown={(event) => onConnectStart(event, data.id, "target")} /> : null}
             {!referenceSelectionState && (definition?.hasSourceHandle ?? true) && data.type !== CanvasNodeType.Config ? <ConnectionHandleDot side="right" visible={hovered || isSelected || isConnecting} onMouseDown={(event) => onConnectStart(event, data.id, "source")} /> : null}
 
             {/* Counter-scale the panel so its on-screen size stays constant while the canvas zooms. */}
@@ -482,6 +498,7 @@ const nodeContentRenderers = {
     [CanvasNodeType.Video]: VideoNodeContent,
     [CanvasNodeType.Audio]: AudioNodeContent,
     [CanvasNodeType.Group]: GroupNodeContent,
+    [CanvasNodeType.ComfyUI]: ComfyNodeContent,
 } satisfies Record<CanvasNodeType, (props: NodeContentRendererProps) => ReactNode>;
 
 function GroupNodeContent({ node, theme, groupChildCount }: NodeContentRendererProps) {
@@ -986,6 +1003,7 @@ function ConnectionHandleDot({ side, visible, onMouseDown }: { side: "left" | "r
 
     return (
         <div
+            data-connection-handle={side === "left" ? "target" : "source"}
             className={`absolute top-1/2 z-30 flex size-12 -translate-y-1/2 cursor-crosshair items-center justify-center transition-opacity duration-150 ${
                 side === "left" ? "-left-6" : "-right-6"
             } ${visible ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"}`}

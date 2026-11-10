@@ -1,0 +1,130 @@
+name: Build macOS Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      signed:
+        description: "使用 Apple 凭据签名并公证（手动运行仅上传 Actions 构建产物）"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-macos-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            arch: arm64
+          - runner: macos-15-intel
+            arch: x64
+    runs-on: ${{ matrix.runner }}
+    env:
+      FRAMEDOCK_RELEASE: ${{ (github.event_name == 'push' || inputs.signed) && '1' || '0' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Validate release version
+        run: node --input-type=module -e 'import { readReleaseVersion } from "./script/prepare-desktop.mjs"; console.log(await readReleaseVersion());'
+
+      - name: Check Apple credentials
+        if: env.FRAMEDOCK_RELEASE == '1'
+        env:
+          CSC_LINK: ${{ secrets.MAC_CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.MAC_CSC_KEY_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          for name in CSC_LINK CSC_KEY_PASSWORD APPLE_ID APPLE_APP_SPECIFIC_PASSWORD APPLE_TEAM_ID; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Missing required signing secret: $name"
+              exit 1
+            fi
+          done
+
+      - name: Install dependencies
+        run: npm run setup
+
+      - name: Test packaging resource paths
+        run: node --test desktop/tests/packaging.test.mjs
+
+      - name: Build application
+        run: npm run build
+
+      - name: Package application
+        env:
+          CSC_LINK: ${{ secrets.MAC_CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.MAC_CSC_KEY_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: npm run pack:mac -- --${{ matrix.arch }}
+
+      - name: Verify packaged resources and Agent runtime
+        run: node script/verify-desktop-package.mjs desktop/release
+
+      - name: Verify signatures and notarization
+        run: |
+          app=$(find desktop/release -maxdepth 3 -type d -name 'FrameDock.app' -print -quit)
+          test -n "$app"
+          codesign --verify --deep --strict --verbose=2 "$app"
+          if [ "$FRAMEDOCK_RELEASE" = "1" ]; then
+            xcrun stapler validate "$app"
+            spctl --assess --type execute --verbose=2 "$app"
+          fi
+
+      - name: Upload installers
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-${{ matrix.arch }}
+          path: desktop/release/*.dmg
+          if-no-files-found: error
+
+  release:
+    if: github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: macos-*
+          path: installers
+          merge-multiple: true
+
+      - name: Create checksums
+        working-directory: installers
+        run: sha256sum FrameDock-*.dmg > SHA256SUMS.txt
+
+      - name: Upload to draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            test "$(gh release view "$RELEASE_TAG" --json isDraft --jq '.isDraft')" = true || {
+              echo '::error::Refusing to replace assets on a published release'
+              exit 1
+            }
+          else
+            prerelease=()
+            if [[ "$RELEASE_TAG" == *-* ]]; then prerelease=(--prerelease); fi
+            gh release create "$RELEASE_TAG" --verify-tag --draft --title "FrameDock $RELEASE_TAG" --notes-file desktop/RELEASE_NOTES.md "${prerelease[@]}"
+          fi
+          gh release upload "$RELEASE_TAG" installers/*.dmg installers/SHA256SUMS.txt --clobber

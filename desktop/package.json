@@ -1,0 +1,18 @@
+{
+  "name": "@basketikun/infinite-canvas-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Infinite Canvas desktop shell: manages the Canvas Agent sidecar and serves the web renderer",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "pack:mac": "electron-builder --config electron-builder.cjs --mac --publish never",
+    "start": "npm run build && electron ."
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "electron": "^38.0.0",
+    "electron-builder": "26.18.0",
+    "typescript": "^5.8.0"
+  }
+}

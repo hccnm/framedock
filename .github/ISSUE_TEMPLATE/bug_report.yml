@@ -1,0 +1,52 @@
+name: 问题反馈
+description: 报告可复现的功能问题
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈！请先搜索已有 Issue。安全漏洞请按 [安全报告流程](https://github.com/hccnm/framedock/blob/main/SECURITY.md) 私密报告。
+        请勿提交 API Key、密码、私有素材或含敏感信息的日志。
+  - type: input
+    id: version
+    attributes:
+      label: FrameDock 版本或提交
+      description: 填写版本号或 Git 提交；源码运行请注明。
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: 运行环境
+      description: 系统版本、处理器架构，以及桌面版或浏览器版；源码运行可补充 Node.js / Bun 版本。
+      placeholder: macOS 15 / Apple Silicon / 桌面版
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 最小复现步骤
+      description: 从打开应用开始，列出能稳定触发问题的操作；如有最小复现数据可附上。
+      placeholder: |
+        1. 打开……
+        2. 点击……
+        3. 出现……
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期结果
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际结果
+      description: 说明出现的错误、发生频率，以及刷新或重启后是否仍然存在。
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 截图、日志与补充信息
+      description: 可附截图、录屏和已脱敏的错误日志；模型或 ComfyUI 问题请注明服务类型，勿包含凭据。

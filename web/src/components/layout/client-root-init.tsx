@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { App } from "antd";
 import { useTranslation } from "react-i18next";
 
-import { useConfigStore } from "@/stores/use-config-store";
+import { useConfigPersistenceStore, useConfigStore } from "@/stores/use-config-store";
 import { usePromptSourceScheduler } from "@/hooks/use-prompt-source-scheduler";
 
 export function ClientRootInit({ children }: { children: ReactNode }) {
@@ -12,6 +12,12 @@ export function ClientRootInit({ children }: { children: ReactNode }) {
     const handledConfigParams = useRef(false);
     const importChannelCredentials = useConfigStore((state) => state.importChannelCredentials);
     const openConfigDialog = useConfigStore((state) => state.openConfigDialog);
+    const persistenceError = useConfigPersistenceStore((state) => state.error);
+
+    useEffect(() => {
+        if (persistenceError) void message.error({ key: "config-persistence", content: persistenceError, duration: 0 });
+        else message.destroy("config-persistence");
+    }, [message, persistenceError]);
 
     usePromptSourceScheduler();
 

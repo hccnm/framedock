@@ -1,0 +1,23 @@
+{
+  "workflowId": "sheep_workflow_f994ec9021f61205a1820c1f",
+  "name": "视频生成-MiniMax H3",
+  "changes": [
+    {
+      "nodeId": "149",
+      "input": "vae_name",
+      "before": "minimax_h3_video_vae_fp16.safetensors",
+      "after": "MiniMax-H3\\minimax_h3_video_vae_fp16.safetensors",
+      "fieldDefaultUpdated": true
+    },
+    {
+      "nodeId": "150",
+      "input": "vae_name",
+      "before": "minimax_h3_audio_vae_fp32.safetensors",
+      "after": "MiniMax-H3\\minimax_h3_audio_vae_fp32.safetensors",
+      "fieldDefaultUpdated": true
+    }
+  ],
+  "otherWorkflowsUnchanged": true,
+  "otherParametersUnchanged": true,
+  "submitted": false
+}

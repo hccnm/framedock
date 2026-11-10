@@ -19,8 +19,12 @@ import { requestEdit, requestGeneration } from "@/services/api/image";
 import { deleteStoredImages, ensureImagePreview, getImagePreviewRevision, previewUrlFor, resolveImageUrl, subscribeImagePreviews, uploadImage } from "@/services/image-storage";
 import { useAssetStore } from "@/stores/use-asset-store";
 import { useWorkbenchAgentStore } from "@/stores/use-workbench-agent-store";
+import { useWorkbenchDraftField, useWorkbenchDraftStore } from "@/stores/use-workbench-draft-store";
 import type { ReferenceImage } from "@/types/image";
 import i18n from "@/i18n";
+import { useComfyWorkbench, type ComfyWorkbenchSnapshot } from "@/hooks/use-comfy-workbench";
+import { useSearchParams } from "react-router-dom";
+import { notifyWorkbenchGeneration } from "@/lib/generation-notifications";
 
 type GeneratedImage = {
     id: string;
@@ -48,6 +52,7 @@ type GenerationLog = {
     time: string;
     model: string;
     config: GenerationLogConfig;
+    comfy?: ComfyWorkbenchSnapshot;
     references: ReferenceImage[];
     durationMs: number;
     successCount: number;
@@ -56,6 +61,7 @@ type GenerationLog = {
     size: string;
     quality: string;
     status: "success" | "failed";
+    error?: string;
     images: GeneratedImage[];
 };
 
@@ -68,6 +74,12 @@ const RESULT_ACTION_BUTTON_CLASS = "min-w-0 px-1.5 [&_.ant-btn-icon]:shrink-0 [&
 const logStore = localforage.createInstance({ name: "infinite-canvas", storeName: "image_generation_logs" });
 
 export default function ImagePage() {
+    const hydrated = useWorkbenchDraftStore((state) => state.hydrated);
+    const error = useWorkbenchDraftStore((state) => state.error);
+    return <>{error ? <div role="alert">{error}</div> : null}{hydrated ? <ImageWorkbench /> : <div role="status">正在恢复上次工作内容…</div>}</>;
+}
+
+function ImageWorkbench() {
     const { message } = App.useApp();
     const { t } = useTranslation();
     useSyncExternalStore(subscribeImagePreviews, getImagePreviewRevision);
@@ -79,10 +91,12 @@ export default function ImagePage() {
     const isAiConfigReady = useConfigStore((state) => state.isAiConfigReady);
     const openConfigDialog = useConfigStore((state) => state.openConfigDialog);
     const addAsset = useAssetStore((state) => state.addAsset);
-    const [prompt, setPrompt] = useState("");
-    const [references, setReferences] = useState<ReferenceImage[]>([]);
+    const [prompt, setPrompt] = useWorkbenchDraftField("image", "prompt");
+    const [references, setReferences] = useWorkbenchDraftField("image", "references");
+    const comfy = useComfyWorkbench(references, prompt, setPrompt, "image");
     const [results, setResults] = useState<GenerationResult[]>([]);
     const [logs, setLogs] = useState<GenerationLog[]>([]);
+    const [searchParams, setSearchParams] = useSearchParams();
     const [running, setRunning] = useState(false);
     const [logsOpen, setLogsOpen] = useState(false);
     const [settingsOpen, setSettingsOpen] = useState(false);
@@ -102,7 +116,7 @@ export default function ImagePage() {
     const agentTaskIdRef = useRef<string | undefined>(undefined);
 
     const model = effectiveConfig.imageModel || effectiveConfig.model;
-    const canGenerate = Boolean(prompt.trim());
+    const canGenerate = Boolean(prompt.trim()) || (comfy.enabled && comfy.usesTemplatePrompt);
     const generationCount = Math.max(1, Math.min(10, Number(config.count) || 1));
 
     useEffect(() => {
@@ -151,18 +165,22 @@ export default function ImagePage() {
         const agentTaskId = agentTaskIdRef.current;
         agentTaskIdRef.current = undefined;
         const text = prompt.trim();
-        if (!text) {
+        if (!text && !(comfy.enabled && comfy.usesTemplatePrompt)) {
             message.error(t("imageWorkbench.promptRequired"));
             if (agentTaskId) updateAgentTask(agentTaskId, { status: "failed", error: t("imageWorkbench.promptRequired") });
             return;
         }
-        if (!isAiConfigReady(effectiveConfig, model)) {
+        if (!comfy.enabled && !isAiConfigReady(effectiveConfig, model)) {
             message.warning(t("workbench.configFirst"));
             openConfigDialog(true);
             if (agentTaskId) updateAgentTask(agentTaskId, { status: "failed", error: t("imageWorkbench.configIncomplete") });
             return;
         }
 
+        if (comfy.enabled) {
+            await generateComfy(comfy.effectivePrompt, agentTaskId);
+            return;
+        }
         const snapshot = buildRequestSnapshot();
         if (!snapshot) {
             if (agentTaskId) updateAgentTask(agentTaskId, { status: "failed", error: t("imageWorkbench.invalidParams") });
@@ -199,10 +217,52 @@ export default function ImagePage() {
                     failCount,
                     status: successCount ? "success" : "failed",
                     images: successImages,
+                    error,
                 }),
             );
             successCount ? message.success(t("imageWorkbench.generated")) : message.error(failed?.reason instanceof Error ? failed.reason.message : t("workbench.generationFailed"));
         } finally {
+            setRunning(false);
+        }
+    };
+
+    const generateComfy = async (text: string, agentTaskId?: string) => {
+        try { comfy.validate(); } catch (error) {
+            const detail = error instanceof Error ? error.message : String(error);
+            message.error(detail);
+            if (agentTaskId) updateAgentTask(agentTaskId, { status: "failed", error: detail });
+            return;
+        }
+        const started = performance.now();
+        const saved = comfy.snapshot;
+        const name = comfy.name;
+        const refs = [...references];
+        setRunning(true);
+        setStartedAt(started);
+        setElapsedMs(0);
+        setPreviewLog(null);
+        setResults([{ id: nanoid(), status: "pending" }]);
+        if (agentTaskId) updateAgentTask(agentTaskId, { status: "running", error: undefined });
+        let output: Awaited<ReturnType<typeof comfy.run>> | undefined;
+        try {
+            output = await comfy.run(text);
+            if (!output.images.length) throw new Error("ComfyUI 工作流未返回图片");
+            const images: GeneratedImage[] = await Promise.all(output.images.map(async (url) => {
+                const stored = await uploadImage(url);
+                return { id: nanoid(), dataUrl: stored.url, storageKey: stored.storageKey, durationMs: performance.now() - started, width: stored.width, height: stored.height, bytes: stored.bytes, mimeType: stored.mimeType };
+            }));
+            setResults(images.map((image) => ({ id: image.id, status: "success", image })));
+            await saveLog({ ...buildLog({ prompt: text, model: name, config: { ...effectiveConfig, count: String(images.length) }, references: refs, durationMs: performance.now() - started, successCount: images.length, failCount: 0, status: "success", images }), comfy: saved });
+            if (agentTaskId) updateAgentTask(agentTaskId, { status: "succeeded", successCount: images.length, failCount: 0, error: undefined });
+            message.success(t("imageWorkbench.generated"));
+        } catch (error) {
+            const detail = error instanceof Error ? error.message : String(error);
+            setResults([{ id: nanoid(), status: "failed", error: detail }]);
+            await saveLog({ ...buildLog({ prompt: text, model: name, config: { ...effectiveConfig, count: "1" }, references: refs, durationMs: performance.now() - started, successCount: 0, failCount: 1, status: "failed", images: [] }), comfy: saved, error: detail });
+            if (agentTaskId) updateAgentTask(agentTaskId, { status: "failed", successCount: 0, failCount: 1, error: detail });
+            message.error(detail);
+        } finally {
+            if (output) [...output.images, ...output.videos, ...output.audios].forEach((url) => URL.revokeObjectURL(url));
             setRunning(false);
         }
     };
@@ -266,6 +326,7 @@ export default function ImagePage() {
     };
 
     const createSession = () => {
+        useWorkbenchDraftStore.getState().updateDraft("image", { uploadedMedia: {} });
         setPrompt("");
         setReferences([]);
         setResults([]);
@@ -286,8 +347,10 @@ export default function ImagePage() {
         setDeleteConfirmOpen(false);
     };
 
-    const saveLog = (log: GenerationLog) => {
-        void logStore.setItem(log.id, serializeLog(log)).then(refreshLogs);
+    const saveLog = async (log: GenerationLog) => {
+        await logStore.setItem(log.id, serializeLog(log));
+        notifyWorkbenchGeneration("image", log);
+        await refreshLogs();
     };
 
     const refreshLogs = async () => setLogs(await readStoredLogs());
@@ -296,13 +359,22 @@ export default function ImagePage() {
         setPreviewLog(log);
         setLogsOpen(false);
         setPrompt(log.prompt);
+        comfy.restore(log.comfy, log.references || []);
         setReferences(log.references || []);
-        if (log.config.imageModel || log.model) updateConfig("imageModel", log.config.imageModel || log.model);
+        if (!log.comfy && (log.config.imageModel || log.model)) updateConfig("imageModel", log.config.imageModel || log.model);
         if (log.config.quality) updateConfig("quality", log.config.quality);
         if (log.config.size) updateConfig("size", log.config.size);
         if (log.config.count) updateConfig("count", log.config.count);
-        setResults(log.images.map((image) => ({ id: image.id, status: "success", image })));
+        setResults(log.images.length ? log.images.map((image) => ({ id: image.id, status: "success", image })) : log.status === "failed" ? [{ id: log.id, status: "failed", error: log.error || t("workbench.generationFailed") }] : []);
     };
+
+    useEffect(() => {
+        const taskId = searchParams.get("task");
+        const log = logs.find((item) => item.id === taskId);
+        if (!log) return;
+        void previewGenerationLog(log);
+        setSearchParams((current) => { const next = new URLSearchParams(current); next.delete("task"); return next; }, { replace: true });
+    }, [logs, searchParams, setSearchParams]);
 
     const buildRequestSnapshot = () => {
         const text = prompt.trim();
@@ -310,7 +382,7 @@ export default function ImagePage() {
             message.error(t("imageWorkbench.promptRequired"));
             return null;
         }
-        if (!isAiConfigReady(effectiveConfig, model)) {
+        if (!comfy.enabled && !isAiConfigReady(effectiveConfig, model)) {
             message.warning(t("workbench.configFirst"));
             openConfigDialog(true);
             return null;
@@ -335,6 +407,7 @@ export default function ImagePage() {
     };
 
     const retryResult = async (index: number) => {
+        if (comfy.enabled) { await generateComfy(comfy.effectivePrompt); return; }
         const snapshot = buildRequestSnapshot();
         if (!snapshot) return;
         setPreviewLog(null);
@@ -356,8 +429,8 @@ export default function ImagePage() {
                 }),
             );
             message.success(t("workbench.retrySuccess"));
-        } catch {
-            // runGenerationSlot has already marked the result as failed.
+        } catch (error) {
+            await saveLog({ ...buildLog({ prompt: snapshot.text, model, config: { ...snapshot.config, count: "1" }, references: snapshot.references, durationMs: performance.now() - retryStartedAt, successCount: 0, failCount: 1, status: "failed", images: [] }), error: error instanceof Error ? error.message : t("workbench.generationFailed") });
         }
     };
 
@@ -395,7 +468,8 @@ export default function ImagePage() {
                         </div>
 
                         <div className="mt-6 space-y-5">
-                            <div>
+                            {comfy.settings}
+                            {!comfy.enabled ? <div>
                                 <div className="mb-2 flex items-center justify-between gap-3">
                                     <span className="text-base font-semibold">{t("workbench.prompt")}</span>
                                     <div className="flex gap-2">
@@ -408,7 +482,7 @@ export default function ImagePage() {
                                     </div>
                                 </div>
                                 <Input.TextArea value={prompt} onChange={(event) => setPrompt(event.target.value)} rows={7} placeholder={t("imageWorkbench.promptPlaceholder")} />
-                            </div>
+                            </div> : null}
 
                             <div className="min-w-0">
                                 <div className="mb-2 flex items-center justify-between gap-3">
@@ -469,18 +543,18 @@ export default function ImagePage() {
                                 </div>
                             </div>
 
-                            <div className="flex items-center justify-between rounded-lg border border-stone-200 bg-stone-50 px-3 py-2 text-sm dark:border-stone-800 dark:bg-stone-900 sm:hidden">
+                            {!comfy.enabled ? <div className="flex items-center justify-between rounded-lg border border-stone-200 bg-stone-50 px-3 py-2 text-sm dark:border-stone-800 dark:bg-stone-900 sm:hidden">
                                 <span className="truncate text-stone-500 dark:text-stone-400">
                                     {modelOptionLabel(effectiveConfig, model)} · {effectiveConfig.size} · {effectiveConfig.quality}
                                 </span>
                                 <Button size="small" type="text" icon={<SlidersHorizontal className="size-4" />} onClick={() => setSettingsOpen(true)}>
                                     {t("workbench.adjust")}
                                 </Button>
-                            </div>
+                            </div> : null}
 
-                            <div className="hidden gap-4 sm:grid sm:grid-cols-2">
+                            {!comfy.enabled ? <div className="hidden gap-4 sm:grid sm:grid-cols-2">
                                 <GenerationSettings config={effectiveConfig} model={model} updateConfig={updateConfig} openConfigDialog={openConfigDialog} />
-                            </div>
+                            </div> : null}
                         </div>
 
                         <div className="mt-auto pt-6">
@@ -541,10 +615,11 @@ export default function ImagePage() {
                 />
             </Drawer>
             <Drawer title={t("workbench.settings")} placement="bottom" size="82vh" open={settingsOpen} onClose={() => setSettingsOpen(false)}>
-                <div className="grid grid-cols-2 gap-3 pb-4">
+                <div className="pb-4">{comfy.enabled ? comfy.settings : <div className="grid grid-cols-2 gap-3">
                     <GenerationSettings config={effectiveConfig} model={model} updateConfig={updateConfig} openConfigDialog={openConfigDialog} />
-                </div>
+                </div>}</div>
             </Drawer>
+            {comfy.editor}
             <PromptSelectDialog open={promptDialogOpen} onOpenChange={setPromptDialogOpen} onSelect={setPrompt} />
             <AssetPickerModal open={assetPickerOpen} defaultTab="my-assets" onInsert={(payload) => void insertPickedAsset(payload)} onClose={() => setAssetPickerOpen(false)} />
             <Modal title={t("workbench.deleteLogs")} open={deleteConfirmOpen} onCancel={() => setDeleteConfirmOpen(false)} onOk={deleteSelectedLogs} okText={t("common.delete")} okButtonProps={{ danger: true }} cancelText={t("common.cancel")}>
@@ -805,6 +880,7 @@ async function normalizeLog(log: Partial<GenerationLog>): Promise<GenerationLog>
         time: log.time || new Date().toLocaleString(i18n.resolvedLanguage, { hour12: false }),
         model: log.model || config.imageModel || "",
         config,
+        comfy: log.comfy,
         references,
         durationMs: log.durationMs || 0,
         successCount: log.successCount ?? log.imageCount ?? 0,
@@ -813,6 +889,7 @@ async function normalizeLog(log: Partial<GenerationLog>): Promise<GenerationLog>
         size: log.size || config.size || "",
         quality: log.quality || config.quality || "",
         status: log.status || "success",
+        error: log.error,
         images,
     };
 }
@@ -863,6 +940,7 @@ function buildLog({
     failCount,
     status,
     images,
+    error,
 }: {
     prompt: string;
     model: string;
@@ -873,6 +951,7 @@ function buildLog({
     failCount: number;
     status: GenerationLog["status"];
     images: GeneratedImage[];
+    error?: string;
 }): GenerationLog {
     const logConfig = {
         model: config.model,
@@ -898,5 +977,6 @@ function buildLog({
         quality: logConfig.quality,
         status,
         images,
+        error,
     };
 }

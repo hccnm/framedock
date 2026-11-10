@@ -1,0 +1,264 @@
+{
+  "prompt": [
+    471,
+    "ffd31c40-4a0b-4591-8593-3e3ba5918b16",
+    {
+      "1": {
+        "class_type": "UNETLoader",
+        "inputs": {
+          "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+          "weight_dtype": "default"
+        },
+        "_meta": {
+          "title": "模型"
+        }
+      },
+      "2": {
+        "class_type": "CLIPLoader",
+        "inputs": {
+          "clip_name": "qwen3vl_8b_bf16.safetensors",
+          "type": "qwen_image",
+          "device": "default"
+        },
+        "_meta": {
+          "title": "文本编码器"
+        }
+      },
+      "3": {
+        "class_type": "VAELoader",
+        "inputs": {
+          "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+        },
+        "_meta": {
+          "title": "VAE"
+        }
+      },
+      "4": {
+        "class_type": "TextEncodeQwenImage21",
+        "inputs": {
+          "clip": [
+            "11",
+            1
+          ],
+          "vae": [
+            "3",
+            0
+          ],
+          "prompt": "Edit ONLY the verified empty bed photograph in <image1> by placing three adults naturally in the bed. Preserve <image1> exactly as the scene plate: same OVERHEAD bird's-eye camera, identical framing, bed size and orientation, headboard along the TOP, foot direction DOWN the image, mattress edges, white metal frame, daylight and plain cotton fabrics. Preserve EXACTLY the TWO existing sleeping pillows in their existing positions against the headboard. Do not add or duplicate a pillow, cushion, bolster or bed object. The three people SHARE those original two pillows: three heads across the same pillow row, the center man's head near the join between the pillows, outer women's heads on the outer portions of the two pillows.\nExactly three ADULTS, left to right across the IMAGE: FEIYU, DONGQING, CAIBAO. Reference <image2> supplies ONLY Dongqing's face, black messy hair and white T-shirt; reference <image3> supplies ONLY Feiyu's face, blue long hair, whale ear accessories and blue-white maid clothes; reference <image4> supplies ONLY Caibao's face, short black hair, purple hair clip, black short sleeve top and red scarf. Do not import the identity references' standing poses, backgrounds or camera gaze.\nAll three are lying horizontally on the mattress, heads against the headboard-end pillows at the TOP, shoulders below heads, torsos and legs extending DOWN toward the foot. CENTER Dongqing lies flat on his back, back of head sunk into the existing pillows, eyes open upward toward the ceiling, just awakened, right hand gripping the shared duvet at his chest. LEFT Feiyu is asleep, eyes closed, lying on her side gently turned inward toward the man with her head close beside his shoulder. RIGHT Caibao is asleep, eyes closed, lying on her side gently turned inward with her head close beside the man's other shoulder. Their shoulders, backs and hips are supported by the bed; no sitting or raised upright torso. Their heads are close together and similar natural adult scale. One continuous shared ivory cotton duvet naturally covers their lower bodies, with a single continuous top edge across their chests, not three separate duvet rolls. Photorealistic natural morning light and coherent contact shadows, realistic anatomy and fabric. Single continuous overhead scene, no lettering.\n",
+          "negative_prompt": "",
+          "resolution": 1024,
+          "images.image_1": [
+            "21",
+            0
+          ],
+          "images.image_2": [
+            "22",
+            0
+          ],
+          "images.image_3": [
+            "23",
+            0
+          ],
+          "images.image_4": [
+            "24",
+            0
+          ]
+        },
+        "_meta": {
+          "title": "通用提示词与参考图"
+        }
+      },
+      "5": {
+        "class_type": "EmptySD3LatentImage",
+        "inputs": {
+          "width": 1344,
+          "height": 768,
+          "batch_size": 1
+        },
+        "_meta": {
+          "title": "输出尺寸"
+        }
+      },
+      "6": {
+        "class_type": "KSampler",
+        "inputs": {
+          "model": [
+            "11",
+            0
+          ],
+          "positive": [
+            "4",
+            0
+          ],
+          "negative": [
+            "4",
+            1
+          ],
+          "latent_image": [
+            "5",
+            0
+          ],
+          "seed": 20261113,
+          "steps": 25,
+          "cfg": 1.0,
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "denoise": 1.0
+        },
+        "_meta": {
+          "title": "采样参数"
+        }
+      },
+      "7": {
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "6",
+            0
+          ],
+          "vae": [
+            "3",
+            0
+          ]
+        },
+        "_meta": {
+          "title": "解码"
+        }
+      },
+      "10": {
+        "class_type": "SaveImage",
+        "inputs": {
+          "images": [
+            "7",
+            0
+          ],
+          "filename_prefix": "FrameDock/QwenEdit/two-stage-overhead-people"
+        },
+        "_meta": {
+          "title": "保存图像"
+        }
+      },
+      "11": {
+        "class_type": "CR Load LoRA",
+        "inputs": {
+          "model": [
+            "1",
+            0
+          ],
+          "clip": [
+            "2",
+            0
+          ],
+          "switch": "Off",
+          "lora_name": "None",
+          "strength_model": 1.0,
+          "strength_clip": 0.0
+        },
+        "_meta": {
+          "title": "可选 LoRA 1（默认关闭）"
+        }
+      },
+      "21": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": "framedock-qwen-overhead-bed-two-pillows.png"
+        },
+        "_meta": {
+          "title": "参考图 1（可选）"
+        }
+      },
+      "22": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": "canvas-8LEQbJLw.png"
+        },
+        "_meta": {
+          "title": "参考图 2（可选）"
+        }
+      },
+      "23": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": "canvas-EkgvRKgM.png"
+        },
+        "_meta": {
+          "title": "参考图 3（可选）"
+        }
+      },
+      "24": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": "canvas-54APOhyq.png"
+        },
+        "_meta": {
+          "title": "参考图 4（可选）"
+        }
+      }
+    },
+    {
+      "client_id": "framedock-qwen-two-stage-direct",
+      "create_time": 1794008824930
+    },
+    [
+      "10"
+    ]
+  ],
+  "outputs": {
+    "10": {
+      "images": [
+        {
+          "filename": "two-stage-overhead-people_00001_.png",
+          "subfolder": "FrameDock\\QwenEdit",
+          "type": "output",
+          "metadata": {
+            "kind": "image",
+            "width": 1344,
+            "height": 768
+          }
+        }
+      ]
+    }
+  },
+  "status": {
+    "status_str": "success",
+    "completed": true,
+    "messages": [
+      [
+        "execution_start",
+        {
+          "prompt_id": "ffd31c40-4a0b-4591-8593-3e3ba5918b16",
+          "timestamp": 1794008824931
+        }
+      ],
+      [
+        "execution_cached",
+        {
+          "nodes": [
+            "1",
+            "2",
+            "3",
+            "5",
+            "11"
+          ],
+          "prompt_id": "ffd31c40-4a0b-4591-8593-3e3ba5918b16",
+          "timestamp": 1794008824973
+        }
+      ],
+      [
+        "execution_success",
+        {
+          "prompt_id": "ffd31c40-4a0b-4591-8593-3e3ba5918b16",
+          "timestamp": 1794008877063
+        }
+      ]
+    ]
+  },
+  "meta": {
+    "10": {
+      "node_id": "10",
+      "display_node": "10",
+      "parent_node": null,
+      "real_node_id": "10"
+    }
+  }
+}

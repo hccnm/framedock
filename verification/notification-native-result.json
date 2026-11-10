@@ -1,0 +1,15 @@
+{
+  "supported": true,
+  "shown": true,
+  "clicked": true,
+  "events": [
+    "restore",
+    "show",
+    "focus",
+    "flowharbor:generation-notification-click"
+  ],
+  "target": {
+    "kind": "image",
+    "logId": "native-verification"
+  }
+}

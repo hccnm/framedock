@@ -18,10 +18,15 @@ import { resolveImageUrl, ensureImagePreview, getImagePreviewRevision, previewUr
 import { createVideoGenerationTask, pollVideoGenerationTask, storeGeneratedVideo, type VideoGenerationTask } from "@/services/api/video";
 import { useAssetStore } from "@/stores/use-asset-store";
 import { useWorkbenchAgentStore } from "@/stores/use-workbench-agent-store";
+import { useWorkbenchDraftField, useWorkbenchDraftStore } from "@/stores/use-workbench-draft-store";
 import { boolConfig, modelOptionLabel, useConfigStore, useEffectiveConfig, type AiConfig } from "@/stores/use-config-store";
 import { useThemeStore } from "@/stores/use-theme-store";
 import type { ReferenceImage } from "@/types/image";
 import i18n from "@/i18n";
+import { useComfyWorkbench, type ComfyWorkbenchSnapshot } from "@/hooks/use-comfy-workbench";
+import { uploadMediaFile } from "@/services/file-storage";
+import { useSearchParams } from "react-router-dom";
+import { notifyWorkbenchGeneration } from "@/lib/generation-notifications";
 
 type GeneratedVideo = {
     id: string;
@@ -49,6 +54,7 @@ type GenerationLog = {
     time: string;
     model: string;
     config: GenerationLogConfig;
+    comfy?: ComfyWorkbenchSnapshot;
     references: ReferenceImage[];
     durationMs: number;
     size: string;
@@ -68,6 +74,12 @@ const LOG_STORE_KEY = "infinite-canvas:video_generation_logs";
 const logStore = localforage.createInstance({ name: "infinite-canvas", storeName: "video_generation_logs" });
 
 export default function VideoPage() {
+    const hydrated = useWorkbenchDraftStore((state) => state.hydrated);
+    const error = useWorkbenchDraftStore((state) => state.error);
+    return <>{error ? <div role="alert">{error}</div> : null}{hydrated ? <VideoWorkbench /> : <div role="status">正在恢复上次工作内容…</div>}</>;
+}
+
+function VideoWorkbench() {
     const { message } = App.useApp();
     const { t } = useTranslation();
     useSyncExternalStore(subscribeImagePreviews, getImagePreviewRevision);
@@ -80,10 +92,12 @@ export default function VideoPage() {
     const isAiConfigReady = useConfigStore((state) => state.isAiConfigReady);
     const openConfigDialog = useConfigStore((state) => state.openConfigDialog);
     const addAsset = useAssetStore((state) => state.addAsset);
-    const [prompt, setPrompt] = useState("");
-    const [references, setReferences] = useState<ReferenceImage[]>([]);
+    const [prompt, setPrompt] = useWorkbenchDraftField("video", "prompt");
+    const [references, setReferences] = useWorkbenchDraftField("video", "references");
+    const comfy = useComfyWorkbench(references, prompt, setPrompt, "video");
     const [results, setResults] = useState<GenerationResult[]>([]);
     const [logs, setLogs] = useState<GenerationLog[]>([]);
+    const [searchParams, setSearchParams] = useSearchParams();
     const [running, setRunning] = useState(false);
     const [logsOpen, setLogsOpen] = useState(false);
     const [settingsOpen, setSettingsOpen] = useState(false);
@@ -103,7 +117,7 @@ export default function VideoPage() {
     const agentTaskIdRef = useRef<string | undefined>(undefined);
 
     const model = effectiveConfig.videoModel || effectiveConfig.model;
-    const canGenerate = Boolean(prompt.trim());
+    const canGenerate = Boolean(prompt.trim()) || (comfy.enabled && comfy.usesTemplatePrompt);
 
     useEffect(() => {
         if (!running || !startedAt) return;
@@ -171,6 +185,10 @@ export default function VideoPage() {
     const generate = async () => {
         const agentTaskId = agentTaskIdRef.current;
         agentTaskIdRef.current = undefined;
+        if (comfy.enabled) {
+            await generateComfy(agentTaskId);
+            return;
+        }
         const snapshot = buildRequestSnapshot();
         if (!snapshot) {
             if (agentTaskId) updateAgentTask(agentTaskId, { status: "failed", error: t("videoWorkbench.invalidParams") });
@@ -195,6 +213,53 @@ export default function VideoPage() {
             await saveLog(buildLog({ prompt: snapshot.text, model, config: snapshot.config, references: snapshot.references, durationMs: performance.now() - batchStartedAt, status: "failed", error: errorMessage }));
             message.error(errorMessage);
             setRunning(false);
+        }
+    };
+
+    const generateComfy = async (agentTaskId?: string) => {
+        const text = comfy.effectivePrompt;
+        try {
+            if (!text && !comfy.usesTemplatePrompt) throw new Error(t("videoWorkbench.promptRequired"));
+            comfy.validate();
+        } catch (error) {
+            const detail = error instanceof Error ? error.message : String(error);
+            message.error(detail);
+            if (agentTaskId) updateAgentTask(agentTaskId, { status: "failed", error: detail });
+            return;
+        }
+        const started = performance.now();
+        const log = { ...buildLog({ prompt: text, model: comfy.name, config: effectiveConfig, references: [...references], durationMs: 0, status: "pending" }), comfy: comfy.snapshot };
+        setRunning(true);
+        setStartedAt(started);
+        setElapsedMs(0);
+        setPreviewLog(null);
+        setResults([{ id: log.id, status: "pending" }]);
+        if (agentTaskId) updateAgentTask(agentTaskId, { status: "running", error: undefined });
+        let output: Awaited<ReturnType<typeof comfy.run>> | undefined;
+        try {
+            output = await comfy.run(text);
+            if (!output.videos.length) throw new Error("ComfyUI 工作流未返回视频");
+            const videos: GeneratedVideo[] = [];
+            for (const url of output.videos) {
+                const stored = await uploadMediaFile(url, "video");
+                const video: GeneratedVideo = { id: nanoid(), url: stored.url, storageKey: stored.storageKey, durationMs: performance.now() - started, width: stored.width || 1280, height: stored.height || 720, bytes: stored.bytes, mimeType: stored.mimeType };
+                videos.push(video);
+                setResults(videos.map((item) => ({ id: item.id, status: "success", video: item })));
+                await saveLog({ ...log, id: video.id, status: "success", durationMs: video.durationMs, video }, true, false);
+            }
+            notifyWorkbenchGeneration("video", { ...log, id: videos[0].id, status: "success" });
+            if (agentTaskId) updateAgentTask(agentTaskId, { status: "succeeded", successCount: videos.length, failCount: 0, error: undefined });
+            message.success(t("videoWorkbench.generated"));
+        } catch (error) {
+            const detail = error instanceof Error ? error.message : String(error);
+            setResults([{ id: log.id, status: "failed", error: detail }]);
+            await saveLog({ ...log, status: "failed", durationMs: performance.now() - started, error: detail });
+            if (agentTaskId) updateAgentTask(agentTaskId, { status: "failed", successCount: 0, failCount: 1, error: detail });
+            message.error(detail);
+        } finally {
+            if (output) [...output.images, ...output.videos, ...output.audios].forEach((url) => URL.revokeObjectURL(url));
+            setRunning(false);
+            setStartedAt(0);
         }
     };
 
@@ -266,6 +331,7 @@ export default function VideoPage() {
     };
 
     const createSession = () => {
+        useWorkbenchDraftStore.getState().updateDraft("video", { uploadedMedia: {} });
         setPrompt("");
         setReferences([]);
         setResults([]);
@@ -289,8 +355,9 @@ export default function VideoPage() {
         setDeleteConfirmOpen(false);
     };
 
-    const saveLog = async (log: GenerationLog, resumePending = true) => {
+    const saveLog = async (log: GenerationLog, resumePending = true, notify = true) => {
         await logStore.setItem(log.id, serializeLog(log));
+        if (notify && log.status !== "pending") notifyWorkbenchGeneration("video", log);
         await refreshLogs(resumePending);
     };
 
@@ -358,8 +425,9 @@ export default function VideoPage() {
         setPreviewLog(log);
         setLogsOpen(false);
         setPrompt(log.prompt);
+        comfy.restore(log.comfy, log.references || []);
         setReferences(log.references || []);
-        if (log.config.videoModel || log.model) updateConfig("videoModel", log.config.videoModel || log.model);
+        if (!log.comfy && (log.config.videoModel || log.model)) updateConfig("videoModel", log.config.videoModel || log.model);
         if (log.config.size) updateConfig("size", log.config.size);
         if (log.config.vquality) updateConfig("vquality", log.config.vquality);
         if (log.config.videoSeconds) updateConfig("videoSeconds", log.config.videoSeconds);
@@ -368,6 +436,14 @@ export default function VideoPage() {
         if (log.config.videoMode) updateConfig("videoMode", log.config.videoMode);
         setResults(log.status === "pending" ? [{ id: log.id, status: "pending" }] : log.video ? [{ id: log.video.id, status: "success", video: log.video }] : [{ id: log.id, status: "failed", error: log.error || t("workbench.generationFailed") }]);
     };
+
+    useEffect(() => {
+        const taskId = searchParams.get("task");
+        const log = logs.find((item) => item.id === taskId);
+        if (!log) return;
+        previewGenerationLog(log);
+        setSearchParams((current) => { const next = new URLSearchParams(current); next.delete("task"); return next; }, { replace: true });
+    }, [logs, searchParams, setSearchParams]);
 
     return (
         <div className="flex h-full flex-col overflow-hidden bg-stone-50 text-stone-900 dark:bg-stone-950 dark:text-stone-100">
@@ -391,7 +467,8 @@ export default function VideoPage() {
                         </div>
 
                         <div className="mt-6 space-y-5">
-                            <div>
+                            {comfy.settings}
+                            {!comfy.enabled ? <div>
                                 <div className="mb-2 flex items-center justify-between gap-3">
                                     <span className="text-base font-semibold">{t("workbench.prompt")}</span>
                                     <div className="flex gap-2">
@@ -404,7 +481,7 @@ export default function VideoPage() {
                                     </div>
                                 </div>
                                 <Input.TextArea value={prompt} onChange={(event) => setPrompt(event.target.value)} rows={7} placeholder={t("videoWorkbench.promptPlaceholder")} />
-                            </div>
+                            </div> : null}
 
                             <div className="min-w-0">
                                 <div className="mb-2 flex items-center justify-between gap-3">
@@ -442,18 +519,18 @@ export default function VideoPage() {
                                 </div>
                             </div>
 
-                            <div className="flex items-center justify-between rounded-lg border border-stone-200 bg-stone-50 px-3 py-2 text-sm dark:border-stone-800 dark:bg-stone-900 sm:hidden">
+                            {!comfy.enabled ? <div className="flex items-center justify-between rounded-lg border border-stone-200 bg-stone-50 px-3 py-2 text-sm dark:border-stone-800 dark:bg-stone-900 sm:hidden">
                                 <span className="truncate text-stone-500 dark:text-stone-400">
                                     {modelOptionLabel(effectiveConfig, model)} · {normalizeResolution(effectiveConfig.vquality)}p · {videoSizeLabel(effectiveConfig.size)} · {normalizeVideoSeconds(effectiveConfig.videoSeconds)}s · {videoModeLabel(effectiveConfig.videoMode)}
                                 </span>
                                 <Button size="small" type="text" icon={<SlidersHorizontal className="size-4" />} onClick={() => setSettingsOpen(true)}>
                                     {t("workbench.adjust")}
                                 </Button>
-                            </div>
+                            </div> : null}
 
-                            <div className="hidden gap-4 sm:grid sm:grid-cols-2">
+                            {!comfy.enabled ? <div className="hidden gap-4 sm:grid sm:grid-cols-2">
                                 <GenerationSettings config={effectiveConfig} model={model} updateConfig={updateConfig} openConfigDialog={openConfigDialog} />
-                            </div>
+                            </div> : null}
                         </div>
 
                         <div className="mt-auto pt-6">
@@ -496,10 +573,11 @@ export default function VideoPage() {
                 <LogPanel logs={logs} selectedLogIds={selectedLogIds} activeLogId={previewLog?.id} onSelectedLogIdsChange={setSelectedLogIds} onCreateSession={createSession} onDeleteSelected={() => setDeleteConfirmOpen(true)} onPreviewLog={previewGenerationLog} />
             </Drawer>
             <Drawer title={t("workbench.settings")} placement="bottom" height="82vh" open={settingsOpen} onClose={() => setSettingsOpen(false)}>
-                <div className="grid grid-cols-2 gap-3 pb-4">
+                <div className="pb-4">{comfy.enabled ? comfy.settings : <div className="grid grid-cols-2 gap-3">
                     <GenerationSettings config={effectiveConfig} model={model} updateConfig={updateConfig} openConfigDialog={openConfigDialog} />
-                </div>
+                </div>}</div>
             </Drawer>
+            {comfy.editor}
             <PromptSelectDialog open={promptDialogOpen} onOpenChange={setPromptDialogOpen} onSelect={setPrompt} />
             <AssetPickerModal open={assetPickerOpen} defaultTab="my-assets" onInsert={(payload) => void insertPickedAsset(payload)} onClose={() => setAssetPickerOpen(false)} />
             <Modal title={t("workbench.deleteLogs")} open={deleteConfirmOpen} onCancel={() => setDeleteConfirmOpen(false)} onOk={deleteSelectedLogs} okText={t("common.delete")} okButtonProps={{ danger: true }} cancelText={t("common.cancel")}>
@@ -688,6 +766,7 @@ async function normalizeLog(log: Partial<GenerationLog>): Promise<GenerationLog>
         time: log.time || new Date().toLocaleString(i18n.resolvedLanguage, { hour12: false }),
         model: log.model || config.videoModel || "",
         config,
+        comfy: log.comfy,
         references,
         durationMs: log.durationMs || 0,
         size: log.size || config.size || "",

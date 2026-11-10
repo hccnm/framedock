@@ -9,13 +9,16 @@ import { useAssetStore } from "@/stores/use-asset-store";
 import type { WebdavSyncConfig } from "@/stores/use-config-store";
 import type { CanvasDeletedProject, CanvasProject } from "@/stores/canvas/use-canvas-store";
 import { useCanvasStore } from "@/stores/canvas/use-canvas-store";
+import { replaceComfyData, useComfyUiStore } from "@/stores/use-comfyui-store";
+import type { ComfyPresetRoles, ComfyWorkflow } from "@/types/comfyui";
 
 type StoredLog = Record<string, unknown> & { id?: string };
-export type AppSyncDomainKey = "canvas" | "assets" | "image-workbench" | "video-workbench";
+export type AppSyncDomainKey = "canvas" | "assets" | "image-workbench" | "video-workbench" | "comfyui";
 type DomainKey = AppSyncDomainKey;
 type CanvasDomainData = { projects: CanvasProject[]; deleted: CanvasDeletedProject[] };
 type AssetDomainData = { assets: Asset[] };
 type LogDomainData = { logs: StoredLog[] };
+type ComfyDomainData = { baseUrl: string; presetWorkflowIds: ComfyPresetRoles; workflows: ComfyWorkflow[] };
 
 type AppSyncFile = {
     storageKey: string;
@@ -58,6 +61,7 @@ export type AppSyncResult = {
     assets: number;
     imageLogs: number;
     videoLogs: number;
+    comfyWorkflows: number;
     files: number;
     manifestBytes: number;
     uploadedFiles: number;
@@ -83,9 +87,9 @@ const storageKeyPattern = /^(image|video|audio|file|video-reference|audio-refere
 
 export async function syncAppDataToWebdav(config: WebdavSyncConfig, onProgress?: AppSyncProgress): Promise<AppSyncResult> {
     emitProgress(onProgress, { stage: "等待本地数据加载" });
-    await Promise.all([waitForHydration(useCanvasStore), waitForHydration(useAssetStore)]);
+    await Promise.all([waitForHydration(useCanvasStore), waitForHydration(useAssetStore), waitForHydration(useComfyUiStore)]);
 
-    const [canvas, assets, imageLogs, videoLogs] = await Promise.all([
+    const [canvas, assets, imageLogs, videoLogs, comfy] = await Promise.all([
         syncDomain<CanvasDomainData>(config, onProgress, {
             key: "canvas",
             label: "画布",
@@ -121,19 +125,36 @@ export async function syncAppDataToWebdav(config: WebdavSyncConfig, onProgress?:
             mergeData: (local, remote) => ({ logs: mergeById(local.logs, remote.logs, "createdAt") }),
             applyData: async (data) => replaceStoredLogs(videoLogStore, data.logs),
         }),
+        // Workflow definitions travel; the instance address stays local unless this machine has none.
+        syncDomain<ComfyDomainData>(config, onProgress, {
+            key: "comfyui",
+            label: "ComfyUI",
+            emptyData: { baseUrl: "", presetWorkflowIds: { text: "", enhance: "", edit: "" }, workflows: [] },
+            localData: async () => {
+                const { baseUrl, presetWorkflowIds, workflows } = useComfyUiStore.getState();
+                return { baseUrl, presetWorkflowIds, workflows };
+            },
+            mergeData: (local, remote) => ({
+                baseUrl: local.baseUrl || remote.baseUrl,
+                presetWorkflowIds: Object.fromEntries(Object.keys(local.presetWorkflowIds).map((mode) => [mode, local.presetWorkflowIds[mode as keyof ComfyPresetRoles] || remote.presetWorkflowIds[mode as keyof ComfyPresetRoles]])) as ComfyPresetRoles,
+                workflows: mergeById(local.workflows, remote.workflows, "updatedAt"),
+            }),
+            applyData: async (data) => replaceComfyData(data),
+        }),
     ]);
 
     const result = {
         syncedAt: new Date().toISOString(),
-        mergedRemote: [canvas, assets, imageLogs, videoLogs].some((item) => item.mergedRemote),
+        mergedRemote: [canvas, assets, imageLogs, videoLogs, comfy].some((item) => item.mergedRemote),
         projects: canvas.data.projects.length,
         assets: assets.data.assets.length,
         imageLogs: imageLogs.data.logs.length,
         videoLogs: videoLogs.data.logs.length,
-        files: canvas.files + assets.files + imageLogs.files + videoLogs.files,
-        manifestBytes: canvas.manifestBytes + assets.manifestBytes + imageLogs.manifestBytes + videoLogs.manifestBytes,
-        uploadedFiles: canvas.uploadedFiles + assets.uploadedFiles + imageLogs.uploadedFiles + videoLogs.uploadedFiles,
-        uploadedBytes: canvas.uploadedBytes + assets.uploadedBytes + imageLogs.uploadedBytes + videoLogs.uploadedBytes,
+        comfyWorkflows: comfy.data.workflows.length,
+        files: canvas.files + assets.files + imageLogs.files + videoLogs.files + comfy.files,
+        manifestBytes: canvas.manifestBytes + assets.manifestBytes + imageLogs.manifestBytes + videoLogs.manifestBytes + comfy.manifestBytes,
+        uploadedFiles: canvas.uploadedFiles + assets.uploadedFiles + imageLogs.uploadedFiles + videoLogs.uploadedFiles + comfy.uploadedFiles,
+        uploadedBytes: canvas.uploadedBytes + assets.uploadedBytes + imageLogs.uploadedBytes + videoLogs.uploadedBytes + comfy.uploadedBytes,
     };
     emitProgress(onProgress, { stage: "同步完成", status: "success" });
     return result;
@@ -355,7 +376,8 @@ function domainLabel(domain: DomainKey) {
     if (domain === "canvas") return "画布";
     if (domain === "assets") return "我的资产";
     if (domain === "image-workbench") return "生图工作台";
-    return "视频创作台";
+    if (domain === "video-workbench") return "视频创作台";
+    return "ComfyUI";
 }
 
 function emitProgress(onProgress: AppSyncProgress | undefined, event: AppSyncProgressEvent) {

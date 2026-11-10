@@ -58,7 +58,7 @@ export function buildCanvasToolRequest(name: ToolName, input: Record<string, unk
     }
     if (name === "canvas_delete_nodes") return applyOps([{ type: "delete_node", ids: (input as { ids: string[] }).ids }]);
     if (name === "canvas_connect_nodes") {
-        const data = input as { connections: Array<{ fromNodeId: string; toNodeId: string }> };
+        const data = input as { connections: Array<{ fromNodeId: string; toNodeId: string; targetFieldId?: string }> };
         return applyOps(data.connections.map((connection) => ({ type: "connect_nodes", ...connection })));
     }
     if (name === "canvas_select_nodes") return applyOps([{ type: "select_nodes", ids: (input as { ids: string[] }).ids }]);
@@ -100,12 +100,14 @@ function configNodeOp(id: string, input: Record<string, unknown>, x: number, y: 
         height: typeof input.height === "number" ? input.height : undefined,
         metadata: cleanRecord({
             generationMode: mode,
+            imageChannel: input.imageChannel,
             composerContent: prompt,
             prompt,
             status: "idle",
             model: input.model,
             size: input.size,
             quality: input.quality,
+            background: input.background,
             count: input.count,
             seconds: input.seconds,
             vquality: input.vquality,

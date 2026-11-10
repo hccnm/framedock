@@ -1,3 +1,4 @@
+import { isCodexImageNode, isCodexImageRunning } from "@/stores/canvas/use-codex-image-store";
 import type { NavigateFunction } from "react-router-dom";
 
 import i18n from "@/i18n";
@@ -6,6 +7,9 @@ import { uploadImage } from "@/services/image-storage";
 import { imageAspectOptions, imageQualityOptions, imageScaleOptions } from "@/components/image-settings-panel";
 import { videoResolutionOptions, videoSecondsRange, videoSizeOptions } from "@/components/video-settings-panel";
 import type { CanvasAgentSnapshot } from "@/lib/canvas/canvas-agent-ops";
+import { readCanvasProject } from "@/lib/canvas/canvas-project-bridge";
+import { desktopBridge } from "@/lib/desktop-host";
+import { getAgentComfyWorkflow, importAgentComfyWorkflow, listAgentComfyWorkflows, runAgentComfyWorkflow } from "./agent-comfyui-tools";
 import { clampVideoSeconds } from "@/lib/media-size";
 import { useCanvasStore } from "@/stores/canvas/use-canvas-store";
 import { useAssetStore } from "@/stores/use-asset-store";
@@ -16,7 +20,13 @@ import { useWorkbenchAgentStore } from "@/stores/use-workbench-agent-store";
 // Their data lives locally in the browser through localforage and Zustand, so this module accesses the relevant stores directly.
 
 export const SITE_TOOL_NAMES = [
+    "comfyui_list_workflows",
+    "comfyui_get_workflow",
+    "comfyui_import_workflow",
+    "comfyui_run_workflow",
     "canvas_list_projects",
+    "project_list_files",
+    "project_read_file",
     "generation_get_status",
     "workbench_image_get_config",
     "workbench_image_generate",
@@ -38,7 +48,13 @@ function siteText(key: string, options?: Record<string, unknown>) {
 }
 
 export const SITE_TOOL_LABELS: Record<SiteToolName, string> = {
+    get comfyui_list_workflows() { return siteText("comfyList"); },
+    get comfyui_get_workflow() { return siteText("comfyDetails"); },
+    comfyui_import_workflow: "导入工作流",
+    get comfyui_run_workflow() { return siteText("comfyRun"); },
     get canvas_list_projects() { return siteText("canvasList"); },
+    project_list_files: "浏览项目文件",
+    project_read_file: "读取项目文件",
     get generation_get_status() { return siteText("generationStatus"); },
     get workbench_image_get_config() { return siteText("imageConfig"); },
     get workbench_image_generate() { return siteText("imageGenerate"); },
@@ -52,12 +68,33 @@ export const SITE_TOOL_LABELS: Record<SiteToolName, string> = {
 type SiteToolInput = Record<string, unknown>;
 type SiteToolContext = { canvasSnapshot?: CanvasAgentSnapshot | null };
 type GenerationStatus = "idle" | "queued" | "running" | "succeeded" | "failed";
-type GenerationStatusItem = { id: string; source: "canvas" | "image" | "video"; status: GenerationStatus; kind?: string; title?: string; prompt?: string; projectId?: string; createdAt?: string; updatedAt?: string; successCount?: number; failCount?: number; error?: string };
+type GenerationStatusItem = { id: string; source: "canvas" | "image" | "video"; status: GenerationStatus; kind?: string; title?: string; prompt?: string; projectId?: string; createdAt?: string; updatedAt?: string; successCount?: number; failCount?: number; error?: string; workflowId?: string; promptId?: string; outputNodeIds?: string[] };
+
+export function assertCanvasToolTarget(name: string, projectId: string | undefined, snapshot?: CanvasAgentSnapshot | null) {
+    if (projectId && (name.startsWith("canvas_") || name === "comfyui_run_workflow") && snapshot?.projectId !== projectId) throw new Error("当前创作页已切换，请返回本轮创作页或重新发起任务");
+}
 
 export async function runSiteTool(name: SiteToolName, input: SiteToolInput, navigate: NavigateFunction, context: SiteToolContext = {}): Promise<unknown> {
     switch (name) {
+        case "comfyui_list_workflows":
+            return listAgentComfyWorkflows(input);
+        case "comfyui_get_workflow":
+            return getAgentComfyWorkflow(input);
+        case "comfyui_import_workflow":
+            return importAgentComfyWorkflow(input);
+        case "comfyui_run_workflow":
+            return runAgentComfyWorkflow(input, context.canvasSnapshot);
         case "canvas_list_projects":
             return listCanvasProjects(input);
+        case "project_list_files":
+        case "project_read_file": {
+            const host = desktopBridge();
+            if (!host) throw new Error("项目文件读取需要桌面应用");
+            if (typeof input.projectId !== "string" || !input.projectId) throw new Error("本轮没有关联项目的创作页，请重新发起任务");
+            const path = typeof input.path === "string" ? input.path : "";
+            if (typeof input.projectFileScope !== "string" || !input.projectFileScope) throw new Error("本轮未绑定项目目录，请在本地项目中重新发起任务");
+            return name === "project_list_files" ? host.projects.listFiles(input.projectId, path, input.projectFileScope) : host.projects.readFile(input.projectId, path, input.projectFileScope);
+        }
         case "generation_get_status":
             return getGenerationStatus(input, context.canvasSnapshot);
         case "workbench_image_get_config":
@@ -89,12 +126,17 @@ function getGenerationStatus(input: SiteToolInput, canvasSnapshot?: CanvasAgentS
     const includeWorkbench = !nodeIds.size || Boolean(taskId);
 
     if (includeCanvas && canvasSnapshot) {
-        canvasSnapshot.nodes.forEach((node) => {
-            const status = normalizeCanvasGenerationStatus(node.metadata?.status);
+        const nodes = readCanvasProject(canvasSnapshot.projectId)?.nodes || canvasSnapshot.nodes;
+        nodes.forEach((node) => {
+            const comfy = node.type === "comfyui";
+            const codex = isCodexImageNode(node);
+            const codexRun = node.metadata?.codexImageRun;
+            const codexStatus = isCodexImageRunning(canvasSnapshot.projectId, node.id) ? "running" : codexRun?.status === "success" ? "success" : codexRun ? "error" : "idle";
+            const status = normalizeCanvasGenerationStatus(codex ? codexStatus : comfy ? node.metadata?.comfyRunStatus : node.metadata?.status);
             if (!status || (nodeIds.size && !nodeIds.has(node.id))) return;
             const metadata = node.metadata || {};
-            if (!nodeIds.size && node.type !== "config" && status !== "running" && status !== "failed" && !metadata.generationMode && !metadata.generationType && !metadata.model) return;
-            tasks.push({ id: node.id, source: "canvas", status, kind: metadata.generationMode || node.type, title: node.title, prompt: compactPrompt(metadata.prompt || metadata.composerContent), projectId: canvasSnapshot.projectId, error: metadata.errorDetails });
+            if (!nodeIds.size && !comfy && !codex && node.type !== "config" && status !== "running" && status !== "failed" && !metadata.generationMode && !metadata.generationType && !metadata.model) return;
+            tasks.push({ id: node.id, source: "canvas", status, kind: metadata.generationMode || node.type, title: node.title, prompt: compactPrompt(metadata.prompt || metadata.composerContent), projectId: canvasSnapshot.projectId, error: codex ? codexRun?.error || (status === "failed" ? "生成已取消或中断，请重试" : undefined) : comfy ? metadata.comfyError : metadata.errorDetails, ...(codex ? { outputNodeIds: codexRun?.outputNodeIds } : {}), ...(comfy ? { workflowId: metadata.comfyWorkflowId, promptId: metadata.comfyPromptId, outputNodeIds: metadata.comfyOutputNodeIds } : {}) });
         });
     }
 
@@ -118,7 +160,8 @@ function generationStatusOrder(status: GenerationStatus) {
 
 function normalizeCanvasGenerationStatus(status: unknown): GenerationStatus | null {
     if (status === "idle") return "idle";
-    if (status === "loading") return "running";
+    if (status === "queued") return "queued";
+    if (status === "loading" || status === "uploading" || status === "running" || status === "processing") return "running";
     if (status === "success") return "succeeded";
     if (status === "error") return "failed";
     return null;

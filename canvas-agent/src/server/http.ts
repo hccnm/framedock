@@ -3,16 +3,21 @@ import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import express, { type NextFunction, type Request, type Response } from "express";
 
+import { codexImageInput, generateCodexImage } from "../agent/codex-image.js";
 import { runClaudeTurn } from "../agent/claude.js";
-import { archiveCodexThread, CodexSkillLookupError, configureCodexSkill, generateCodexSkillDraft, interruptCodexTurn, isRecoverableThreadError, listCodexModels, listCodexSkills, listCodexThreads, readCodexThread, resolveCodexApproval, resolveCodexSkill, resumeCodexThread, runCodexTurn, startCodexThread, summarizeCodexThread } from "../agent/codex.js";
+import { ApiAgent, apiProviderSchema, generateApiSkillDraft } from "../agent/api.js";
+import { CONFIG_DIR } from "../config.js";
+import { archiveCodexThread, CodexSkillLookupError, canvasSkillSource, configureCodexSkill, generateCodexSkillDraft, interruptCodexTurn, isRecoverableThreadError, listCodexModels, listCodexSkills, listCodexThreads, readCodexThread, restartCodexApp, resolveCodexApproval, resolveCodexSkill, resumeCodexThread, runCodexTurn, startCodexThread, summarizeCodexThread } from "../agent/codex.js";
 import type { CodexReasoningEffort, CodexSkillSelector } from "../agent/codex-protocol.js";
 import { messageMetadataStore } from "../agent/message-metadata.js";
 import type { AgentAttachment, AgentPermissionMode } from "../agent/types.js";
 import { AGENT_PROTOCOL_VERSION, CanvasSession } from "../canvas/session.js";
 import { DEFAULT_PORT, ensureSiteWorkspace, loadConfig, saveConfig, updateSiteWorkspace, type CanvasAgentConfig } from "../config.js";
+import { bindRuntimeConfig, listLocalRuntimes, selectLocalRuntime, testLocalRuntime, CliRuntimeError } from "../runtime/registry.js";
 import { logger } from "../utils/logger.js";
 import { checkVersions } from "../version-check.js";
 import { SkillStore, SkillStoreError } from "../skills/store.js";
+import { createExternalMcp } from "./external-mcp.js";
 
 /** 启动仅监听本机的 Canvas Agent HTTP 服务。 */
 export function startHttpServer() {
@@ -20,9 +25,12 @@ export function startHttpServer() {
     const port = Number(process.env.PORT) || Number(new URL(config.url).port) || DEFAULT_PORT;
     config.url = `http://127.0.0.1:${port}`;
     saveConfig(config);
+    bindRuntimeConfig(config);
 
     const initialWorkspace = ensureSiteWorkspace(config);
-    const session = new CanvasSession(initialWorkspace.activeThreadId || "");
+    const session = new CanvasSession("");
+    const api = new ApiAgent(path.join(CONFIG_DIR, "api-threads"));
+    let activeEngine: "api" | "codex" = "api";
     const skillStore = new SkillStore(initialWorkspace.workspacePath);
     /** 将 Agent 事件广播到所属线程或全部网页。 */
     const emit = (type: string, payload: unknown) => {
@@ -50,6 +58,7 @@ export function startHttpServer() {
     };
     /** 保存并广播当前站点工作空间的活跃线程。 */
     const setActiveThread = (activeThreadId: string, payload: Record<string, unknown> = {}, preserveConversation = false) => {
+        activeEngine = "codex";
         const workspace = updateSiteWorkspace(config, { activeThreadId: activeThreadId || undefined });
         if (!preserveConversation) session.activateConversation(activeThreadId, String(payload.sourceClientId || "") || undefined);
         if (!session.codexBusy && session.codexThreadId !== activeThreadId) session.setCodexState({ threadId: activeThreadId, turnId: "" });
@@ -101,8 +110,33 @@ export function startHttpServer() {
         session.failConversationPreparation(text);
         emit("agent_bootstrap", { type: "codex.prepare_failed", threadId, sourceClientId: clientId || undefined, error: text });
     };
+    /** 按 Agent 启动语义重建当前对话：有活跃线程先尝试恢复；没有活跃线程时清掉残留失败状态，等待下一次新建或恢复。 */
+    const reprepareActiveConversation = () => {
+        const activeThreadId = ensureSiteWorkspace(config).activeThreadId || "";
+        if (!activeThreadId) {
+            if (!session.codexBusy && session.conversationStateSnapshot.status === "failed") session.activateConversation("");
+            return;
+        }
+        if (!session.beginCodexMutation()) return;
+        void prepareExistingThread(activeThreadId).catch(async (error) => {
+            if (!isRecoverableThreadError(error)) return failPreparedConversation(error, activeThreadId);
+            session.beginConversation();
+            setActiveThread("", { emptyThread: true, draftThread: true }, true);
+            await prepareDraftThread("", "request");
+        }).finally(() => session.endCodexMutation()).catch(() => undefined);
+    };
     const app = express();
     app.disable("x-powered-by");
+    const skillImportJson = express.json({ limit: "256mb" });
+    app.post("/agent/api/skills/import", (req, res, next) => {
+        const url = requestUrl(req, config);
+        if (!setCors(req, res, url, config)) return void res.status(403).json({ ok: false, error: "origin not allowed" });
+        if (!validToken(req, url, config.token)) return void res.status(401).json({ ok: false, error: "invalid token" });
+        skillImportJson(req, res, (error) => {
+            if (error?.type === "entity.too.large") return void res.status(413).json({ ok: false, error: "技能安装请求超过 256 MB 上限，未安装任何文件" });
+            next(error);
+        });
+    });
     app.use(express.json({ limit: "30mb" }));
     app.use((req, res, next) => {
         if (!logger.enabled) return next();
@@ -114,6 +148,14 @@ export function startHttpServer() {
         });
         next();
     });
+    const externalMcp = createExternalMcp((name, input) => {
+        if (session.codexBusy) throw new Error("内置助手正在运行，请稍后调用外部 MCP");
+        return session.callTool(name, input);
+    }, { token: config.externalMcpToken, saveToken: (token) => {
+        const next = { ...config, externalMcpToken: token };
+        saveConfig(next);
+        config.externalMcpToken = token;
+    } });
     app.use((req, res, next) => {
         const url = requestUrl(req, config);
         if (!setCors(req, res, url, config)) return void res.status(403).json({ ok: false, error: "origin not allowed" });
@@ -126,6 +168,7 @@ export function startHttpServer() {
         if (validToken(req, requestUrl(req, config), config.token)) return next();
         res.status(401).json({ ok: false, error: "invalid token" });
     });
+    app.use(externalMcp.settings);
     app.get("/events", (req, res) => {
         session.openEvents(requestUrl(req, config), res, ensureSiteWorkspace(config).activeThreadId || "");
     });
@@ -161,6 +204,17 @@ export function startHttpServer() {
         await revealLocalFile(filePath, file.isDirectory());
         res.json({ ok: true });
     }));
+    app.post("/agent/codex/image", route(async (req, res) => {
+        const parsed = codexImageInput.safeParse(req.body);
+        if (!parsed.success) return void res.status(400).json({ ok: false, error: "生图节点参数或参考图无效" });
+        const controller = new AbortController();
+        const cancel = () => { if (!res.writableEnded) controller.abort(); };
+        res.once("close", cancel);
+        try {
+            const result = await generateCodexImage(parsed.data, controller.signal);
+            if (!controller.signal.aborted) res.json({ ok: true, ...result });
+        } finally { res.off("close", cancel); }
+    }));
     app.post("/agent/local-image", route(async (req, res) => {
         const filePath = String(req.body?.path || "");
         if (!path.isAbsolute(filePath) || !/\.(?:avif|gif|jpe?g|png|webp)$/i.test(filePath)) return res.status(400).json({ ok: false, error: "图片路径无效" });
@@ -170,11 +224,169 @@ export function startHttpServer() {
         res.type(path.extname(filePath)).send(await readFile(filePath));
     }));
     app.post("/api/tools", route(async (req, res) => res.json({ ok: true, result: await session.callTool(req.body?.name, req.body?.input || {}) })));
+    const apiWorkspace = () => ({ workspacePath: api.directory, activeThreadId: api.activeThreadId });
+    const activateApiThread = (id: string, clientId = "") => {
+        activeEngine = "api";
+        api.activeThreadId = id;
+        session.activateConversation(id, clientId);
+        session.setCodexState({ busy: false, threadId: id, turnId: "" });
+        return { ok: true, workspace: apiWorkspace(), conversation: session.conversationStateSnapshot };
+    };
+    app.post("/agent/engine", route(async (req, res) => {
+        let engine = req.body?.engine;
+        if (engine !== "api" && engine !== "codex") return res.status(400).json({ ok: false, error: "未知的 Agent 类型" });
+        if (req.body?.initialize === true && session.conversationStateSnapshot.threadId) engine = activeEngine;
+        if (engine === activeEngine && session.conversationStateSnapshot.threadId && session.conversationStateSnapshot.status !== "failed") {
+            return res.json({ ok: true, engine, workspace: engine === "api" ? apiWorkspace() : ensureSiteWorkspace(config), conversation: session.conversationStateSnapshot });
+        }
+        if (!session.beginCodexMutation()) return res.status(409).json({ ok: false, error: "Agent 正在运行或切换会话，请稍后重试" });
+        const previousEngine = activeEngine;
+        const previousThread = session.conversationStateSnapshot.threadId;
+        const clientId = String(req.body?.clientId || "");
+        try {
+            if (engine === "api") {
+                const thread = api.activeThreadId ? await api.read(api.activeThreadId) : await api.create();
+                const result = activateApiThread(thread.id, clientId);
+                if (previousEngine !== engine) session.emitAll("agent_engine", { engine });
+                return res.json({ ...result, engine });
+            }
+            const workspace = ensureSiteWorkspace(config);
+            if (workspace.activeThreadId) {
+                await prepareExistingThread(workspace.activeThreadId, clientId, permissionMode(req.body?.permissionMode));
+                setActiveThread(workspace.activeThreadId, { sourceClientId: clientId }, true);
+            } else {
+                session.beginConversation({ sourceClientId: clientId });
+                setActiveThread("", { emptyThread: true, draftThread: true, sourceClientId: clientId }, true);
+                await prepareDraftThread(clientId, permissionMode(req.body?.permissionMode));
+            }
+            if (previousEngine !== engine) session.emitAll("agent_engine", { engine });
+            res.json({ ok: true, engine, workspace: ensureSiteWorkspace(config), conversation: session.conversationStateSnapshot });
+        } catch (error) {
+            if (previousEngine === "api") activateApiThread(previousThread, clientId);
+            else failPreparedConversation(error, previousThread, clientId);
+            throw error;
+        } finally {
+            session.endCodexMutation();
+        }
+    }));
+    app.get("/agent/api/threads", route(async (_req, res) => res.json({ ok: true, workspace: apiWorkspace(), conversation: session.conversationStateSnapshot, data: await api.list() })));
+    app.post("/agent/api/threads/reset", codexMutation(async (req, res) => {
+        const thread = await api.create();
+        res.json({ ...activateApiThread(thread.id, String(req.body?.clientId || "")), thread, messages: [] });
+    }));
+    app.get("/agent/api/threads/:threadId", route(async (req, res) => {
+        const thread = await api.read(routeParam(req.params.threadId));
+        res.json({ ok: true, workspace: apiWorkspace(), conversation: session.conversationStateSnapshot, thread, messages: thread.chat, settledTurnIds: thread.settledTurnIds, historyReady: true });
+    }));
+    app.post("/agent/api/threads/:threadId/resume", codexMutation(async (req, res) => {
+        const thread = await api.read(routeParam(req.params.threadId));
+        res.json({ ...activateApiThread(thread.id, String(req.body?.clientId || "")), messages: thread.chat, settledTurnIds: thread.settledTurnIds });
+    }));
+    app.post("/agent/api/threads/:threadId/delete", codexMutation(async (req, res) => {
+        const id = routeParam(req.params.threadId);
+        await api.delete(id);
+        await messageMetadataStore.removeThread(id);
+        res.json(activateApiThread(api.activeThreadId === id ? (await api.create()).id : api.activeThreadId));
+    }));
+    app.post("/agent/api/history/ack", (req, res) => { session.acknowledgeCodexHistory(String(req.body?.threadId || ""), Array.isArray(req.body?.turnIds) ? req.body.turnIds.map(String) : []); res.json({ ok: true }); });
+    app.post("/agent/api/interrupt", (req, res) => { const ok = api.interrupt(String(req.body?.threadId || "")); res.status(ok ? 200 : 409).json({ ok }); });
+    app.post("/agent/api/turn", codexMutation(async (req, res) => {
+        const parsed = apiProviderSchema.safeParse(req.body?.provider);
+        if (!parsed.success) return res.status(400).json({ ok: false, error: "渠道配置无效，请在设置中配置文本模型和密钥" });
+        const clientId = String(req.body?.clientId || "");
+        if (!clientId || !session.hasClient(clientId)) return res.status(409).json({ ok: false, error: "发起任务的网页已断开" });
+        const conversation = session.conversationStateSnapshot;
+        const id = String(req.body?.threadId || "");
+        if (id !== api.activeThreadId || req.body?.conversationId !== conversation.conversationId || req.body?.expectedRevision !== conversation.revision) return res.status(409).json({ ok: false, code: "CONVERSATION_STALE", error: "当前会话已切换，请重试", state: conversation });
+        const prompt = String(req.body?.prompt || "");
+        if (!prompt.trim()) return res.status(400).json({ ok: false, error: "请输入任务内容" });
+        const skill = req.body?.skill === undefined ? undefined : await skillStore.resolve(skillSelector(req.body.skill));
+        const thread = await api.read(id);
+        const attachments = Array.isArray(req.body?.attachments) ? req.body.attachments as AgentAttachment[] : [];
+        const messageId = String(req.body?.messageId || "");
+        const metadata = await messageMetadataStore.recordPending(messageId, req.body?.messageMetadata);
+        const refs = session.setTurnAttachments(clientId, attachments);
+        session.bindClient(clientId, typeof req.body?.projectId === "string" ? req.body.projectId : undefined, typeof req.body?.projectFileScope === "string" ? req.body.projectFileScope : undefined);
+        session.markConversationRunning(id);
+        void api.run(thread, parsed.data, withAttachmentContext(prompt, refs), String(req.body?.messageText || prompt), messageId, metadata || {}, attachments, session, emit, clientId, undefined, skill).catch(() => {
+            session.emitThread("agent_error", id, { threadId: id, message: "对话历史保存失败，请检查本地存储" });
+        });
+        res.json({ ok: true, threadId: id });
+    }));
     app.get("/agent/codex/workspace", (_req, res) => {
         const workspace = ensureSiteWorkspace(config);
         res.json({ ok: true, workspace, conversation: session.conversationStateSnapshot });
     });
     app.get("/agent/codex/models", route(async (_req, res) => res.json({ ok: true, ...(await listCodexModels(emit)) })));
+    app.get("/agent/runtimes", route(async (_req, res) => res.json({ ok: true, data: await listLocalRuntimes() })));
+    app.post("/agent/runtimes/rescan", route(async (_req, res) => res.json({ ok: true, data: await listLocalRuntimes(true) })));
+    app.put("/agent/runtime", codexMutation(async (req, res) => {
+        const id = String(req.body?.id || "");
+        const executablePath = req.body?.executablePath == null || req.body?.executablePath === "" ? undefined : String(req.body.executablePath);
+        const data = await selectLocalRuntime(id, executablePath);
+        await restartCodexApp();
+        // 切换 CLI 后旧 app-server 已废弃：按启动语义重建对话，避免页面停留在上一次“初始化失败”的不可恢复状态。
+        // 重建自身要取得 Codex 写锁，必须等本请求的 codexMutation 释放后再执行，因此调度到下一个事件循环。
+        if (activeEngine === "codex") setImmediate(() => reprepareActiveConversation());
+        res.json({ ok: true, data });
+    }));
+    app.post("/agent/runtime/test", route(async (req, res) => {
+        const id = String(req.body?.id || "");
+        const executablePath = typeof req.body?.executablePath === "string" && req.body.executablePath.trim() ? req.body.executablePath.trim() : undefined;
+        res.json({ ok: true, data: await testLocalRuntime(id, executablePath) });
+    }));
+    app.get("/agent/api/skills", route(async (_req, res) => {
+        const { skills, errors } = await skillStore.list();
+        res.json({ ok: true, data: skills.map(({ instructions: _instructions, ...skill }) => ({ ...skill, scope: "repo" })), errors });
+    }));
+    app.post("/agent/api/skills/draft", codexMutation(async (req, res) => {
+        const provider = apiProviderSchema.safeParse(req.body?.provider);
+        if (!provider.success) return res.status(400).json({ ok: false, error: "请先配置文本模型与密钥" });
+        const clientId = String(req.body?.clientId || "");
+        if (!session.hasClient(clientId)) return res.status(409).json({ ok: false, error: "网页已断开，请重新连接" });
+        let source: unknown;
+        if (req.body?.source === "conversation") {
+            const threadId = String(req.body?.threadId || "");
+            if (!threadId || threadId !== api.activeThreadId) return res.status(409).json({ ok: false, error: "当前对话已切换" });
+            const thread = await api.read(threadId);
+            const messages = thread.chat.filter((item) => thread.settledTurnIds.includes(item.turnId) && (item.role === "user" || item.role === "assistant")).map(({ role, text }) => ({ role, text }));
+            if (!messages.length) return res.status(409).json({ ok: false, error: "当前没有已完成的对话" });
+            source = messages;
+        } else if (req.body?.source === "canvas") {
+            const snapshot = session.canvasStateForClient(clientId);
+            if (!snapshot || (snapshot as Record<string, unknown>).hasCanvas === false) return res.status(409).json({ ok: false, error: "当前页面没有画布" });
+            source = canvasSkillSource(snapshot);
+        } else return res.status(400).json({ ok: false, error: "技能草稿来源无效" });
+        try { res.json({ ok: true, data: await generateApiSkillDraft(provider.data, source) }); }
+        catch { res.status(502).json({ ok: false, error: "技能草稿生成失败，请检查文本模型配置" }); }
+    }));
+    app.get("/agent/api/skills/:name", route(async (req, res) => res.json({ ok: true, data: await skillStore.get(routeParam(req.params.name)) })));
+    app.post("/agent/api/skills", codexMutation(async (req, res) => {
+        const data = await skillStore.create(req.body);
+        session.emitAll("skills_changed", { forceReload: true });
+        res.status(201).json({ ok: true, data });
+    }));
+    app.post("/agent/api/skills/import", codexMutation(async (req, res) => {
+        const data = await skillStore.importPackage(req.body);
+        session.emitAll("skills_changed", { forceReload: true });
+        res.status(201).json({ ok: true, data });
+    }));
+    app.post("/agent/api/skills/:name/enabled", codexMutation(async (req, res) => {
+        if (typeof req.body?.enabled !== "boolean") return res.status(400).json({ ok: false, error: "技能启用状态无效" });
+        const data = await skillStore.setEnabled(routeParam(req.params.name), req.body.enabled);
+        session.emitAll("skills_changed", { forceReload: true });
+        res.json({ ok: true, data });
+    }));
+    app.post("/agent/api/skills/:name/delete", codexMutation(async (req, res) => {
+        await skillStore.delete(routeParam(req.params.name), String(req.body?.expectedRevision || ""));
+        session.emitAll("skills_changed", { forceReload: true });
+        res.json({ ok: true });
+    }));
+    app.post("/agent/api/skills/:name", codexMutation(async (req, res) => {
+        const data = await skillStore.update(routeParam(req.params.name), req.body);
+        session.emitAll("skills_changed", { forceReload: true });
+        res.json({ ok: true, data });
+    }));
     app.get("/agent/codex/skills", route(async (req, res) => {
         const workspace = ensureSiteWorkspace(config);
         const result = await listCodexSkills(emit, workspace.workspacePath, String(req.query.forceReload || "") === "1");
@@ -315,7 +527,7 @@ export function startHttpServer() {
         const messageMetadata = await messageMetadataStore.recordPending(messageId, req.body?.messageMetadata);
         let threadId = activeThreadId;
         logger.info("Codex turn accepted", { threadId: req.body?.threadId, model: model || "default", reasoningEffort: effort || "default", promptLength: prompt.length, attachmentCount: attachments.length });
-        session.bindClient(clientId);
+        session.bindClient(clientId, typeof req.body?.projectId === "string" ? req.body.projectId : undefined, typeof req.body?.projectFileScope === "string" ? req.body.projectFileScope : undefined);
         session.markConversationRunning(threadId);
         session.setCodexState({ busy: true, threadId, turnId: "" });
         try {
@@ -427,7 +639,7 @@ export function startHttpServer() {
     app.use((_req, res) => res.status(404).json({ ok: false, error: "not found" }));
     app.use((error: Error, req: Request, res: Response, _next: NextFunction) => {
         logger.error("HTTP request failed", { method: req.method, path: req.path, error });
-        if (error instanceof SkillStoreError || error instanceof CodexSkillLookupError) return void res.status(error.statusCode).json({ ok: false, error: error.message });
+        if (error instanceof SkillStoreError || error instanceof CodexSkillLookupError || error instanceof CliRuntimeError) return void res.status(error.statusCode).json({ ok: false, error: error.message });
         res.status(500).json({ ok: false, error: error.message });
     });
 
@@ -441,15 +653,7 @@ export function startHttpServer() {
         console.log("Remove manually added MCP: codex mcp remove infinite-canvas");
         if (logger.enabled) console.log(`Debug log: ${logger.filePath}`);
         logger.info("Canvas Agent started", { url: config.url, workspace: ensureSiteWorkspace(config).workspacePath, debugLog: logger.filePath });
-        const activeThreadId = initialWorkspace.activeThreadId || "";
-        if (activeThreadId && session.beginCodexMutation()) {
-            void prepareExistingThread(activeThreadId).catch(async (error) => {
-                if (!isRecoverableThreadError(error)) return failPreparedConversation(error, activeThreadId);
-                session.beginConversation();
-                setActiveThread("", { emptyThread: true, draftThread: true }, true);
-                await prepareDraftThread("", "request");
-            }).finally(() => session.endCodexMutation()).catch(() => undefined);
-        }
+        // 内置 API 助手由网页创建线程，不预热或探测 CLI。
     });
 }
 
@@ -522,7 +726,7 @@ function setCors(req: Request, res: Response, url: URL, config: CanvasAgentConfi
     const origin = req.headers.origin;
     res.setHeader("Access-Control-Allow-Origin", origin || "*");
     res.setHeader("Access-Control-Allow-Headers", "content-type,x-canvas-agent-token");
-    res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,OPTIONS");
     res.setHeader("Access-Control-Allow-Private-Network", "true");
     if (!origin || req.method === "OPTIONS" || url.pathname === "/health" || url.pathname === "/config") return true;
     config.origins ||= [];

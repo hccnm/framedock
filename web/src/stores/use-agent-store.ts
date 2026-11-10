@@ -11,8 +11,10 @@ export type AgentCanvasReference = Pick<CanvasResourceReference, "nodeId" | "lab
 export type AgentSkillReference = { name: string; path: string; displayName?: string };
 export type AgentChatItem = { id: string; itemId?: string; clientMessageId?: string; threadId?: string; turnId?: string; role: AgentChatRole; title?: string; text: string; meta?: string; detail?: unknown; attachments?: AgentMessageAttachment[]; canvasReferences?: AgentCanvasReference[]; skill?: AgentSkillReference; streamId?: string; activityItems?: Record<string, string> };
 export type AgentEventLog = { id: string; time: string; title: string; text: string; raw?: unknown };
-export type AgentPendingToolCall = { requestId: string; name: string; input?: { ops?: CanvasAgentOp[]; path?: string } & Record<string, unknown> };
+export type AgentPendingToolCall = { requestId: string; name: string; projectId?: string; input?: { ops?: CanvasAgentOp[]; path?: string } & Record<string, unknown> };
 export type AgentPermissionMode = "request" | "automatic" | "full";
+export type AgentEngine = "api" | "codex";
+export type AgentCreation = { projectId: string; prompt: string; attachments: AgentAttachment[]; skillName?: string; ready?: boolean };
 export type AgentReasoningEffort = "minimal" | "low" | "medium" | "high" | "xhigh" | "max" | "ultra";
 export type AgentModel = {
     id: string;
@@ -24,7 +26,9 @@ export type AgentModel = {
 };
 export type AgentApprovalDecision = "accept" | "acceptForSession" | "decline";
 export type AgentPendingApproval = { requestId: string; method: string; threadId?: string; turnId?: string; itemId?: string; reason?: string; command?: unknown; cwd?: string; grantRoot?: string; networkApprovalContext?: unknown; permissions?: unknown; deciding?: AgentApprovalDecision };
-export type AgentCanvasContext = { snapshot: CanvasAgentSnapshot; applyOps: (ops?: CanvasAgentOp[]) => CanvasAgentSnapshot; undoOps: () => CanvasAgentSnapshot | null; canUndo: boolean };
+export type CanvasVideoFrameInput = { projectId: string; nodeId: string; position: "first" | "last" | "current" | "time"; time?: number };
+export type CanvasVideoFrameResult = { projectId: string; sourceNodeId: string; nodeId: string; storageKey?: string; width: number; height: number; time: number; snapshot: CanvasAgentSnapshot };
+export type AgentCanvasContext = { snapshot: CanvasAgentSnapshot; applyOps: (ops?: CanvasAgentOp[]) => CanvasAgentSnapshot; captureVideoFrame: (input: CanvasVideoFrameInput) => Promise<CanvasVideoFrameResult>; undoOps: () => CanvasAgentSnapshot | null; canUndo: boolean };
 export type AgentThreadSummary = { id: string; preview: string; name?: string | null; cwd?: string; status?: string; source?: unknown; createdAt?: number; updatedAt?: number };
 export type AgentTokenUsage = { input: number; cached: number; output: number };
 export type AgentBootstrapStatus = { key: string; text: string; detail: string; status: "running" | "ready" | "error" };
@@ -44,6 +48,9 @@ let agentSource: EventSource | null = null;
 let connectTimer: ReturnType<typeof setTimeout> | null = null;
 
 type AgentStore = {
+    engine: AgentEngine;
+    switchingEngine: boolean;
+    pendingCreation: AgentCreation | null;
     width: number;
     panelOpen: boolean;
     panelMounted: boolean;
@@ -96,6 +103,9 @@ type AgentStore = {
 export const CANVAS_AGENT_PANEL_MOTION_MS = 500;
 
 export const useAgentStore = create<AgentStore>((set, get) => ({
+    engine: typeof window !== "undefined" && localStorage.getItem("canvas-agent-engine") === "codex" ? "codex" : "api",
+    switchingEngine: false,
+    pendingCreation: null,
     width: typeof window === "undefined" ? 440 : Number(localStorage.getItem("canvas-agent-panel-width")) || 440,
     panelOpen: false,
     panelMounted: true,

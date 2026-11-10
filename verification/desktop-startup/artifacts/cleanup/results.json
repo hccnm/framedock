@@ -1,0 +1,10 @@
+{
+  "passed": false,
+  "failure": "回归测试注入的退出阻塞",
+  "profile": "/var/folders/tk/vltfxzw51vnb8lxd7csfk75h0000gn/T/flowharbor-cleanup-e2e-gMeCYi",
+  "cleanup": {
+    "forced": true,
+    "reason": "electronApplication.waitForEvent: Timeout 5000ms exceeded while waiting for event \"close\""
+  },
+  "profileRemoved": true
+}

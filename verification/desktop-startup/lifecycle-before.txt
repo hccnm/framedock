@@ -1,0 +1,12 @@
+[e2e-lifecycle] did-start-loading
+[e2e-lifecycle] flowharbor:close-ready
+[e2e-lifecycle] did-navigate-in-page
+[e2e-lifecycle] did-start-loading
+[e2e-lifecycle] did-navigate-in-page
+准备关闭已进入项目库的真实窗口
+FAIL 路由切换后窗口不能退出 electronApplication.waitForEvent: Timeout 30000ms exceeded while waiting for event "close"
+[e2e-lifecycle] did-start-loading
+[e2e-lifecycle] flowharbor:close-ready
+[e2e-lifecycle] flowharbor:close-result
+
+[exited with code 1]

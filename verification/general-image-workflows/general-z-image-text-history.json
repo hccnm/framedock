@@ -1,0 +1,252 @@
+{
+  "prompt": [
+    224,
+    "718bfe0c-9da1-47c3-9e3e-9043d5bf7b65",
+    {
+      "1": {
+        "class_type": "UNETLoader",
+        "inputs": {
+          "unet_name": "z_image_bf16.safetensors",
+          "weight_dtype": "default"
+        },
+        "_meta": {
+          "title": "模型"
+        }
+      },
+      "2": {
+        "class_type": "CLIPLoader",
+        "inputs": {
+          "clip_name": "qwen_3_4b.safetensors",
+          "type": "lumina2",
+          "device": "default"
+        },
+        "_meta": {
+          "title": "文本编码器"
+        }
+      },
+      "3": {
+        "class_type": "VAELoader",
+        "inputs": {
+          "vae_name": "ae.safetensors"
+        },
+        "_meta": {
+          "title": "VAE"
+        }
+      },
+      "4": {
+        "class_type": "TextEncodeZImageOmni",
+        "inputs": {
+          "clip": [
+            "12",
+            1
+          ],
+          "vae": [
+            "3",
+            0
+          ],
+          "prompt": "A red ceramic mug and a blue teapot beside a small green potted plant on a wooden table, soft daylight, product photography, realistic materials, no text.",
+          "auto_resize_images": true
+        },
+        "_meta": {
+          "title": "通用提示词与参考图"
+        }
+      },
+      "5": {
+        "class_type": "EmptySD3LatentImage",
+        "inputs": {
+          "width": 768,
+          "height": 768,
+          "batch_size": 1
+        },
+        "_meta": {
+          "title": "输出尺寸"
+        }
+      },
+      "6": {
+        "class_type": "KSampler",
+        "inputs": {
+          "model": [
+            "12",
+            0
+          ],
+          "positive": [
+            "4",
+            0
+          ],
+          "negative": [
+            "8",
+            0
+          ],
+          "latent_image": [
+            "5",
+            0
+          ],
+          "seed": 42,
+          "steps": 8,
+          "cfg": 1,
+          "sampler_name": "res_2s_ode",
+          "scheduler": "kl_optimal",
+          "denoise": 1
+        },
+        "_meta": {
+          "title": "采样参数"
+        }
+      },
+      "7": {
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "6",
+            0
+          ],
+          "vae": [
+            "3",
+            0
+          ]
+        },
+        "_meta": {
+          "title": "解码"
+        }
+      },
+      "8": {
+        "class_type": "CLIPTextEncode",
+        "inputs": {
+          "clip": [
+            "12",
+            1
+          ],
+          "text": ""
+        },
+        "_meta": {
+          "title": "负向提示词（CFG为1时不生效）"
+        }
+      },
+      "9": {
+        "class_type": "LoraLoaderModelOnly",
+        "inputs": {
+          "model": [
+            "1",
+            0
+          ],
+          "lora_name": "Z-Image-Fun-Lora-Distill-8-Steps-2603-ComfyUI.safetensors",
+          "strength_model": 1
+        },
+        "_meta": {
+          "title": "8步蒸馏（无固定风格）"
+        }
+      },
+      "10": {
+        "class_type": "SaveImage",
+        "inputs": {
+          "images": [
+            "7",
+            0
+          ],
+          "filename_prefix": "FrameDock/ZImage/general"
+        },
+        "_meta": {
+          "title": "保存图像"
+        }
+      },
+      "11": {
+        "class_type": "CR Load LoRA",
+        "inputs": {
+          "model": [
+            "9",
+            0
+          ],
+          "clip": [
+            "2",
+            0
+          ],
+          "switch": "Off",
+          "lora_name": "Kook_Zimage_瑶光.safetensors",
+          "strength_model": 0.5,
+          "strength_clip": 0
+        },
+        "_meta": {
+          "title": "可选 LoRA 1（默认关闭）"
+        }
+      },
+      "12": {
+        "class_type": "CR Load LoRA",
+        "inputs": {
+          "model": [
+            "11",
+            0
+          ],
+          "clip": [
+            "11",
+            1
+          ],
+          "switch": "Off",
+          "lora_name": "Kook_Zimage_如梦似幻.safetensors",
+          "strength_model": 0.7,
+          "strength_clip": 0
+        },
+        "_meta": {
+          "title": "可选 LoRA 2（默认关闭）"
+        }
+      }
+    },
+    {
+      "client_id": "framedock-general-verification",
+      "create_time": 1793267891200
+    },
+    [
+      "10"
+    ]
+  ],
+  "outputs": {
+    "10": {
+      "images": [
+        {
+          "filename": "general_00001_.png",
+          "subfolder": "FrameDock\\ZImage",
+          "type": "output",
+          "metadata": {
+            "kind": "image",
+            "width": 768,
+            "height": 768
+          }
+        }
+      ]
+    }
+  },
+  "status": {
+    "status_str": "success",
+    "completed": true,
+    "messages": [
+      [
+        "execution_start",
+        {
+          "prompt_id": "718bfe0c-9da1-47c3-9e3e-9043d5bf7b65",
+          "timestamp": 1793268301651
+        }
+      ],
+      [
+        "execution_cached",
+        {
+          "nodes": [],
+          "prompt_id": "718bfe0c-9da1-47c3-9e3e-9043d5bf7b65",
+          "timestamp": 1793268301654
+        }
+      ],
+      [
+        "execution_success",
+        {
+          "prompt_id": "718bfe0c-9da1-47c3-9e3e-9043d5bf7b65",
+          "timestamp": 1793268323226
+        }
+      ]
+    ]
+  },
+  "meta": {
+    "10": {
+      "node_id": "10",
+      "display_node": "10",
+      "parent_node": null,
+      "real_node_id": "10"
+    }
+  }
+}

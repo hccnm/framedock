@@ -1,4 +1,5 @@
 import { CanvasNodeType, type CanvasConnection, type CanvasNodeData, type ConnectionHandle, type ViewportTransform } from "@/types/canvas";
+import { canConnectComfyField, getNodeInputAnchor } from "@/lib/comfyui/ports";
 
 export function nodeBounds(nodes: CanvasNodeData[]) {
     return nodes.reduce(
@@ -131,17 +132,23 @@ export function findContainingGroupId(node: CanvasNodeData, nodes: CanvasNodeDat
     return undefined;
 }
 
-export function getConnectionTargetAnchor(node: CanvasNodeData, current: ConnectionHandle) {
+export function getConnectionTargetAnchor(node: CanvasNodeData, current: ConnectionHandle, fieldId?: string) {
+    if (current.handleType === "source") return getNodeInputAnchor(node, fieldId);
     return {
-        x: current.handleType === "source" ? node.position.x : node.position.x + node.width,
+        x: node.position.x + node.width,
         y: node.position.y + node.height / 2,
     };
 }
 
-export function normalizeConnection(firstNodeId: string, secondNodeId: string, nodes: CanvasNodeData[], firstHandleType: "source" | "target") {
+export function normalizeConnection(firstNodeId: string, secondNodeId: string, nodes: CanvasNodeData[], firstHandleType: "source" | "target", targetFieldId?: string): Pick<CanvasConnection, "fromNodeId" | "toNodeId" | "targetFieldId"> | null {
     const first = nodes.find((node) => node.id === firstNodeId);
     const second = nodes.find((node) => node.id === secondNodeId);
     if (!first || !second || first.id === second.id) return null;
+    const target = first.type === CanvasNodeType.ComfyUI && firstHandleType === "target" ? first : second;
+    const source = target === first ? second : first;
+    if (target.type === CanvasNodeType.ComfyUI) {
+        return canConnectComfyField(source, target, targetFieldId, nodes) ? { fromNodeId: source.id, toNodeId: target.id, targetFieldId } : null;
+    }
     if (second.type === CanvasNodeType.Group) return null;
     if (first.type === CanvasNodeType.Config && second.type === CanvasNodeType.Config) return null;
     if (second.type === CanvasNodeType.Config) return { fromNodeId: first.id, toNodeId: second.id };

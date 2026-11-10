@@ -1,0 +1,16 @@
+TAP version 13
+# Subtest: 退出被阻塞时先写失败报告，再终止隔离实例及 sidecar
+ok 1 - 退出被阻塞时先写失败报告，再终止隔离实例及 sidecar
+  ---
+  duration_ms: 5880.368041
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6127.685083

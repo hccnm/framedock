@@ -1,0 +1,349 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+      "weight_dtype": "default"
+    },
+    "_meta": {
+      "title": "模型"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen3vl_8b_bf16.safetensors",
+      "type": "qwen_image",
+      "device": "default"
+    },
+    "_meta": {
+      "title": "文本编码器"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+    },
+    "_meta": {
+      "title": "VAE"
+    }
+  },
+  "4": {
+    "class_type": "TextEncodeQwenImage21",
+    "inputs": {
+      "clip": [
+        "11",
+        1
+      ],
+      "vae": [
+        "3",
+        0
+      ],
+      "prompt": "根据提示词生成图像；有参考图时，按 <image1>、<image2> 等编号描述需要保留或改变的内容，生成统一自然的新画面。",
+      "negative_prompt": "",
+      "resolution": 1024,
+      "images.image_1": [
+        "21",
+        0
+      ],
+      "images.image_2": [
+        "22",
+        0
+      ],
+      "images.image_3": [
+        "23",
+        0
+      ],
+      "images.image_4": [
+        "24",
+        0
+      ],
+      "images.image_5": [
+        "25",
+        0
+      ],
+      "images.image_6": [
+        "26",
+        0
+      ],
+      "images.image_7": [
+        "27",
+        0
+      ],
+      "images.image_8": [
+        "28",
+        0
+      ],
+      "images.image_9": [
+        "29",
+        0
+      ],
+      "images.image_10": [
+        "30",
+        0
+      ],
+      "images.image_11": [
+        "31",
+        0
+      ],
+      "images.image_12": [
+        "32",
+        0
+      ],
+      "images.image_13": [
+        "33",
+        0
+      ],
+      "images.image_14": [
+        "34",
+        0
+      ],
+      "images.image_15": [
+        "35",
+        0
+      ],
+      "images.image_16": [
+        "36",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "通用提示词与参考图"
+    }
+  },
+  "5": {
+    "class_type": "EmptySD3LatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "输出尺寸"
+    }
+  },
+  "6": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "11",
+        0
+      ],
+      "positive": [
+        "4",
+        0
+      ],
+      "negative": [
+        "4",
+        1
+      ],
+      "latent_image": [
+        "5",
+        0
+      ],
+      "seed": 42,
+      "steps": 25,
+      "cfg": 1,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1
+    },
+    "_meta": {
+      "title": "采样参数"
+    }
+  },
+  "7": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "6",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "解码"
+    }
+  },
+  "10": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "7",
+        0
+      ],
+      "filename_prefix": "FrameDock/QwenEdit/general"
+    },
+    "_meta": {
+      "title": "保存图像"
+    }
+  },
+  "11": {
+    "class_type": "CR Load LoRA",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "clip": [
+        "2",
+        0
+      ],
+      "switch": "Off",
+      "lora_name": "None",
+      "strength_model": 1,
+      "strength_clip": 0
+    },
+    "_meta": {
+      "title": "可选 LoRA 1（默认关闭）"
+    }
+  },
+  "21": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": ""
+    },
+    "_meta": {
+      "title": "参考图 1（可选）"
+    }
+  },
+  "22": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": ""
+    },
+    "_meta": {
+      "title": "参考图 2（可选）"
+    }
+  },
+  "23": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": ""
+    },
+    "_meta": {
+      "title": "参考图 3（可选）"
+    }
+  },
+  "24": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": ""
+    },
+    "_meta": {
+      "title": "参考图 4（可选）"
+    }
+  },
+  "25": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": ""
+    },
+    "_meta": {
+      "title": "参考图 5（可选）"
+    }
+  },
+  "26": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": ""
+    },
+    "_meta": {
+      "title": "参考图 6（可选）"
+    }
+  },
+  "27": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": ""
+    },
+    "_meta": {
+      "title": "参考图 7（可选）"
+    }
+  },
+  "28": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": ""
+    },
+    "_meta": {
+      "title": "参考图 8（可选）"
+    }
+  },
+  "29": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": ""
+    },
+    "_meta": {
+      "title": "参考图 9（可选）"
+    }
+  },
+  "30": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": ""
+    },
+    "_meta": {
+      "title": "参考图 10（可选）"
+    }
+  },
+  "31": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": ""
+    },
+    "_meta": {
+      "title": "参考图 11（可选）"
+    }
+  },
+  "32": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": ""
+    },
+    "_meta": {
+      "title": "参考图 12（可选）"
+    }
+  },
+  "33": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": ""
+    },
+    "_meta": {
+      "title": "参考图 13（可选）"
+    }
+  },
+  "34": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": ""
+    },
+    "_meta": {
+      "title": "参考图 14（可选）"
+    }
+  },
+  "35": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": ""
+    },
+    "_meta": {
+      "title": "参考图 15（可选）"
+    }
+  },
+  "36": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": ""
+    },
+    "_meta": {
+      "title": "参考图 16（可选）"
+    }
+  }
+}

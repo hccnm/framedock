@@ -1,0 +1,10 @@
+[e2e-lifecycle] did-start-loading
+[e2e-lifecycle] flowharbor:close-ready
+[e2e-lifecycle] did-navigate-in-page
+[e2e-lifecycle] did-start-loading
+[e2e-lifecycle] did-navigate-in-page
+准备关闭已进入项目库的真实窗口
+[e2e-lifecycle] flowharbor:close-result
+PASS 路由切换后正常保存并退出
+
+[exited with code 0]

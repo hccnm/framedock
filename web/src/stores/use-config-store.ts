@@ -1,9 +1,10 @@
 import { useMemo } from "react";
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist, type StateStorage } from "zustand/middleware";
 import { nanoid } from "nanoid";
 
 import i18n from "@/i18n";
+import { desktopBridge, isDesktopHost } from "@/lib/desktop-host";
 
 export type ApiCallFormat = "openai" | "gemini";
 export type ModelCapability = "image" | "video" | "text" | "audio";
@@ -65,14 +66,66 @@ export type WebdavSyncConfig = {
     directory: string;
     lastSyncedAt: string;
 };
-export type ConfigTabKey = "channels" | "local-proxy" | "preferences" | "prompt-sources" | "webdav" | "local-storage";
+export type ConfigTabKey = "channels" | "local-cli" | "local-proxy" | "external-mcp" | "comfyui" | "preferences" | "prompt-sources" | "webdav" | "local-storage";
 
 export type ChannelCredentialsImportResult = {
     status: "created" | "updated" | "missing-base-url" | "invalid-base-url";
     channelName?: string;
 };
 
-export const CONFIG_STORE_KEY = "infinite-canvas:ai_config_store";
+export const CONFIG_STORE_KEY = "framedock:ai_config_store";
+
+function browserConfigWithoutSecrets(value: string) {
+    const stored = JSON.parse(value);
+    if (stored.state?.config) {
+        stored.state.config.apiKey = "";
+        stored.state.config.channels = stored.state.config.channels?.map((channel: ModelChannel) => ({ ...channel, apiKey: "" }));
+    }
+    if (stored.state?.webdav) stored.state.webdav.password = "";
+    return JSON.stringify(stored);
+}
+
+export const useConfigPersistenceStore = create<{ error: string }>(() => ({ error: "" }));
+let configStorageWritable = false;
+
+const configStorage: StateStorage = {
+    getItem: async (name) => {
+        if (typeof window === "undefined") return null;
+        try {
+            const host = desktopBridge();
+            const value = host ? await host.storage.getConfig() : window.localStorage.getItem(name);
+            if (value) {
+                const parsed = JSON.parse(value);
+                if (!parsed || typeof parsed.state !== "object" || !parsed.state || !parsed.state.config || !Array.isArray(parsed.state.config.channels)) throw new Error("配置文件格式无效");
+            }
+            const result = value && !host ? browserConfigWithoutSecrets(value) : value;
+            configStorageWritable = true;
+            useConfigPersistenceStore.setState({ error: "" });
+            return result;
+        } catch (error) {
+            configStorageWritable = false;
+            useConfigPersistenceStore.setState({ error: "配置读取失败，已停止保存以保护原文件；请修复配置并重启。当前修改仅在内存中生效。" });
+            throw error;
+        }
+    },
+    setItem: async (name, value) => {
+        if (typeof window === "undefined" || !configStorageWritable) return;
+        const host = desktopBridge();
+        try {
+            if (host) await host.storage.setConfig(value);
+            else window.localStorage.setItem(name, browserConfigWithoutSecrets(value));
+            useConfigPersistenceStore.setState({ error: "" });
+        } catch {
+            useConfigPersistenceStore.setState({ error: "配置保存失败，密钥和配置修改未保存，当前仅在内存中生效。请检查存储空间和文件写入权限。" });
+        }
+    },
+    removeItem: async (name) => {
+        if (typeof window === "undefined") return;
+        const host = desktopBridge();
+        if (host) await host.storage.removeConfig();
+        else window.localStorage.removeItem(name);
+    },
+};
 const CHANNEL_MODEL_SEPARATOR = "::";
 const OPENAI_BASE_URL = "https://api.openai.com";
 const GEMINI_BASE_URL = "https://generativelanguage.googleapis.com";
@@ -131,7 +184,7 @@ export const defaultWebdavSyncConfig: WebdavSyncConfig = {
     url: "",
     username: "",
     password: "",
-    directory: "infinite-canvas",
+    directory: "framedock",
     lastSyncedAt: "",
 };
 
@@ -247,6 +300,13 @@ export const useConfigStore = create<ConfigStore>()(
         }),
         {
             name: CONFIG_STORE_KEY,
+            storage: createJSONStorage(() => configStorage),
+            onRehydrateStorage: () => (_state, error) => {
+                if (error) {
+                    configStorageWritable = false;
+                    useConfigPersistenceStore.setState({ error: "配置读取失败，已停止保存以保护原文件；请修复配置并重启。当前修改仅在内存中生效。" });
+                }
+            },
             partialize: (state) => ({ config: state.config, webdav: state.webdav }),
             merge: (persisted, current) => {
                 const persistedState = (persisted || {}) as Partial<ConfigStore>;
@@ -499,6 +559,7 @@ export function normalizeLocalProxyUrl(value: string) {
 
 /** Prefix an outgoing request with the local forwarding proxy so the browser is not blocked by CORS. */
 export function withLocalProxy(url: string) {
+    if (isDesktopHost() && /^https?:\/\//i.test(url)) return `app://framedock/proxy/${encodeURIComponent(url)}`;
     const { proxyEnabled, proxyUrl } = useConfigStore.getState().config;
     if (!proxyEnabled || !/^https?:\/\//i.test(url)) return url;
     const base = normalizeLocalProxyUrl(proxyUrl);

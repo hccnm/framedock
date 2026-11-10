@@ -1,4 +1,4 @@
-export type VideoFramePosition = "first" | "last" | "current";
+export type VideoFramePosition = "first" | "last" | "current" | "time";
 
 export async function captureVideoFrame(source: string, position: VideoFramePosition, currentTime: number) {
     const video = document.createElement("video");
@@ -12,8 +12,10 @@ export async function captureVideoFrame(source: string, position: VideoFramePosi
         video.load();
 
         await metadataLoaded;
+        if (!Number.isFinite(video.duration) || video.duration <= 0) throw new Error("无法读取视频时长");
+        if (position === "time" && (!Number.isFinite(currentTime) || currentTime < 0 || currentTime >= video.duration)) throw new Error(`截帧时间必须大于等于 0 且小于视频时长 ${video.duration} 秒`);
         const endTime = Math.max(0, video.duration - 0.001);
-        const time = position === "first" ? 0 : position === "last" ? endTime : Math.min(currentTime, endTime);
+        const time = position === "first" ? 0 : position === "last" ? endTime : position === "time" ? currentTime : Math.min(currentTime, endTime);
         if (time) {
             const seeked = waitForVideo(video, "seeked");
             video.currentTime = time;
@@ -26,7 +28,8 @@ export async function captureVideoFrame(source: string, position: VideoFramePosi
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         canvas.getContext("2d")!.drawImage(video, 0, 0);
-        return await new Promise<Blob>((resolve, reject) => canvas.toBlob((result) => (result ? resolve(result) : reject(new Error("Failed to capture video frame"))), "image/png"));
+        const blob = await new Promise<Blob>((resolve, reject) => canvas.toBlob((result) => (result ? resolve(result) : reject(new Error("Failed to capture video frame"))), "image/png"));
+        return { blob, time };
     } finally {
         video.removeAttribute("src");
         video.load();

@@ -1,0 +1,39 @@
+{
+  "workflowId": "general-qwen-edit",
+  "title": "019关键帧 · Qwen2.1 · 厦门卧室床铺重做",
+  "prompt": "Photorealistic television drama keyframe, landscape. Recreate the actual small Xiamen bedroom and bed in <image1>: plain light-wood headboard, WHITE METAL bed frame and tubular guardrails, plain pale cotton pillows and duvet, narrow window with cream curtains, daylight. Camera is ABOVE the foot of the bed, looking DOWN at the mattress at 45 degrees. Exactly THREE ADULTS are lying down next to each other, their heads resting on the same row of pillows at approximately the same height. Their bodies and shoulders lie flat against the mattress. LEFT: Feiyu, use the woman's identity, long blue hair, whale accessories and blue-and-white maid outfit from <image3>; asleep, eyes closed, lying on her side with her head resting beside the man's shoulder on the left side of the image. CENTER: Dongqing, use only the man's facial identity, messy black hair and white T-shirt from <image2>; fully SUPINE, lying FLAT on his BACK, the back of his head visibly sunk into a pillow, shoulders against mattress, relaxed extended neck, face tilted UP toward the ceiling, eyes open looking at the ceiling as he has just woken, right hand gripping the duvet at his chest. RIGHT: Caibao, use only the woman's identity, short black hair, purple hair clip, black shirt and red scarf from <image4>; asleep, eyes closed, lying on her side with her head beside the man's shoulder on the right side of the image. All three are resting horizontally on the bed. Their lower bodies are naturally covered by the same plain cotton duvet. Identity references supply faces and clothing only: do not transfer their standing poses or their direct gaze at the camera. Natural morning window light, coherent realistic anatomy and bedding, a single continuous image.",
+  "values": {
+    "5:width": 1344,
+    "5:height": 768,
+    "6:seed": 20261109,
+    "6:steps": 25,
+    "6:cfg": 1,
+    "4:resolution": 1024,
+    "11:switch": "Off"
+  },
+  "randomEnabled": {
+    "6:seed": false
+  },
+  "inputs": [
+    {
+      "fieldId": "21:image",
+      "nodeId": "ep001-asset-25c29d79f7dd139f"
+    },
+    {
+      "fieldId": "22:image",
+      "nodeId": "ep001-asset-7ebaf040d75d5a51"
+    },
+    {
+      "fieldId": "23:image",
+      "nodeId": "ep001-asset-30acabba7c3f1e54"
+    },
+    {
+      "fieldId": "24:image",
+      "nodeId": "ep001-asset-227613a002270251"
+    }
+  ],
+  "x": 2800,
+  "y": 4950,
+  "run": true,
+  "nodeId": "comfyui-1794008020008-rqc4f"
+}

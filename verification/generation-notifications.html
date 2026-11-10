@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>FrameDock 通知隔离验收</title></head><body><div id="root"></div><script type="module">
+import axios from 'axios';
+const media = new Map(), state = new Map();
+window.notificationQA = { notices: [], fail: false, requests: [] };
+window.canvasDesktop = {
+    notifyGeneration: async notice => { window.notificationQA.notices.push(notice); return true; },
+    onGenerationNotificationClick: listener => { window.notificationQA.click = listener; return () => { delete window.notificationQA.click; }; },
+    storage: {
+        getState: async key => state.get(key) ?? null, setState: async (key, value) => { state.set(key, value); },
+        getConfig: async () => null, setConfig: async () => {},
+        getMedia: async (namespace, key) => media.get(namespace + key) ?? null,
+        setMedia: async (namespace, key, value) => { media.set(namespace + key, value); },
+        removeMedia: async (namespace, key) => { media.delete(namespace + key); }, mediaKeys: async () => [],
+    },
+    projects: { locations: async () => [], sync: async () => {} },
+    getAgentConnection: async () => null,
+    getHostInfo: async () => ({ desktop: true, platform: 'darwin', version: 'notification-fixture' }),
+    onSidecarEvent: () => () => {}, onBeforeClose: () => () => {},
+};
+axios.defaults.adapter = async config => {
+    window.notificationQA.requests.push(config.url);
+    if (window.notificationQA.fail) throw new Error('验收模拟：生成服务失败');
+    return { data: { data: [{ b64_json: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9ZpAAAAABJRU5ErkJggg==' }] }, status: 200, statusText: 'OK', headers: {}, config };
+};
+const { useConfigStore } = await import('/src/stores/use-config-store.ts');
+await useConfigStore.persist.rehydrate();
+useConfigStore.setState({ config: { ...useConfigStore.getState().config, imageModel: 'notify-qa-image', model: 'notify-qa-image', count: '1', channels: [{ id: 'notify-qa', name: '验收模拟渠道', baseUrl: 'http://127.0.0.1:3030/notification-fixture', apiKey: 'fixture', apiFormat: 'openai', models: [{ name: 'notify-qa-image', capability: 'image' }] }] } });
+const { router } = await import('/src/router.tsx');
+window.notificationQA.router = router;
+await router.navigate('/image');
+await import('/src/main.tsx');
+</script></body></html>

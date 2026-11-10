@@ -13,12 +13,10 @@ API keys, proof-of-concept code, or screenshots that reveal sensitive data.
 
 Preferred reporting channels:
 
-1. Use GitHub private vulnerability reporting or a GitHub Security Advisory for
-   this repository, if available.
-2. If a private GitHub report is not available, email `1844025705@qq.com` with
-   the subject `[infinite-canvas security]`.
-3. If neither private channel is available, open a public issue that asks for a
-   private contact channel and does not include technical exploit details.
+1. Use [GitHub private vulnerability reporting](https://github.com/hccnm/framedock/security/advisories/new)
+   for this repository, if enabled.
+2. If private reporting is not available, open an [issue](https://github.com/hccnm/framedock/issues)
+   asking for a private reporting channel without including technical exploit details.
 
 Please include:
 
@@ -28,6 +26,10 @@ Please include:
 - Any relevant logs, screenshots, or proof of concept, with secrets removed.
 - Whether the issue affects local-only usage, hosted deployments, browser
   storage, WebDAV sync, AI provider configuration, or API proxy behavior.
+
+## Desktop configuration storage
+
+Desktop settings are stored as plain JSON in `storage/config.json` under the Electron user data directory. API keys and WebDAV passwords are stored in plaintext. The app does not use the system keychain for these settings. Files are created with owner-only permissions where supported. Previous `config.encrypted` files are retained but are not automatically decrypted or imported.
 
 ## Scope
 

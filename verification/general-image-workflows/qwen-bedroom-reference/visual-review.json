@@ -1,0 +1,39 @@
+{
+  "workflowId": "general-qwen-edit",
+  "promptId": "27f128b3-552d-452d-b75c-cb553b6bc9c1",
+  "outputNodeId": "image-1794008192851-otfr3",
+  "references": [
+    {
+      "fieldId": "21:image",
+      "nodeId": "ep001-asset-25c29d79f7dd139f"
+    },
+    {
+      "fieldId": "22:image",
+      "nodeId": "ep001-asset-7ebaf040d75d5a51"
+    },
+    {
+      "fieldId": "23:image",
+      "nodeId": "ep001-asset-30acabba7c3f1e54"
+    },
+    {
+      "fieldId": "24:image",
+      "nodeId": "ep001-asset-227613a002270251"
+    }
+  ],
+  "old_composite_connected": false,
+  "status": "visually_reviewed_pass",
+  "adoption": "pending_user_review",
+  "checks": {
+    "bedroom_scene_reference": "ep001-asset-25c29d79f7dd139f",
+    "plain_cotton_bedding": true,
+    "white_metal_frame": true,
+    "left_feiyu_middle_dongqing_right_caibao": true,
+    "three_people_lying_down": true,
+    "man_eyes_open_upwards": true,
+    "women_eyes_closed": true,
+    "no_fragmentation_or_double_images": true,
+    "saved_canvas_bytes_match": true
+  },
+  "attempt_1": "rejected_by_agent: man half sitting and looking into camera",
+  "sha256": "83a34c70bfca97c89f1466e22bf22849070dd7635404009ec70b350848e93c1d"
+}

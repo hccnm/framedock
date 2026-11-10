@@ -1,5 +1,5 @@
 {
-  "title": "Support and Security",
+  "title": "Contributing and Security",
   "root": true,
   "defaultOpen": true,
   "pages": ["security", "sponsor"]

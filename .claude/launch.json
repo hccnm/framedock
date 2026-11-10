@@ -1,0 +1,30 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "framedock-desktop-renderer",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "web", "run", "dev", "--", "--host", "127.0.0.1", "--port", "3030"],
+      "port": 3030
+    },
+    {
+      "name": "framedock-docs",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "docs", "run", "dev", "--", "--hostname", "127.0.0.1", "--port", "3031"],
+      "port": 3031
+    },
+    {
+      "name": "video-frame-mcp-fixture",
+      "runtimeExecutable": "./canvas-agent/node_modules/.bin/tsx",
+      "runtimeArgs": ["verification/video-frame-mcp/start-agent.mts"],
+      "port": 17390
+    },
+    {
+      "name": "external-mcp-preview-fixture",
+      "runtimeExecutable": "./canvas-agent/node_modules/.bin/tsx",
+      "runtimeArgs": ["verification/external-mcp-preview.ts"],
+      "port": 17373,
+      "url": "http://127.0.0.1:17373"
+    }
+  ]
+}

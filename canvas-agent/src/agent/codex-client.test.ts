@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { CodexAppClient } from "./codex-client.js";
+import { canvasAgentMcpCommand, canvasAgentMcpEnv, CodexAppClient } from "./codex-client.js";
 import { assertDraftHasNoSensitiveValues, canvasSkillSource } from "./codex.js";
 
 type TestClient = {
@@ -940,3 +940,15 @@ function eventScope(payload: unknown) {
 function eventType(payload: unknown) {
     return payload && typeof payload === "object" ? (payload as Record<string, unknown>).type : undefined;
 }
+
+test("桌面 Electron runtime 生成的画布 MCP 配置显式携带 ELECTRON_RUN_AS_NODE", () => {
+    const mcp = canvasAgentMcpCommand({ ELECTRON_RUN_AS_NODE: "1" });
+    assert.deepEqual(mcp.env, { ELECTRON_RUN_AS_NODE: "1" });
+    assert.equal(canvasAgentMcpEnv({ ELECTRON_RUN_AS_NODE: "1" })?.ELECTRON_RUN_AS_NODE, "1");
+});
+
+test("普通 Node 运行时生成的画布 MCP 配置不设置 ELECTRON_RUN_AS_NODE", () => {
+    const mcp = canvasAgentMcpCommand({});
+    assert.equal(mcp.env, undefined);
+    assert.equal(canvasAgentMcpEnv({}), undefined);
+});

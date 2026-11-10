@@ -6,6 +6,25 @@ import test from "node:test";
 
 import { SkillStore, SkillStoreError } from "./store.js";
 
+test("API 技能列举与启停持久化，拒绝停用技能和伪造路径", async (context) => {
+    const workspace = await fs.mkdtemp(path.join(os.tmpdir(), "api-skills-"));
+    context.after(() => fs.rm(workspace, { recursive: true, force: true }));
+    const store = new SkillStore(workspace);
+    assert.deepEqual(await store.list(), { skills: [], errors: [] });
+    const created = await store.create({ name: "demo", description: "演示", instructions: "先读取画布再生成" });
+    assert.equal((await store.list()).skills[0].enabled, true);
+    assert.equal((await store.resolve(created)).instructions, "先读取画布再生成");
+    await assert.rejects(store.resolve({ name: "demo", path: "/outside/SKILL.md" }), /路径无效/);
+    await store.setEnabled("demo", false);
+    assert.equal((await new SkillStore(workspace).get("demo")).enabled, false);
+    await assert.rejects(store.resolve(created), /停用/);
+    const disabled = await store.get("demo");
+    await store.update("demo", { description: "更新", instructions: "新版指令", expectedRevision: disabled.revision });
+    assert.equal((await store.get("demo")).enabled, false);
+    await store.setEnabled("demo", true);
+    assert.equal((await store.resolve(created)).instructions, "新版指令");
+});
+
 test("创建、读取和更新画布专属 Skill", async (context) => {
     const workspace = await fs.mkdtemp(path.join(os.tmpdir(), "canvas-skill-store-"));
     context.after(() => fs.rm(workspace, { recursive: true, force: true }));
@@ -228,4 +247,32 @@ test("拒绝读取非对象格式的 interface 元数据", async (context) => {
     await fs.writeFile(path.join(agentsDir, "openai.yaml"), "interface: false\n", "utf8");
 
     await assert.rejects(store.get("invalid-interface"), (error: unknown) => error instanceof SkillStoreError && error.statusCode === 409);
+});
+
+test("导入完整技能包保留二进制与参考文件，拒绝路径穿越和覆盖", async (context) => {
+    const workspace = await fs.mkdtemp(path.join(os.tmpdir(), "skill-package-"));
+    context.after(() => fs.rm(workspace, { recursive: true, force: true }));
+    const store = new SkillStore(workspace);
+    const md = Buffer.from("---\nname: bundled-demo\ndescription: 演示资源\n---\n读取 references/guide.md。").toString("base64");
+    const files = { "SKILL.md": md, "references/guide.md": Buffer.from("保留原文").toString("base64"), "assets/data.bin": Buffer.from([0, 255, 1]).toString("base64") };
+    for (const unsafe of ["../outside", "/absolute", "a/../../outside", "a\\outside", "C:/outside", "a//b"]) {
+        await assert.rejects(store.importPackage({ files: { ...files, [unsafe]: "YQ==" } }), /路径不安全/);
+    }
+    await assert.rejects(store.importPackage({ files: { ...files, "bad": "not-base64" } }), /编码无效/);
+    const result = await store.importPackage({ files, interface: { displayName: "资源技能" } });
+    assert.equal(result.name, "bundled-demo");
+    assert.equal(result.interface?.displayName, "资源技能");
+    assert.equal(await fs.readFile(path.join(path.dirname(result.path), "references/guide.md"), "utf8"), "保留原文");
+    assert.deepEqual(await fs.readFile(path.join(path.dirname(result.path), "assets/data.bin")), Buffer.from([0, 255, 1]));
+    await assert.rejects(store.importPackage({ files }), /已存在/);
+    assert.equal((await store.get("bundled-demo")).revision, result.revision);
+});
+
+test("技能包导入中途失败不留下半成品", async (context) => {
+    const workspace = await fs.mkdtemp(path.join(os.tmpdir(), "skill-package-"));
+    context.after(() => fs.rm(workspace, { recursive: true, force: true }));
+    const store = new SkillStore(workspace);
+    const md = Buffer.from("---\nname: demo\ndescription: 演示\n---\n内容").toString("base64");
+    await assert.rejects(store.importPackage({ files: { "SKILL.md": md, "assets": "YQ==", "assets/file": "YQ==" } }));
+    assert.deepEqual((await store.list()).skills, []);
 });

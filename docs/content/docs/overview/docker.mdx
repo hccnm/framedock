@@ -5,11 +5,13 @@ description: Deploy Infinite Canvas with Docker Compose
 
 # Docker Deployment
 
-## Use the published image
+The `ghcr.io/hccnm/framedock:latest` and `ghcr.io/hccnm/framedock-docs:latest` image names below must be built and published by the deployer, or replaced with images they control. These examples do not imply that either image is currently published. Docker deployment and static resource paths still need validation.
+
+## Use an image you have published
 
 ```bash
-git clone git@github.com:basketikun/infinite-canvas.git
-cd infinite-canvas
+git clone git@github.com:hccnm/framedock.git
+cd framedock
 docker compose up -d
 ```
 
@@ -23,7 +25,7 @@ docker compose -f docker-compose.local.yml up -d --build
 
 ## Documentation image
 
-The documentation in `docs/` is a separate Next.js standalone application with server capabilities.
+The documentation in `docs/` is a separate Next.js standalone application with server capabilities. The following command requires the documentation image to have been built and published first.
 
 ```bash
 cd docs
@@ -51,7 +53,7 @@ No analytics are enabled by default. A deployment can enable GA4, Baidu Analytic
 ```yaml
 services:
   app:
-    image: ghcr.io/basketikun/infinite-canvas:latest
+    image: ghcr.io/hccnm/framedock:latest
     ports:
       - "3000:3000"
     environment:
